@@ -23,6 +23,10 @@ OS treats the monitor as a 2-dimensional array of pixels, where each pixel has a
 If an image uses a smaller amount of colours (for instance, GIF only uses 256 colours) than true colour, those colours will be defined within a palette called the **Colour LookUp Table (CLUT)**, where only the most important colours will be specified.
 
 
+It is also possible — but deprecated nowadays — for an image (GIF, JPEG) to be **interlaced**. The GIF will contains several resolutions (from low to normal quality) of itself.
+	*The purpose is to give an idea of what the image looks like to people with a poor internet connection.*
+
+
 ****
 ## Image Resolution
 
@@ -73,7 +77,7 @@ Colours coded on 24 bits (true colour), level of compression is selected when sa
 #### Portable Network Graphics (PNG)
 
 Dedicated to the web (normalised by W3C), lossless.
-Gray-level coded on 2 bytes, colours on 6 bytes (more than true colour).
+Gray-level coded on 2 bytes, colours on 6 bytes (true colour + an alpha channel for opacity)
 
 #### Others
 
@@ -95,5 +99,9 @@ Each shape requires parameters in order to be displayed correctly, and they are 
 	*E.g: A segment requires start_x start_y, end_x and end_y coordinates, along with colour and thickness.*
 
 
-The advantage of vectors other raster is the possibility to **resize** drawings **without any loss of quality**. 
+
+
+The advantage of vectors other raster is the possibility to **resize** drawings **without any loss of quality**. Most of the time, the vector file is way smaller than a raster file which should contain a similar content.
+
+
 
