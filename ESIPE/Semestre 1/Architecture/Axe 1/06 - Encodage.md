@@ -78,4 +78,3 @@ Le premier octet aura donc 3 "1" suivi d'un "0". Chaque octet suivant ce dernier
 
 On code la valeur sur 16 Bits (4+6+6) 
 	*ਗ਼ = 1110**0000** 10**101001** 10**011001***
-
