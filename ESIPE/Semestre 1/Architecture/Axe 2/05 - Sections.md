@@ -71,3 +71,4 @@ main:
 
 "main" est l'étiquette de code.
 "global main" rend l'étiquette visible pour l'édition des liens.
+
