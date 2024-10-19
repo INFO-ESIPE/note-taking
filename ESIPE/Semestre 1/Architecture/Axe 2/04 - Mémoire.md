@@ -11,7 +11,6 @@ Ces caractéristiques viennent s'ajouter :
 - **Débit de lecture**
 - **Débit d'écriture**
 
-
 On peut dresser les caractéristiques suivantes :
 
 | **Type de mémoire**         | **Volatile** | **Réécriture**   | **Temps d'accès** | **Débit de lecture/écriture** |

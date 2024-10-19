@@ -144,6 +144,3 @@ Ce dernier **se manifeste systématiquement lorsqu'une instruction de saut est e
 La solution sera simplement de ne jamais exécuter les étapes des instructions sautées une fois que le **WB** de l'instruction de saut est exécuté.
 	*C'est lors du WB de l'instruction `jmp` modifie le contenu du registre EIP (et ce même si l'adresse de saut est calculée à l'étape **EX** juste avant).*
 
-
-****
-## Mémoire
