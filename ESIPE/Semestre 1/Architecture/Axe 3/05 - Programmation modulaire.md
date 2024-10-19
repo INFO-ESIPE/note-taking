@@ -30,7 +30,7 @@ Un module contient une collection de fonctions destinées à être utilisées de
 Le seul fichier source qui ne contient pas d'en-tête est celui spécifiant la fonction principale `main`.
 
 
-On autorise une étiquette d'instruction à être visible depuis l'extérieur en la précédent par `global`. De plus, on renseigne dans le fichier d’en-tête l’existence de la fonction par avec `extern ETIQ`.
+On autorise une étiquette d'instruction à être visible depuis l'extérieur en la précédent par `global ETIQ`. De plus, on renseigne dans le fichier d’en-tête l’existence de la fonction par avec `extern ETIQ`.
 	*On remarque que cette logique est très similaire à celle du C, avec les fichiers headers `.h` qui permettaient d'inclure des fichiers externes.
 	L'avantage de cette méthode est que les inclusions fonctionnent comme des API. On connait les fonctions que l'on peut appeler, mais on ne voit pas forcément l'implémentation derrière (code pur du fichier `.c`). Puisqu'on suit une logique d'API, on documentera la fonction dans le fichier d'en-tête (au dessus de la clause `extern ETIQ`, de la même manière que pour les fichiers header en C.*
 

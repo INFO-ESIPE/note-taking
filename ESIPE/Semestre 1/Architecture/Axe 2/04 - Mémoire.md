@@ -1,5 +1,30 @@
 [[Axe 2]]
 ****
+## Rappel: Mémoire
+
+On juge la mémoire sur 3 dimensions essentielles :
+![[memory.png]]
+
+Ces caractéristiques viennent s'ajouter :
+- **Volatilité** - Présence obligatoire de courant électrique pour conserver les données
+- Nombre de **réecritures** possibles
+- **Débit de lecture**
+- **Débit d'écriture**
+
+
+On peut dresser les caractéristiques suivantes :
+
+| **Type de mémoire**         | **Volatile** | **Réécriture**   | **Temps d'accès** | **Débit de lecture/écriture** |
+| --------------------------- | ------------ | ---------------- | ----------------- | ----------------------------- |
+| Registre                    | Oui          | Oui              | 1 ns              | N/A                           |
+| Mémoire morte (ROM)         | Non          | Non              | 150 ns            | N/A                           |
+| Mémoire vive (RAM)          | Oui          | Oui              | 10 ns             | environ 8 Gio/s               |
+| Mémoire flash               | Non          | Oui (≈ 10⁵ fois) | 0.1 ms            | environ 500 Mio/s             |
+| Mémoire de masse magnétique | Non          | Oui              | 10 ms (guez)      | environ 100 Mio/s             |
+
+
+****
+## Mémoire pour l'assembleur
 
 Les registres n'offrent pas suffisamment de mémoire pour construire des programmes élaborés. C'est pour cette raison que l'on a introduit le principe de mémoire.
 
