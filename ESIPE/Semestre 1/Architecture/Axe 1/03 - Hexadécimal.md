@@ -1,4 +1,5 @@
 [[Axe 1]]
+02/10/2022
 ****
 
 Un octet est représenté par deux valeurs Hexadécimales allant de 0 à F (15), soit 16 valeurs 

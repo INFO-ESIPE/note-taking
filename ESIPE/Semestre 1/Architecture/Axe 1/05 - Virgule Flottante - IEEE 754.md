@@ -1,4 +1,5 @@
 [[Axe 1]]
+02/10/2022
 ****
 
 A l'inverse de l'exemple précédent, qui mettait en place un principe de virgule fixe, cette norme prend en considération le principe de virgule flottante, pouvant être déplacé à gauche ou à droite. 

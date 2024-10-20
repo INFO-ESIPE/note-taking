@@ -1,4 +1,5 @@
 [[Axe 3]]
+10/10/2022
 ****
 
 À tout moment lors de l'exécution d'un programme, le **registre de drapeaux (flags)** est un registre de 32 bits qui contient des informations cruciales sur l'état de la dernière instruction exécutée.

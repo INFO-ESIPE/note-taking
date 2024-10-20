@@ -1,4 +1,5 @@
 [[Axe 1 - Généralités]]
+04/10/2022
 ****
 
 Comme mentionné précédemment, l'OS a pour but de mieux gérer et partager les ressources de l'ordinateur.

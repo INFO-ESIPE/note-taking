@@ -1,4 +1,5 @@
 [[Axe 2 - Administration basique]]
+04/10/2022
 ****
 
 Linux étant un système multi-utilisateur, il est normal que tout le monde — en dehors de l'administrateur **(root)** et des **sudoers** (ayant la possibilité de lancer une commande avec "sudo") — ne puisse pas tout faire.

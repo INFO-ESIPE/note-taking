@@ -1,4 +1,5 @@
 [[Axe 1]]
+02/10/2022
 ****
 Pour représenter un nombre négatif, on ajoute un bit de signe. Ce bit sera de poids fort (à gauche). 
 	0 = Positif 

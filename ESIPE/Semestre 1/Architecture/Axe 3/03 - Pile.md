@@ -1,4 +1,5 @@
 [[Axe 3]]
+10/10/2022
 ****
 La pile est une zone de la mémoire dans laquelle des données peuvent être **empilée** (`push`) ou **dépilées** (`pop`).
 
