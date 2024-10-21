@@ -1,0 +1,92 @@
+[[Web And Multimedia Technologies]]
+21/10/2024
+****
+**Note :** Slide 19 (DV technology) might be at the exam
+****
+## Analog
+
+For analog videos (interlaced), there were 3 different broadcast standards :
+
+| Broadcast formats | Countries                                                  | Horizontal lines | Frame rate |
+| ----------------- | ---------------------------------------------------------- | ---------------- | ---------- |
+| PAL               | Europe (almost all),<br>China, South<br>America, Australia | 625              | 25         |
+| SECAM             | France, Middle East,<br>most of Africa                     | 625              | 25         |
+| NTSC              | USA, Canada, Japan,<br>Korea, Mexico                       | 525              | 29.97 (30) |
+
+
+Analog videos were typically using the YCC colour model. This model was chosen — instead of RGB — in order to keep compatibility with black and white TV sets (if RGB was chosen, grey-level television sets could not comprehend RGB-based analog videos at all).
+
+YCC is composed of a luminance level **Y** (defined by R, G and B), and two colour components **CC** :
+- C1 = B - Y
+- C2 = R - Y
+The exact formulas depends on the analog display system :
+![[ycc.png]]
+
+
+Digital videos are, however, non-interlaced, no need to generate half odd and half even fields. **Each frame is displayed as a whole**.
+
+
+****
+## Analog to Digital
+
+We acquire it from analog devices (VHS, Hi-8, BetaSP) and process it in a capture device that will digitalize it.
+	*We have to decide for a time sampling (fps), a spatial sampling (resolution), and quantisation (number of bits to represent a colour)*
+
+
+****
+## Compression
+
+Nearly every digitisation implies compression :
+	*E.g., 640x480 video, 25 fps, RGB colour (i.e., 24 bits)
+	1 second = 640 • 480 • 3 • 25 = 23,040,000 bytes = 22 MB
+	1 minute = 22 • 60 = 1,320 MB = 1.3 GB
+	1 hour = 1.3 • 60 = 78 GB*
+
+There are two kinds of video compression :
+- **Intra-frame :** An algorithm is applied on each frame independently of the others (like you would compress a static image)
+- **Inter-frame :** Acknowledging the content of the surrounding frames (in general, the one immediately before and after), and compress them by analysing the differences between the frames
+	*Only the pixels that changes are coded*
+
+
+The **codec (COmpressor/DECompressor)** is the device or algorithm that performs the compression process.
+
+| Format | Resolution | Type of compression | Data Rate      | Usage                |
+| ------ | ---------- | ------------------- | -------------- | -------------------- |
+| MJPEG  | 720 x 486  | Intra-frame         | 0.5-25 MB/s    | Generic              |
+| MPEG-1 | 352 x 240  | Intra-frame         | 0.01-0.06 MB/s | CD-Rom               |
+| MPEG-2 | 720 x 480  | Intra and Inter     | 0.01-2 MB/s    | DVD, Digital TV      |
+| DV     | 720 x 480  | Intra-frame         | 3.5 MB/s       | Domestic, Industrial |
+| D1     | 720 x 486  | Uncompressed        | 25 MB/s        | Broadcast            |
+
+
+The **codec is not necessarily the same as the format**. The codec says what is actually stored in the file, and the format specifies how it is formatted in the file.
+	*But for instance, MPEG-2 can be both the format and the codec, but this is not the case for every format*
+
+
+We can apply spatial compression by reducing resolution (and quantisation, but this one is not recommended).
+
+We can apply time compression by reducing the frame rate, or by coding changes between frames rather than complete images.
+	*in a video containing a still person who is talking, relevant changes will be only in the head area.
+	Each frame that is very different from the previous one becomes a
+	keyframe and is completely coded*
+
+
+A compression is said **symmetric** if the compression (when producing the video) is as long as the decompression (by the media player). 
+On the other hand, it is called **asymmetric** if the duration varies in one direction or another.
+	*In general, low decompression times require high compression times*
+
+
+Like for static digital images, a compression is judged lossless or lossy depending of if it preserve original information or not.
+
+
+****
+## MPEG Technologies
+
+Motion Picture Expert Group (MPEG) is a standard defined in 1988.
+MPEG-2 was the most used format for a long time. It includes 3 kinds of frames :
+- Intra-Frames : Frames are coded completely, normally
+- Predicted Frames : We only code differences with the previous frame
+- Bi-directional Frames : Based on both the direct previous and upcoming frame
+
+
+MPEG-4 arrived a decade later, and quickly became an international standard.
