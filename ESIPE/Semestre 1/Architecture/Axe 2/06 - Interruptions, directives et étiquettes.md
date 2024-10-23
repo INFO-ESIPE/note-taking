@@ -42,6 +42,22 @@ Le registre "EAX" doit contenir le **code système de la tâche à effectuer** (
 ![[int.png]]
 
 
+`int 0x80` effectue en réalité un **appel système (syscall)**. L'appel précis varie en fonction des paramètres que l'ont fournit dans les registres.
+En assembleur x64, on passe par l'instruction `syscall`, cependant, cette dernière n'existe pas en x86, d'ou l'utilisation de `int 0x80` à la place :
+```assembly
+; code x86
+mov eax, 1        ; numéro de l'appel système (exit)
+mov ebx, 0        ; code de retour
+int 0x80          ; appel système
+
+; équivalent code x64
+mov rax, 60       ; numéro de l'appel système (exit)
+mov rdi, 0        ; code de retour
+syscall           ; appel système
+```
+*Plus d'informations sur les appels systèmes dans le cours de Programmation Systèmes du S3.*
+
+
 ****
 ## Directives
 

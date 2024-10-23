@@ -75,23 +75,6 @@ Certains choix sont fait, à savoir de choisir si certaines fonctionnalités son
 	- Linux: Programme utilisateur (Serveur X)*
 
 
-#### Modes d'exécution
-
-Deux modes d'exécution: 
-- **Mode utilisateur**: Dédié — en général — aux applications, shells et librairies, interdit certaines instructions liées au CPU, pas d'accès direct à la mémoire (Virtual memory à la place), et les crashs ne font pas planter le système (SIGSEGV, SIGFPE...).
-
-- **Mode kernel**: Dédié au noyau (kernel), aucune limitation d'accès à la mémoire et au CPU, les erreurs peuvent faire planter la machine. 
-
-*Note: Ce qui est inclus ou non dans l'espace kernel/utilisateur dépend de l'architecture du Kernel ([[#Architecture|cf. partie sur l'architecture des noyaux]])*
-
-
-On va constamment passer d'un mode à l'autre de manière tacite, ce qui occasionne des ralentissements. 
-	**Exemple :** Dans le cas ou l'on ouvre un fichier, le système prend implicitement la main pour effectuer l'action *(réserve des ressources...)*, et permet ensuite à l'application dédiée d'ouvrir le fichier ciblé.
-
-
-Afin de garder une persistance des données entre le passage d'un état à l'autre **(switch)**, les **données doivent être copiées temporairement à un autre endroit de la mémoire**, avant d'être re-placées à l'endroit d'origine une fois les opérations en mode kernel terminées, c'est pourquoi cela s'avère si lent.
-
-
 #### Architecture
 
 Il existe différent types d'architecture pour les noyaux :
@@ -108,6 +91,23 @@ Il existe différent types d'architecture pour les noyaux :
 	*ExOS, Nemesis*
 
 
+#### Modes d'exécution
+
+Deux modes d'exécution: 
+- **Mode utilisateur**: Dédié — en général — aux applications, shells et librairies, interdit certaines instructions liées au CPU, pas d'accès direct à la mémoire (Virtual memory à la place), et les crashs ne font pas planter le système (SIGSEGV, SIGFPE...).
+
+- **Mode kernel (ring 0)**: Dédié au noyau (kernel), aucune limitation d'accès à la mémoire et au CPU, les erreurs peuvent faire planter la machine. 
+
+*Note: Ce qui est inclus ou non dans l'espace kernel/utilisateur dépend de l'architecture du Kernel ([[#Architecture|cf. partie sur l'architecture des noyaux]])*
+
+
+On va constamment passer d'un mode à l'autre de manière tacite, ce qui occasionne des ralentissements. 
+	**Exemple :** Dans le cas ou l'on ouvre un fichier, le système prend implicitement la main pour effectuer l'action *(réserve des ressources...)*, et permet ensuite à l'application dédiée d'ouvrir le fichier ciblé.
+
+
+Afin de garder une persistance des données entre le passage d'un état à l'autre **(switch)**, les **données doivent être copiées temporairement à un autre endroit de la mémoire**, avant d'être re-placées à l'endroit d'origine une fois les opérations en mode kernel terminées, c'est pourquoi cela s'avère si lent.
+
+
 ****
 ## Appels Systèmes (syscalls)
 
@@ -119,7 +119,12 @@ Une application peut effectuer des appels systèmes directement, mais en génér
 	*Fonction `printf()` qui va effectuer un appel système `write` sur le **system call handler***
 
 ![[syscall.png]]
-	*L'appel "syscall" effectue la bascule vers le mode kernel.*
+	*L'appel "syscall" effectue la bascule vers le mode kernel.
+	Les méthodes autres que `syscall` sont des **wrapers** qui vont effectuer — dans leur implémentation — l'appel systeme pour l'utilisateur. On peut observer ce comportement avec la commande `strace ./fichier_binaire` qui va lister tous les appels systèmes effectués par le binaire* 
+
+
+Exemple plus concis :
+![[rings.png]]
 
 Plus de détails sur les syscalls dans le cours de Programmation Systèmes du S3.
 
