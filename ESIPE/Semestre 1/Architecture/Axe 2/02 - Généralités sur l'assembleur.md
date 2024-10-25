@@ -53,11 +53,13 @@ Un registre est un emplacement de 32 bits interne au processeur (ou 64 bits sur 
 Un registre est considéré comme une variable globale. 
 
 Pour une architecture 32bits, il y a un total de 4 registres de travail, les **General-Purpose Registers (GPRs)**: 
-- E**A**X 
-- E**B**X
-- E**C**X
-- E**D**X
-	*Il en existe encore 4 autres (ESI, EDI, EBP et ESP), mais on va faire genre que y'a que ceux-la\**
+- E**A**X - **A**ccumulateur, souvent utilisé pour des opérations mathématiques, ou pour contenir le résultat (return) d'une opération
+- E**B**X - **B**ase, contient souvent des paramètres de fonction
+- E**C**X - **C**ompteur, souvent utilisé pour les boucles (équivalent à la variable `i`)
+- E**D**X - **D**ata, usage générique 
+	*Les quatres registres principaux (E**X**X) peuvent être utilisés comme souhaité, mais les conventions veulent que l'usage indiqué soit celui à suivre quand on le peut.
+	Il existe encore 4 autres registres\* (ESI, EDI, EBP et ESP), mais on va faire genre que y'a que ceux-la pour l'instant.*
+
 
 Chacun est donc représenté sur 32 bits. Cependant, chacun de ces registres peuvent être découpés en plus petits registres :
 ![[registry.png]]
@@ -68,9 +70,7 @@ Chacun est donc représenté sur 32 bits. Cependant, chacun de ces registres peu
 	CH = Le second octet (celui qui suit CL)*
 
 En fait, ces registres de 32 bits sont eux-mêmes des sous-registres pour ceux de 64 bits *(RAX, RBX, RCX et RDX)* — qu'on ne verra pas ici, puisqu'on va étudier l'architecture x86.
-
-
-La modification d'un **sous-registre** (AX, AH et AL dans le cas de EAX) impacte évidemment le registre global.
+	*La modification d'un **sous-registre** (AX, AH et AL dans le cas de EAX) impacte évidemment le registre global*
 
 
 
@@ -78,9 +78,9 @@ La modification d'un **sous-registre** (AX, AH et AL dans le cas de EAX) impacte
 
 | Nom                          | Variable        | Rôle                                                                                                                                                        |
 | ---------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Pointeur d'instruction       | EIP / RIP       | Contient l'adresse de la prochaine instruction à exécuter                                                                                                   |
-| Pointeur de tête de pile     | ESP / RSP       | Contient l'adresse actuelle du sommet de la pile                                                                                                            |
-| Pointeur de base de pile     | EBP / RBP       | Utilisé pour contenir l'adresse d'une donnée dans la pile, souvent pour référencer des variables locales ou des paramètres de fonctions.                    |
+| Pointeur d'instruction       | EIP / RIP       | Contient l'**adresse de la prochaine instruction à exécuter**                                                                                               |
+| Pointeur de tête de pile     | ESP / RSP       | Contient l'**adresse actuelle du sommet de la pile (stack pointer)**                                                                                        |
+| Pointeur de base de pile     | EBP / RBP       | Utilisé pour contenir l'**adresse d'une donnée dans la pile**, souvent pour référencer des variables locales ou des paramètres de fonctions.                |
 | Registre de drapeaux         | EFLAGS / RFLAGS | Contient des informations sur le résultat de la dernière opération (comme les drapeaux de dépassement, zéro, ou de retenue) ainsi que des bits de contrôle. |
-| Registre source d’index      | ESI / RSI       | Utilisé principalement comme pointeur source pour les opérations de copie ou de manipulation de chaînes.                                                    |
-| Registre destination d’index | EDI / RDI       | Utilisé principalement comme pointeur destination pour les opérations de copie ou de manipulation de chaînes.                                               |
+| Registre source d’index      | ESI / RSI       | Utilisé principalement comme **pointeur source** pour les opérations de copie ou de manipulation de chaînes.                                                |
+| Registre destination d’index | EDI / RDI       | Utilisé principalement comme **pointeur destination** pour les opérations de copie ou de manipulation de chaînes.                                           |

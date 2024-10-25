@@ -3,7 +3,7 @@
 ****
 ## Instruction `mov`
 
-L'instruction `mov` permet de manipuler ou recopier une valeur donnée dans le registre donné. 
+L'instruction `mov` permet de recopier une valeur dans le registre souhaité. 
 	*Le premier argument sera le registre, le second sera la valeur à assigner.*
 ![[mov.png]]
 
@@ -14,6 +14,36 @@ L'instruction `mov` permet de manipuler ou recopier une valeur donnée dans le r
 ![[mov-wrong.png]]
 
 ![[mov-valid.png]]
+
+
+On peut aussi utiliser les crochets pour **recopier des valeurs contenues à un espace mémoire précis** (plus de détails [[03 - Instructions#Addressing modes|ici]]) :
+```asm
+mov ebx, 0x05 ; met 5 dans le registre ebx
+mov eax, ebx  ; recopie 5 dans le registre eax
+
+mov ebx, 0x1234ABCD ; on indique une adresse mémoire contenant une valeur qui                        ; nous intéresse (e.g. "0x50" est la valeur stockée à cette                      ; adresse)
+mov eax, [ebx] ; va récupérer la valeur contenue à l'adresse 0x1234ABCD et la                   ; copier dans eax (eax contiendra donc 0x50)
+```
+*Le registre placé entre crochets devra absolument contenir une **adresse légale** (qui est réservée en RAM pour le programme actuel) 
+Si on spécifie une connerie (ou une adresse à laquelle on n'a pas accès), le programme **SEGFAULT** (voir cour de C2 avec les allocations dynamiques)*
+
+
+L'instruction — plus avancée — `lea` permet un résultat un peu similaire. Elle est surtout utilisée en Reverse Engineering pour récupérer une valeur contenue dans un tableau (dans `esi+4*ecx` par exemple).
+
+
+****
+## Addressing modes
+
+En assembleur, on peut passer des valeurs de différentes façons :
+- Register addressing - On donne le contenu brut d'un registre
+	`mov eax, ebx ; on copie le contenu brut de ebx dans eax`
+- Immediate addressing - On donne une valeur
+	`mov eax, 0x10 ; on place 10 dans eax`
+- Memory addressing - On récupère la valeur contenue à une adresse mémoire spécifique
+	`mov [ebx], eax ; va copier la valeur stockée dans EAX à l'adresse que contient ebx`
+	*Un peu comme l'instruction `jmp 0x401438` qui va directement sauter à l'adresse donnée
+	Bien entendu, il est attendu que **EBX contienne une adresse correcte à la quelle on a accès***
+
 
 
 ****

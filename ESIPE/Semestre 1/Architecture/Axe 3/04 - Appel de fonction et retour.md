@@ -65,7 +65,14 @@ fin:              ; Adresse a7.
 Il est conseillé de respecter les **conventions d'appel du C** lorsque l'on écrit des fonctions en assembleur — et donc qu'on utilise le couple `call`/`ret`
 
 On respectera les points suivants :
-1. On **empile les arguments de la fonction** (on ne les stocke pas dans les registres, donc). Ils seront récupérés dans la fonction.
+1. On **empile les arguments de la fonction** (on ne les stocke pas dans les registres, donc) dans le sens inverse (LIFO). Ils seront récupérés dans la fonction.
+```assembly
+push 0x22             ; arg 3
+push 0x4058b4         ; arg 2
+push eax              ; arg 1
+call DWORD myfunction ; AKA myfunction(eax, 0x4058b4, 0x22)
+mov esi, eax          ; stocker le résultat dans eax
+```
 2. Le **résultat** — unique — de la fonction est **écrit dans EAX**
 	*Comme on l'a vu, l'instruction `ret` ne prend pas d'opérandes en paramètres. Elle ne renvoit pas de valeur, elle se contente de retourner à une adresse.*
 3. La **pile doit être identique** avant et après l'appel de la fonction
