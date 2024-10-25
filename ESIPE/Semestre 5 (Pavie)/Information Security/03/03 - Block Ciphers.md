@@ -210,3 +210,25 @@ The most important part is to **NEVER reuse the nonce** on another block (that's
 
 
 There is, however, a more modern version of this operation called **Galois/Count Mode (GCM)** — used by AES — which uses the exact same principle, but applies a **Galois Message Authentication Code** (**GMAC**) that ensure nothing has been altered (similar to a hash).
+
+
+****
+## Galois Counter Mode (AES GCM)
+Note: this part is optional, this won't be in the exam at all.
+
+Counter Mode is good at preventing a cryptanalyst from understanding our communication, but it does not guarantee than an adversary manipulated the outputted ciphertext and turned some blocks to gibberish.
+We'll need some an equivalent of a **checksum/tag** that also guarantees the **integrity of our ciphertext**.
+	*This way, we know that we crafted something no adversary can read (via AES), nor manipulate (via GCM). GCM is an **authenticated encryption scheme***
+
+We will check this tag both when we encrypt or decrypt. If we see that what we obtain is different from what the tag indicates, we know that the ciphertext has been affected and that its integrity has been violated.
+
+
+We want to **authenticate everything that we don't want anyone to mess with** : 
+- Every ciphertext block
+- The original nonce (no need to authenticate each block's nonce, only the initial value)
+- Total length of our ciphertext
+
+Each of those data will be included in our key `H`. If something is altered, the key will be different, hence it guarantees us that we can not manipulate the ciphertext — nor the nonce — without obtaining a different key.
+
+
+AES-GCM is the most widely used method of encryption for web communications (and others). The only reliable alternative available is **ChaCha20-Poly1305**.
