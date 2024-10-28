@@ -89,4 +89,67 @@ MPEG-2 was the most used format for a long time. It includes 3 kinds of frames :
 - Bi-directional Frames : Based on both the direct previous and upcoming frame
 
 
-MPEG-4 arrived a decade later, and quickly became an international standard.
+MPEG-4 arrived a decade later, and quickly became an international standard
+It was mainly designed for digital television and interactive content (WWW)
+
+
+****
+## Codecs
+28/10/2024
+
+H.264 is the most widely-used MPEG-4 codec
+	*It is pretty much the same as Advanced Video Coding (AVC), with minor differences*
+
+It is suitable to Full HD and 4K definitions, thus explaining their use for Blu-Ray discs.
+
+The motion prediction feature is way more precise than it is with MPEG-2, allowing motion prediction block unit to go from a 16x16 pixel size to a 4x4 one
+	*It operates on smaller elements of the image, more precise*
+
+The inter-frame of MPEG-4 is more sophisticated than MPEG-2 one, the latest uses the frame before and the frame after, while MPEG-4 uses two for each direction (4 frames instead of 2) :
+![[interframe.png]]
+
+
+****
+## Formats
+
+720p is called **HD Ready**
+	*1280x720, progressive*
+
+1080p is **Full HD**
+	*1920x1080, progressive
+	1080i (interlaced, for CRT TVs) is not Full HD*
+
+**Digital Cinema Initiative 4K (DCI 4K)** is twice the height of a Full HD Frame
+	*2160, progressive
+	8K Is double the size of 4K ...*
+
+
+****
+## Streaming
+
+Generic concept of streaming (for music, videos ...) means that **our player will download portions of files, and plays it progressively** :
+- Pure Streaming (not so common)
+	- Uses dedicated protocols (RTSP), and servers that supports it
+	- Downloaded files are not saved locally
+	- Only for specific formats (MP3, Quicktime ...)
+- Progressive Download
+	- Behaviour is similar to pure streaming
+	- Uses HTTP/HTTPS (DASH Protocol is the common solution for modern players)
+	- Lesser consumption of bandwidth
+
+
+****
+## Montage (Editing)
+
+Professional video creation usually follows this scheme :
+1. Pre-production
+	*Script, storyboard, budgeting, casting, locations selection*
+
+2. Production
+	*Actual shooting, usually both the shortest and the most expensive part (unless you are JLG or some avant-garde director*
+
+3. **Post-Production**
+	*Montage, special effects, titles*
+
+**Non-linear editing** refers to video/audio **editing carried through a computer software**
+	*On the other hand, **linear editing** (related to analog video/audio editing) was **carried on tapes** (with glue, scissors and pencils ...)*
