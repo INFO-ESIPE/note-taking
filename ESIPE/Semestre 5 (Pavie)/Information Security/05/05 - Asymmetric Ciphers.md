@@ -53,7 +53,7 @@ We call the **keyring** the set of public keys you possess in order to communica
 Public-key cryptosystems can be used for :
 - Message encryption/decryption
 	*We encrypt with the public key. Only the person with the private key can retrieve the plaintext.*
-- Digital Signature
+- Digital Signature (potentially)
 	*We sign with the private key, and people decrypt with the public key.*
 - Key Exchange
 	*Two sides cooperate to exchange a session key, which is a secret key for
