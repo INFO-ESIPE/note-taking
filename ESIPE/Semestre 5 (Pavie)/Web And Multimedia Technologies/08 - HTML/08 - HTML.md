@@ -17,7 +17,7 @@ HTML5.3 is the latest version that was standardised by W3C
 **Tags** defines the structural elements of an HTML document. Most of the time, they are used in pairs (one opens the section with `<...>`, one closes it with `</...>`)
 	*Tags are usually in lowercase. They can technically be in uppercase, but since XHTML (old ass technology) requires lowercase, we kept it like so)*
 ```html
-<!DOCTYPE html> <!-- 
+<!DOCTYPE html> <!-- Doctype. Indicates which version of HTML we use (5 Here) -->
 <html>
 	<head> <!-- Informations about document, link to stylesheet, etc -->
 		<title>Welcome Page</title>
@@ -72,13 +72,42 @@ HTML5.3 is the latest version that was standardised by W3C
 ```
 
 
+Elements are organised under a tree shape. This is the **Document Object Model (DOM)**
+![[dom.png]]
+
+
+****
+## Text-related tags
+
+| Tag                 | Purpose                          |
+| ------------------- | -------------------------------- |
+| `<b>` or `<strong>` | Make the text **bold**           |
+| `<i>` or `<em>`     | Make the text *italic*           |
+| `<small>`           | Makes the text small             |
+| `<s>`               | Makes the text ~~Strikethrough~~ |
+| `<sup>`/`<sub>`     | Superscript / Subscript          |
+| `<code>`            | Showcases code                   |
+
+
+****
+## (Basic) Structural tags
+
+| Tag             | Purpose               |
+| --------------- | --------------------- |
+| `<section>`     | Section               |
+| `<div>`         | Groups elements       |
+| `<h1>` - `<h6>` | Titles of the section |
+| `<p>`           | Paragraph             |
+| `<blockquote>`  | Quoting               |
+
+
 ****
 ## Attributes
 
 Tags can have one or several attributes :
 ```html
 <body>
-	<p title="myparagraph"> <!-- Written: attributename="value" -->
+	<p title="myparagraph" class="myparagraph" id="paragraph1"> <!-- Written: attributename="value" -->
 		blabla...
 	</p>
 	
@@ -89,6 +118,10 @@ Tags can have one or several attributes :
 	</p>
 </body>
 ```
+
+`class` allows to group several elements under a same family
+`id` is an unique identifier attributed to a single element
+	*Those are especially used for styling (CSS) and dynamic interactions (JavaScript)*
 
 
 ****
@@ -262,12 +295,13 @@ There are other types of fields along with the traditional `input` one :
 
 To escape values that has a special meaning to HTML 
 
-| Escape     | Equivalent |
-| ---------- | ---------- |
-| `&lt;`     | <          |
-| `&gt;`     | >          |
-| `&amp;`    | &          |
-| `&egrave;` | è          |
-| `&eacute;` | é          |
-| `&Egrave;` | È          |
-| `&copy;`   | ©          |
+| Escape     | Equivalent                                                              |
+| ---------- | ----------------------------------------------------------------------- |
+| `&lt;`     | <                                                                       |
+| `&gt;`     | >                                                                       |
+| `&amp;`    | & (ampersand)                                                           |
+| `&egrave;` | è                                                                       |
+| `&eacute;` | é                                                                       |
+| `&Egrave;` | È                                                                       |
+| `&copy;`   | ©                                                                       |
+| `&nbsp;`   | [non-breakable space](https://en.wikipedia.org/wiki/Non-breaking_space) |
