@@ -448,3 +448,472 @@ The `position` property allows to place an element on the page :
 	*Often used for headers, sidebars, footers...*
 - `sticky` - Combines relative and fixed positioning. Element behaves as a `relative` element until it reaches the top-left hand corner of the viewport, and then acts as a `fixed` element
 	*Useful if an element has to display correctly, and then sticks to the stop when we scroll down*
+
+
+****
+## Responsive Design (out of class scope)
+
+Usually when developing a web app we follow the **Mobile First** guideline
+	*We make the website for mobile first, and then tweak the CSS to fit desktop format*
+and the **Progressive Enhancement** guideline.
+	*We display important data first, and then progressively load additional scripts that offers interactivity*
+
+Three main ideas to guarantee a responsive design :
+- CSS Media Queries
+- Flexible images in relative units (`%` or `em`)
+- Elements placed on a fluid grid (works with `grid` and `flexbox` too)
+
+
+**Media Queries**
+
+The `@media` selector allows us to apply a specific CSS block depending on the viewport size
+
+```css
+body {
+  background-color: silver;
+}
+
+/* Only appears brown-ish if the screen is wider than 480px */
+@media screen and (min-width: 480px) {
+  body {
+    background-color: tan;
+  }
+}
+```
+
+
+The selector is followed — like in the code above — by a display kind :
+- `screen` - Displayed page
+- `print` - Printed page
+- `speech` - For blind people
+- `all` - All kinds (default)
+
+```css
+@media screen {
+  body { background-color: black; }
+}
+
+/* Better to set the background to white when we print, avoid wasting ink... */
+@media printer {
+  body { background-color: white; color: black; }
+}
+```
+
+
+We can also specify a width boundary to apply it to :
+- `min-width` - Apply if the screen is wider (`>=`) than n
+- `max-width` - Apply if the screen is smaller (`<=`) than n
+	*The keyword `and` is used to apply several characteristics, the keyword `not` is used to inverse it, a `,` indicates an OR* 
+
+```css
+body { background-color: silver; }
+
+@media screen and (min-width: 250px) and (max-width: 450px)  {
+  body { background-color: tan; }
+}
+```
+
+```css
+body { background-color: silver; }
+
+/* Will appear grey when viewport width is greater than 459, OR smaller than 251, brown otherwise */
+@media screen and (max-width: 250px), (min-width: 450px)  {
+  body { background-color: tan; }
+}
+```
+
+
+**Fluid Grid**
+
+We display each div with a width of 100%
+
+```css
+* {
+  box-sizing: border-box;  /* Sizes are the one of the box !! */
+}
+
+.title {
+  background-color: tan;
+  width: 100%;
+}
+```
+
+
+Design of a simple grid :
+```html
+<div class="row">
+  <div class="col-2 title">Titre</div>
+</div><div class="row">
+  <div class="col-1 fact">div avec col-1</div>
+  <div class="col-1 fact">div avec col-1</div>
+</div><div class="row">
+  <div class="col-2 story">div avec col-2</div>
+</div>
+```
+```css
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.col-1 { width: 50%; float: left; padding: 15px; }
+.col-2 { width: 100%; float: left; padding: 15px; }
+```
+
+
+**Various**
+
+*We can disable the mobile scrollbar by including this in the HTML Head :*
+```html
+<!-- "initial-scale" is the zoom factor -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+```
+
+
+****
+## Flexbox (out of class scope)
+
+Different **models of layouts** :
+- pre-CSS: `tables` (< 1996)
+- CSS1: `float` (>= 1996)
+- CSS1/CSS2: `position` (>= 1996-2011)
+- CSS3: `flexbox` and `grid` (>= 2015)
+
+The flex layout allows responsive elements within a container to be automatically arranged depending upon screen size (or device)
+	*Allows to vertically align boxes
+	Allows to place boxes in a responsive way*
+
+**Example :**
+```html
+<div class="container">
+	<div class="item">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
+</div>
+```
+```css
+.container {
+  display: flex; /* inline-flex */
+}
+.item {
+  background-color: pink;
+  margin: 15px;
+  width: 100px;
+  height: 40px;
+}
+``` 
+![[flexbox-first.png]]
+
+
+**Container Properties**
+
+**Direction - `flex-direction`** (row | row-reverse | column | column-reverse)
+```css
+.container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+```
+![[flexbox-reverse.png]]
+
+**Horizontal Alignment - `justify-content`** (start | end | center | space-between | space-evenly | space-around) 
+```css
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+```
+![[flexbox-justify.png]]
+
+**Vertical Alignment - `align-items`** (start | end | center | baseline | stretch)
+```css
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+```
+![[flexbox-align.png]]
+
+**Multi-lines if not enough space**
+	`flex-wrap` (nowrap | wrap | wrap-reverse)
+	`align-content` (start | end | center | space-between | space-around | space-evenly | stretch)
+	`flex-flow: <flex-direction> <flex-wrap>;` allows to manage both wrap and content in one single property 
+```css
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  align-content: start;
+  height: 200px;
+}
+```
+![[flexbox-wrap1.png]]
+
+![[flexbox-wrap2.png]]
+
+**Spacing**
+	`row-gap` for gap between rows
+	`column-gap` for gap between columns
+	`gap: <row-gap> <column-gap>;` to manage both
+	`gap: <gap>;` to apply same gap to both row and columns (shorter)
+```css
+.container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: flex-start;
+  gap: 10px 30px;
+  height: 150px;
+}
+```
+![[flexbox-gap.png]]
+
+
+**Individual Elements Properties**
+
+**Specific Vertical Alignment - `align-self`** (auto | flex-start | flex-end | center | baseline | stretch)
+
+Instead of following the `align-items` container directive, the element will be vertically placed with the directive
+```css
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100px;
+}
+.items {
+  background-color: pink;
+  margin: 15px;
+  width: 100px;
+  height: 20px;
+}
+.item1 {
+  align-self: flex-end;
+}
+```
+![[flexbox-self.png]]
+
+
+**Element Size - `flex-basis`**
+
+Size an elements takes in the total flex zone
+- Specified by a size unit: `flex-basis: 100px; flex-basis: 20%;`
+- Auto: `flex-basis: auto /* use width/height */`
+```css
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.items {
+  background-color: pink;
+  margin: 10px;
+  width: 100px;
+  height: 40px;
+  flex-basis: 20%;
+}
+.item2 {
+  flex-basis: 60%; /* Larger than the two others */
+}
+```
+![[flexbox-basis.png]]
+
+
+**Growing - `flex-grow`**
+
+Indicates if the element is growing when there is room available for it
+- 0 - false, not growing
+- >= 1 - true, growing
+	*If several elements have this property, their growing will go accordingly to their value (`elt1` of `flex-grow: 2` will appear wider than `elt2` of `flex-grow: 1`)*
+```css
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.items {
+  background-color: pink;
+  margin: 10px;
+  width: 100px;
+  height: 40px;
+}
+.item1 {
+  flex-grow: 1;
+}
+```
+![[flexbox-grow1.png]]
+![[flexbox-grow2.png]]
+
+
+**Shrinking - `flex-shrink`**
+
+Same as `flex-grow`, but default value is 1.
+
+
+**Flex Attribute - `flex <flex-grow> <flex-shrink> <flex-basis>`**
+
+Allows to specify growing, shrinking and size (basis) in one single command
+
+
+****
+## Grid (out of class scope)
+
+CSS Grids allows creation of complex responsive web design layouts more easily and consistently across browsers.
+```html
+<div class="container">
+  <div class="item">1</div>
+  <div class="item">2</div>
+  <div class="item">3</div>
+</div>
+```
+```css
+.container {
+  display: grid; /* inline-grid */
+  grid-template-columns: 50% 80px;
+  grid-template-rows: auto auto;
+  border: solid black;
+}
+.item {
+  border: solid black;
+  background-color: pink;
+  margin: 5px;
+}
+```
+![[grid.png]]
+
+
+**Container Properties**
+
+**Template - `grid-template-columns`, `grid-template-rows`**
+
+Indicates size of each column/row
+```css
+.container {
+  display: grid;
+  grid-template-columns: 40% 1fr 20%;
+  grid-template-rows: auto 50px;
+  border: solid black;
+}
+.item {
+  border: solid black;
+  background-color: pink;
+  margin: 5px;
+}
+```
+![[grid-template.png]]
+
+Ways of specifying :
+- in pixels: `100px`
+- in percentage (of the container): `20%`
+- in fr (proportional **fr**ee space): `2fr`
+- Size of largest word (text): `min-content: 4fr`
+- Size of all words (text): `max-content: 2fr`
+```css
+.container {
+  display: grid;
+  grid-template-columns: 1fr max-content 2fr;
+  grid-template-rows: auto 50px;
+  border: solid black;
+}
+.item {
+  border: solid black;
+  background-color: pink;
+  margin: 5px;
+}
+```
+![[grid-units.png]]
+
+It is also possible to use the `repeat(times, value)` macro to apply a same value to each row/column of the grid
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, auto);
+  border: solid black;
+}
+.item {
+  border: solid black;
+  background-color: pink;
+  margin: 5px;
+}
+```
+![[grid-repeat.png]]
+
+
+**Horizontal Alignment - `justify-content`** (start | end | center)
+
+Similar to how it works with flexboxes
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: auto;
+  justify-content: center;
+  border: solid black;
+}
+.item {
+  border: solid black;
+  background-color: pink;
+  margin: 5px;
+}
+```
+![[grid-justify.png]]
+
+
+**Vertical Alignment - `align-items`** (start | end | center | baseline | stretch)
+
+Again, exactly like flexboxes
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 150px);
+  grid-template-rows: auto;
+  align-items: center;
+  border: solid black;
+}
+.item1 {
+  border: solid black;
+  background-color: pink;
+  margin: 5px;
+  height: 20px;
+}
+.item2 {
+  border: solid black;
+  background-color: pink;
+  margin: 5px;
+  height: 40px;
+}
+.item3 {
+  border: solid black;
+  background-color: pink;
+  margin: 5px;
+  height: 60px;
+}
+```
+![[grid-align.png]]
+
+
+**Spacing**
+
+Again, exactly like flexboxes
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 10px 40px;
+  border: solid black;
+}
+.item {
+  border: solid black;
+  background-color: pink;
+  margin: 5px;
+}
+```
+![[grid-gap.png]]
