@@ -1,5 +1,9 @@
 [[Concurrence]]
 ****
+Note: The english version is slightly more detailed
+****
+## Concurrence ?
+
 La concurrence est un concept permettant l'exécution de plusieurs morceaux de code en même temps. Ce concept s'utilise dans deux cas: 
 - Appels I/O bloquants (requêtes base de données, API distante...), ce cas est le plus fréquent pour du dev logiciel et celui que l'on va traiter 
 - Calcul massif nécessitant d'exploiter pleinement le CPU
@@ -175,11 +179,11 @@ public static void main(String[] args) throws InterruptedException {
 }
 ```
 
-L'appel `thread.join()` peut lever une `InterruptedException`, erreur déclenchée si l'on demande a un thread de s'arrêter et qu'il est en attente dans sa méthode `join()`.
+L'appel `thread.join()` peut lever une `InterruptedException` car c'est une action bloquante. Cette exception est levée si l'on demande a un thread de s'arrêter et qu'il est en attente dans sa méthode `join()`.
 
 
-La méthode `Thread.sleep()` permet de **mettre en pause le thread** pendant n millisecondes. Tout comme join, la méthode est bloquante et susceptible de lever une `InterruptedException`.
-Il faut, pour ce cas, **gérer l'exception avec un try-catch et une AssertionError** :
+La méthode `Thread.sleep()` permet de **mettre en pause le thread pendant `n` millisecondes**. Tout comme join, la méthode est bloquante et susceptible de lever une `InterruptedException`.
+Il faut, pour ce cas, **gérer l'exception avec un try-catch et une `AssertionError`** :
 ```java
 Thread.ofPlatform().start(() -> {
 	try {
