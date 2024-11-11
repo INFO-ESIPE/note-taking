@@ -62,13 +62,13 @@ The thread entering the block **acquires a token (the lock)** associated to the 
 Instructions can be swapped in the section itself, but it will never escape it.
 ```java
 // Normal code
-var j = 20;
-var i = 30;
+var i = 20;
+var j = 30;
 var k = j + i;
 
 // What the JIT can do if it judges it more optimized and that it does not alternate the behaviour of a SEQUENTIALLY EXECUTED CODE (so, not concurrent)
-var i = 30;
-var j = 20;
+var j = 30;
+var i = 20;
 var k = j + i;
 ```
 
