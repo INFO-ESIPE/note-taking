@@ -60,7 +60,7 @@ HTML5.3 is the latest version that was standardised by W3C
 					It preserves spaces      and line breaks. 
 		
 		
-		Code snippets or ASCII art are often displayed using the <pre> tag. 
+		Code snippets or ASCII art are often displayed using the &lt;pre&gt; tag.
 		
 		Useful to include code too : 
 		if (true == true) { 
@@ -218,6 +218,36 @@ This is what it looks like (render in markdown) :
 `td` means **T**able **D**atacell
 
 
+The `colspan` and `rowspan` properties can be used like so:
+```html
+<h1>Chapters</h1>
+<table border="1" cellpadding="10">
+  <thead>
+	<tr>
+	  <th>Info \ Chapter</th>
+	  <th colspan="4">Chapters 1 - 4</th>
+	</tr>
+  </thead>
+  <tbody>
+	<tr>
+	  <th rowspan="2">Titles and pages</th>
+	  <td>Story of the Door</td>
+	  <td>Search for Mr Hyde</td>
+	  <td>Dr Jekyll was Quite and at Ease</td>
+	  <td>The Carew Murder Case</td>
+	</tr>
+	<tr>
+	  <td>5-12</td>
+	  <td>13-25</td>
+	  <td>26-30</td>
+	  <td>31-37</td>
+	</tr>
+  </tbody>
+</table>
+```
+![[table.png]]
+
+
 ****
 ## Forms
 
@@ -237,12 +267,12 @@ The `name` property is the unique field name, this is useful for the back-end as
 GET is the code to retrieve data (get a resource on the server)
 POST is to submit data the server needs to process (usually a creation form, inserting new data in the database)
 -->
-<form action="./endpoint" method="post">
+<form action="./endpoint" method="post" id="form1">
 	<label for="uname">Username</label>  <!-- Label for "uname" input -->
 	<input type="text" id="uname" name="form_uname"> <!-- "uname" text field -->
 
 	<!-- Button that submits the form data to the endpoint ("action") when pressed -->
-	<button type="submit">
+	<button type="submit" form="form1">Submit</button>
 </form>
 ```
 
@@ -257,9 +287,13 @@ Other kinds of inputs :
 	<input type="checkbox" value="Bike">
 
 	<!-- Radio buttons, they exclude each other -->
-	<input type="radio" value="My favourite language is Rust">
-	<input type="radio" value="My favourite language is Zig">
-	<input type="radio" value="My favourite language is Intel x86 asm (???)">
+	<legend>Favourite language</legend>
+	<input type="radio" name="language" id="lang-rust" value="rust">
+	<label for="lang-rust">My favourite language is Rust</label>
+	<input type="radio" name="language" id="lang-zig" value="zig">
+	<label for="lang-zig">My favourite language is Zig</label>
+	<input type="radio" name="language" id="lang-asm" value="x86">
+	<label for="lang-asm">My favourite language is Intel x86 asm (???)</label>
 
 	<!-- Allow user to upload a file of his choice -->
 	<input type="file">
@@ -283,6 +317,7 @@ There are other types of fields along with the traditional `input` one :
 
 <!-- Dropdown menu -->
 <select name="country">
+	<option value="">Please choose an option</option>
 	<option value="fr">France</option>
 	<option value="jp">Japan</option>
 	<option value="it">Italy</option>
