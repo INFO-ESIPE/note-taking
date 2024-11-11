@@ -305,3 +305,99 @@ To escape values that has a special meaning to HTML
 | `&Egrave;` | È                                                                       |
 | `&copy;`   | ©                                                                       |
 | `&nbsp;`   | [non-breakable space](https://en.wikipedia.org/wiki/Non-breaking_space) |
+
+
+****
+## HTML5
+
+It's just an update that provides new tags and attributes.
+There are new semantic description of content (to split the HTML document in a more comprehensive way), and multimedia elements:
+```html
+<body>
+	<header>
+		<h1>Website name</h1>
+	</header>
+
+	<nav>
+		<ul>
+			<li><a href="#">Main Page</a></li>
+			<li><a href="#">Articles</a></li>
+			<li><a href="#">Sign In<</a>/li>
+			<li><a href="#">Sign Up</a></li>
+		</ul>
+	</nav>
+
+	<main>
+		<article>
+			<h2>My article</h2>
+			<p>blabla...</p>
+		</article>
+
+		<section>
+			<figure> <!-- Autonomous content -->
+				<figcaption>My favourite music:</figcaption> <!-- Desc of figure -->
+			<!-- Provide multiple sources in case a browser doesn't support a codec -->
+				<audio controls>
+					<source src="/down_on_the_road_by_the_beach/sleep_walk.mp3" type="audio/mpeg"/>
+					<source src="/down_on_the_road_by_the_beach/sleep_walk.ogg" type="audio/ogg"/>
+					Sorry, your browser does not support any of the available codecs
+				</audio>
+			</figure>
+			<figure>
+				<figcaption>Cool movie:</figcaption>
+				<video controls width="1920">
+					<source src="/cat_listening_to_music.webm" type="video/webm"/>
+					<!-- Like audio, it can have several sources too -->
+				</video>
+			</figure>
+		</section>
+
+		<section>
+			<h2>Drawing</h2>
+			<!-- Canvas works with javascript -->
+			<canvas id="mioCanvas" width="200" height="100" style="border:1px solid #c3c3c3;">
+				Sorry, your browser doesn’t support the ‘canvas’ tag
+			</canvas>
+			<script type="text/javascript">
+				var c = document.getElementById("mioCanvas");
+				var cxt = c.getContext("2d");
+				cxt.fillStyle = "#FF0000";
+				cxt.beginPath();
+				cxt.arc(70,18,15,0,Math.PI*2,true);
+				cxt.closePath();
+				cxt.fill();
+			</script>
+		</section>
+
+		<aside>
+			<h2>Related:</h2>
+			<ul>
+				<li>blabla</li>
+				<li>blabla</li>
+			</ul>
+		</aside>
+	</main>
+
+	<footer>
+		<h2>Contact: prout@gmail.com</h2>
+	</footer>
+</body>
+```
+
+Those new multimedia tags allows for multimedia inclusion in web pages to be more consistent and standardised. With previous versions, it was required for browsers to have specific plugins, which was very messy and hard to make a standard out of.
+
+Here is the structural document an HTML5 should follow:
+![[structure.png]]
+- `header`: “introductory” information
+- `main`: content of the page
+- `nav`: navigation elements
+- `section`: generic section (like `div` but more important, div is just a random box)
+- `article`: “independent” content portion
+- `aside`: “extra” content
+- `footer`: “bottom area” of a content region (usually for contact info, legal remarks)
+
+
+There are also new types of inputs for forms:
+	`color`, `date`, `datetime`, `datetime-local`, `email`,
+	`month`, `number`, `range`, `search`, `tel`, `time`, `url`,
+	`week`

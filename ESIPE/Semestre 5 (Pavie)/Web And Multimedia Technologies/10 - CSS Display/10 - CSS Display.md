@@ -198,7 +198,7 @@ We can manage the **overlap order** of elements with the `z-index` property:
 
 
 ****
-## Responsive Design (out of class scope)
+## Responsive Design
 
 Usually when developing a web app we follow the **Mobile First** guideline
 	*We make the website for mobile first, and then tweak the CSS to fit desktop format*
@@ -206,7 +206,7 @@ and the **Progressive Enhancement** guideline.
 	*We display important data first, and then progressively load additional scripts that offers interactivity*
 
 Three main ideas to guarantee a responsive design :
-- CSS Media Queries
+- CSS Media Queries (CSS3)
 - Flexible images in relative units (`%` or `em`)
 - Elements placed on a fluid grid (works with `grid` and `flexbox` too)
 

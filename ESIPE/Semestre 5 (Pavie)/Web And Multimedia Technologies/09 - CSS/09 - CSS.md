@@ -316,3 +316,76 @@ tr:nth-child(odd) { /* "even" is also available */
 }
 ```
 ![[final.png]]
+
+
+****
+## CSS3
+
+CSS3 adds new features
+
+**Borders for boxes:**
+```css
+div {
+	border: 2px solid #a1a1a1;
+	padding: 10px 40px;
+	background: #dddddd;
+	width: 300px;
+	-moz-border-radius: 25px; /* Only applies to firefox */
+	-webkit-border-radius: 50px; /* Only applies to chrome & safari */
+	-ms-border-radius: 75px; /* Only applies to IE */
+	-o-border-radius: 100px; /* Only applies to Opera */
+	border-radius: 25px;
+}
+```
+
+**Background size and origin:**
+```css
+div {
+	background: url(img_flwr.gif);
+	background-size: 80px 60px;
+	background-repeat: no-repeat;
+}
+div {
+	background: url(“img_flwr.gif”);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-origin: content-box;
+}
+```
+
+**Special effects for text:**
+```css
+h1 {
+	text-shadow: 5px 5px 5px #FF0000;
+}
+```
+![[text.png]]
+
+**Font via files:**
+Custom fonts can be added to the web server. Those will be automatically downloaded via an HTTP request when the user loads a page.
+	*In the past, websites only used to use `Times` and `Arial`, as they were the only widely-used fonts that every web browser had by default.*
+```css
+@font-face {
+	font-family: myFirstFont;
+	src: url('Sansation_Light.ttf'),
+	url('Sansation_Light.eot'); /* IE9+ */
+}
+
+div {
+	font-family: myFirstFont;
+}
+```
+
+**Column display:**
+```css
+.newspaper {
+	column-count: 3;
+	column-gap: 40px;
+}
+```
+![[columns.png]]
+
+**Media Queries for Responsive Design (can be found [[10 - CSS Display#Responsive Design|here]])**
+
+**Animations and transitions (can be found [[11 - CSS Animations|here]])**
+
