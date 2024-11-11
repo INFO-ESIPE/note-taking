@@ -2,7 +2,6 @@
 ****
 ## Deadlocks
 
-
 What does this code prints ?
 ```java
 public class PingPong {

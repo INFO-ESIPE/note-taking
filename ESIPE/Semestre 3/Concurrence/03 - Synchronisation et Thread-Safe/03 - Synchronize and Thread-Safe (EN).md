@@ -2,26 +2,32 @@
 ****
 ## Mutex
 
-La non-atomicité des instructions ainsi que l'entrelacement des threads posent de gros problèmes qui nécessitent une solution permettant d'inclure une logique de synchronisation.
+Non-atomicity of instructions is a major issue, as our threads might be de-scheduled in the middle of it, allowing other threads to see data in an incoherent state.
 
-Cette solution est une **section critique** (lock, verrou). 
+We need a solution allowing to include a **synchronisation** logic.
+This solution is a **critical section** (lock). 
+
+The simplest and most common implementation of a critical section is the **mutex (MUTual EXclusion)**.
+A critical section is a block of code that accesses a shared resource and can’t be executed by more than one thread at the same time. This section is attached to the lock.
+	*If a thread is inside one of the critical sections binded to a lock, no other thread can enter any critical section binded to the same lock.*
+
+When used correctly, this ensures that several threads can not access some code (and the data manipulation that goes with it) at the same time.
+The ultimate purpose it to **prevent thread 2 from attempting to read a value that thread 1 is currently modifying or reading, until the overall operation he carries is fully done**
 
 
-Le plan conceptuel le plus courrant et simple du verrou est le **mutex (MUTual EXclusion)**. 
-Cette section critique permettrait de s'assurer que des threads différents ne puissent pas exécuter un même bout de code en même temps, et qu'on **essaye de lire une valeur avant que l'écriture soit totalement finie** (totalement répercutée sur la RAM et non conservée uniquement en cache ou dans une variable locale).
+However, **the lock does not guarantee that the thread wont be de-scheduled right in the middle of the critical section**. It just prevents the reading and execution of fragments of code by several threads, but does not guarantee the writing on RAM. 
+To solve this issue, it will be mandatory to **apply the lock on each reading/writing action of the class**.
 
-Cependant, **le lock ne garantit pas que le thread soit dé-schedulé en plein milieu de la section critique**. Il empêche effectivement que deux threads accèdent et exécutent un même bout de code en même temps, mais ne garantit pas l'écriture en RAM. Pour répondre à cette seconde contrainte, il sera nécessaire d'**appliquer un lock sur chaque action de lecture et d'écriture de la classe**.
-
-*Pour notre `count` de la dernière fois :*
+*For our `count` from last time:*
 ```java
 public class Counter {
 	private int value;
 
 	public void addALot() {
 		for (int i = 0; i < 10_000; i++) {
-			// Début section critique
+			// Begin critical section
 			this.value++;
-			// Fin section critique
+			// End critical section
 		}
 	}
 
@@ -42,60 +48,76 @@ public class Counter {
 
 
 ****
-## Bloc de synchronisation
+## Synchronise block
 
-Le bloc `synchronized` est une barrière en mémoire qui sert à empécher l'exécution concurrente d'un même bloc de code, pouvant résulter en un état incohérent des données de l'application.
+The `synchronized` block is a memory boundary that prevents concurrent execution of a block of code, as it always results in altering data in an incoherent manner.
 
-Ce bloc **prend (acquire) un jeton** associé au moniteur avant l'exécution du code interne au synchronized, **et rend (release) ce jeton une fois sorti du bloc de synchro**. 
+The thread entering the block **acquires a token (the lock)** associated to the block, and **releases the token at the end of the block** (when it is about to leave it). 
 
-**Un seul thread peut avoir le jeton**. Si le thread est dé-schedulé au sein du bloc de synchro (et qu'il possède donc le jeton), **il le conserve** et aucun autre thread n'a donc la clef donnant accès au code.
-
-
-**La synchro empêche également le JIT de déplacer les lignes de code** (au cours du processus d'optimisation de code) en dehors du bloc de synchronisation, et ce pour d'évidentes raisons. Les instructions peuvent être ré-organisées au sein du bloc même sans soucis, mais ça ne sort jamais du bloc.
+**Only one thread at a time can carry this token**. If the thread carrying the token is de-scheduled in the middle of the `synchronized` block, **he keeps it** and no other thread can access any `synchronized` block binded to this lock (as no other thread can acquire the token).
+	*Try to visualise it as a lock in real life. The first person to enter the lock-protected room takes the key, and keeps it. As long as he doesn't leaves the room, he keeps the key. Other people willing to enter the room can't, until he leaves and give back the key.*
 
 
-La synchro ne garantit pas le bon comportement du code concurrent en dehors de ce même bloc. Si on effectue des opérations non-atomiques et non-synchronisées depuis un main (e.g :
+**The synchronise mechanism also prevents the JIT to swap lines of code** (when he optimises the code) **outside of the critical section**, for obvious reason. 
+Instructions can be swapped in the section itself, but it will never escape it.
+```java
+// Normal code
+var j = 20;
+var i = 30;
+var k = j + i;
+
+// What the JIT can do if it judges it more optimized and that it does not alternate the behaviour of a SEQUENTIALLY EXECUTED CODE (so, not concurrent)
+var i = 30;
+var j = 20;
+var k = j + i;
+```
+
+
+The synchronisation mechanism does not guarantee the correct behaviour of the concurrent code outside of the critical section itself. If we execute non-atomic and non-synchronised operations from outside (e.g,
 ```java
 System.out.println(user.nom() + " " + user.prenom())
 ```
-), alors la synchro perd tout son intéret et le code va potentiellement ouvrir sur des erreurs de concurrence. 
-Il est donc important, même si la classe est bien conçue et thread-safe, de **respecter les principes de concurrence en dehors de la classe**.
+), then the mechanism loses all it's purpose and the code will potentially opens on concurrency issues. 
+So it is always important — even if the class is thread-safe and well-conceived — to **respect concurrency principles outside of the class**.
 
 
-On constate donc que la synchro n'empeche pas le dé-scheduling — et donc un état incohérent des données — mais va cependant empêcher aux autres d'avoir accès à cet état incohérent. On a donc l'impression que l'état n'est jamais incohérent ce qui est en réalité faux, mais on ne tombera jamais sur cet état car c'est impossible.
+So, we see that this synchronise mechanism does not prevent de-scheduling in any way — and by doing so, an incoherent state of data — but it will definitely prevent other threads from accessing this incoherent state. 
+	*Which means, it does not really matter that our data is incoherent during a critical section, as only the current thread can read/write it. For other threads, the data will only be accessible when everything is done.
+	We have the illusion that the state is never incoherent (which is false, a thread can still be interrupted in the middle of a non-atomic operation), but since no one else can see it, it's fine.*
 
 
 ****
-## Mutex - Implémentation et utilisation en Java
+## Mutex - Implementation and usage in Java
 
-On ajoute à la classe qu'on souhaite rendre thread-safe un `Object` qui sert de lock, aussi appelé **"moniteur"** :
+As we explained, a `synchronize` block is binded to a lock. In our class, we initialise an `Object` that will serve us as the lock (also called **"monitor"**):
 ```java
 public class Counter {
 	private int value;
 	private final Object lock = new Object();
 
+	/* 
+	Note that here, it is more performant to put the synchronize inside the loop rather than outside. If a thread is de-scheduled after the end of a loop, another thread can get the lock and increase the counter on it's side without causing any data race. If the synchronize was outside of the loop, the code would only be accessible if the current thread finished the 10000 loops
+	*/
 	public void addALot() {
 		for (int i = 0; i < 10_000; i++) {
-			synchronized(lock) { // Début section critique
+			synchronized(lock) { // Begin critical section
 				this.value++;
-			} // Fin section critique
+			} // End critical section
 		}
 	}
 }
 ```
 
-Le moniteur choisi se doit de respecter certaines conditions: 
-- Il doit être un **Objet**, donc pas primitif (int, long...) ni null 
-- L'objet ne doit **pas utiliser d'interning** (String literals, Integer), afin que le même objet serve de verrou pour différents besoins 
-- Le lock ne doit pas pouvoir être utilisé par d'autres threads et va donc respecter certains principes d'encapsulation: 
-    - Le champ servant de moniteur doit être **private** car il ne doit pas être accessible en dehors de la classe 
-    - Le champ doit être **final afin que sa référence ne change jamais** 
-    - L'objet doit être **créé dans le constructeur** de la classe 
-    - On **ne fournit jamais un accesseur vers le moniteur** 
-- L'objet doit servir de référence commune
+The chosen lock **must respect three conditions**: 
+- **The lock must not be accessible to other threads** and must then respect several encapsulation principles: 
+    - Monitor field must be **private** as it mustn't be retrieved from outside (obviously, don't even start doing retarded things like a `getter` or `setter` for the lock, it **SHOULD ONLY BE ACCESSIBLE WHEN A THREAD ENTERS A CRITICAL SECTION, NOTHING MORE**)
+    - Lock must be **final**, as it **must be initialised in the constructor and never change afterwards** 
+    - As mentioned above, **never provide an accessor to the lock**
+- It must be an **object**, so no primitives (int, long...) nor null 
+- The chosen object **mustn't implement interning** (String literals). More details [[03 - Synchronize and Thread-Safe (EN)#Interning|here]] 
 
 
-Les verrous en Java sont dit **"ré-entrants"**, un même thread peut prendre plusieurs fois le même lock :
+Locks in java are called **"re-entrant"**, a **same thread can acquire several time the same lock**:
 ```java
 public class Foo {
 	private int value;
@@ -119,23 +141,27 @@ public class Foo {
 ****
 ## Interning
 
-On désigne par interning une optimisation évitant des allocations de mémoire superflues pour des objets représentant les mêmes valeurs. 
-	*Si il existe cinquante String "Bob", alors le JIT alloue un espace mémoire pour la toute première, mais va ensuite renvoyer une **référence/représentation canonique** (équivalent à un pointeur C) vers le tout premier String bob, afin de ne pas allouer cinquante fois la même chose.*
+Interning is an optimisation avoiding useless allocations for objects having the same value. 
+	*If there are fifteen "Bob" Strings, the JIT only allocates memory for the first one, the forty-nine others will simply point to a **reference/canonical representation** (similar to a C pointer) to the very first "Bob" String, so we don't have to allocate several times some memory space to store the same thing...*
 
-Le fonctionnement profond est le suivant : 
-	Il existe une méthode "intern()" sur la classe String qui effectue l'action mentionnée ci-dessus. Il existe donc, au sein du programme, une piscine de chaînes de caractères qui est maintenue par la classe String. Cet ensemble est initialement vide.
-	Quand la méthode d'intern est appelée, on regarde si la string existe dans la piscine (via la méthode `equals()`, surtout pas `==` hein...)
-	S'il s'avère qu'elle est présente dans l'ensemble, on renvoi la string originelle, celle dans la piscine, on n'alloue rien. Sinon, on ajoute la string à la piscine et on retourne une référence à l'objet.
+This is what it looks like under the hood: 
+	There is an `intern()` method on the String class which operates the aforementioned action. There is a pool of Strings inside the program which is maintained by the `String` class. This collection is initially empty.
+	When the `intern()` method is called, the class looks if it already exists in the pool (via the `equals()` methods, obviously not `==` huh...)
+	If it is present, we return the original string present in the pool, and do not allocate anything. Otherwise, we add this new string to the pool and return the reference to it.
 
 
-Le JIT effectue, par défaut, de l'interning sur les objets de la classe `String` et `Integer`. Cela est fait implicitement, c'est pourquoi on n'utilise jamais réellement la méthode `interning()`, car le JIT le fait pour nous.
+By default, JIT is doing Interning on the `String`. This is done in an implicit way, which is why we never use the dedicated method to do it, as the JIT does it for us.
 
 
 ****
-## Classe "Thread-Safe"
+## "Thread-Safe" Class
 
-Une classe thread-safe est une classe **pouvant être utilisée par plusieurs threads sans jamais avoir d'état incohérent** (définition floue).  
-Comme mentionné ultérieurement, le thread-safe garantit la bonne conception de la classe elle-même, mais pas sa bonne utilisation à l'extérieur. 
+A class is thread-safe when it **can be used by several threads without having data race nor incoherent states** 
+	*kind of an abstract definition...*
 
-La majorité des classes Java ne sont pas thread-safe (`HashMap`, `ArrayList`...). Cela va donc radicalement changer notre façon de concevoir notre code. Les seules classes Java thread-safe sont celles du package `java.util.concurrent`. 
-	*Note: un record (ou toute autre classe non-mutable) est donc, par définition, thread-safe*
+As mentioned earlier, thread-safe guarantees the good conception of the class itself, not it's correct usage from outside. 
+
+Most native mutable Java classes aren't thread safe (`HashMap`, `ArrayList`...). This will radically change the way we conceive our code. 
+The only native thread-safe classes are the one in the `java.util.concurrent` package. 
+	*Note: a record (or any immutable class) is, by definition, thread-safe...*
+
