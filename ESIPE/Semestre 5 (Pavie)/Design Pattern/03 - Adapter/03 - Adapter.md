@@ -64,6 +64,7 @@ public class GoogleSMSAdapter implements SMSSender{
 
 ****
 ## Example 2: Logger
+*We'll see another way of doing it here*
 
 We begin with this simple logging interface:
 ```java
@@ -72,7 +73,7 @@ interface Logger {
 }
 ```
 
-But as our code evolves, another library logger is introduced:
+But as our code evolves, another logger is introduced, coming from another library:
 ```java
 enum Level { WARNING, ERROR }
 
@@ -81,3 +82,36 @@ interface Logger2 {
 }
 ```
 
+
+What if we do not have control over `Logger2` ?
+> We go through a dedicated methods that takes both the logger and the level and adapt it
+```java
+public static Logger adapt(Logger2 logger2, Level level) {
+  return msg -> logger2.log(level, msg);
+}
+
+// ...
+
+Logger logger = adapt(logger2, Level.WARNING);
+logger.log("blabla");
+```
+
+In this case, the `Adapter` acts as a **vue that transfers the data from one method of the new interface to a method call to the old interface**.
+
+
+What if we have control over `Logger2` ?
+>  Then, our `adapt()` method can directly be an instance method of the `Logger2`
+```java
+interface Logger2 {
+  void log(Level level, String message);
+
+  default Logger adapt(Level level) {
+    return msg -> log(level, msg);
+  }
+}
+
+// ...
+
+Logger logger = logger2.adapt(Level.WARNING);
+logger.log("blabla");
+```
