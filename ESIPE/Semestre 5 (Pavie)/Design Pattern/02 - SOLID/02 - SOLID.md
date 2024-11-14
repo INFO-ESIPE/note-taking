@@ -37,7 +37,7 @@ public class AWTColorConverter {
 ```
 
 
-**Example 1: Client**
+### Example 1: Client
 
 ```java
 class Client {
@@ -113,7 +113,7 @@ public class BritishAddress implements Address {
 ![[address.png]]
 
 
-**Example 2: Uber Client**
+### Example 2: Uber Client
 
 We begin with the following class:
 ```java
@@ -246,7 +246,7 @@ public static void main(String[] args){
 }
 ```
 
-This idea of externalising the algorithm is called a **Strategy Design Pattern** (hence the naming...)
+This idea of externalising the algorithm is called a **Strategy Design Pattern** (hence the naming...). More details [[05 - Strategy|in this class]]...
 
 
 ****
@@ -257,7 +257,7 @@ This idea of externalising the algorithm is called a **Strategy Design Pattern**
 	*In other words, when we inherit from a class, we must preserve the contract with it*
 
 
-**Example 1: Employee**
+### Example 1: Employee
 
 ```java
 public class Employee {
@@ -288,7 +288,7 @@ It will not return what we want in the case of an Intern... We can set the salar
 	*As a result, the behaviour of `getSalary()` is inconsistent across `Employee` and `Intern`, breaking the expected contract where `getSalary()` should reflect the value set by `setSalary()`. This inconsistency makes the class hierarchy unreliable and confusing, especially when working with `Employee` references.*
 
 
-**Example 2: Shapes**
+### Example 2: Shape
 
 We have the following:
 ```java
