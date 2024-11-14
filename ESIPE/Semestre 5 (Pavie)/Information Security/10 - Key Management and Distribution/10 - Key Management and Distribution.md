@@ -38,13 +38,16 @@ Available solutions:
 	*Again, C must be a trustworthy proxy, but this is the most widely-used method as it offers a good **symmetric distribution system**.*
 
 
-As we can see, a lot of assumptions are made (the proxy is trustworthy, the last key was never leaked ...).
+As we can see, a lot of assumptions are made (the proxy is trustworthy, the last key was never leaked ...). 
+
+Distributing symmetric keys via symmetric keys is relatively inconvenient, as it requires a master key for every pair of people we want to help in the exchange of key. Furthermore, a share authority solution is also dangerous, as it will end up storing all the master keys (the safe becomes pretty much like a treasure cave that every cryptanalyst or adversary will attempt to break into).
 
 
 ****
 ## Symmetric Key Distribution Using Asymmetric Encryption
+==Most of what is there is still copy-paste, I will try to make it more personal in the upcoming days==
 
-As we have seen so far, public-key encryption is way slower, which is why we mostly use it only to encrypt secret keys and distribute them.
+As we have seen so far, public-key encryption is way slower, which is why we mostly use it only to encrypt secret keys and distribute them (instead of encrypting long documents etc).
 	*We encrypt a symmetric key via the private key of our asymmetric cipher*
 
 We can follow the **Simple Secret Key Distribution**:
@@ -67,6 +70,8 @@ Instead, we tend to use the following protocol (which is more complex but more r
 At the end, the two keypairs trust each other (as the nonces allows to authenticates each other), but this still does not guarantee us that we talk to the good entity (A thinks he talks to B, but what if B is pretending to be the correct entity)
 	*The only statement we can do is: Owner of keypair A can trust and communicate with owner of keypair B.*
 
+This solution is way better than relying on symmetric encryption like in the first chapter. However, we still need a way to publish our public keys to the world, so they can communicate with us and likewise ...
+
 
 ****
 ## Public key distribution
@@ -78,7 +83,7 @@ There are four ways of distributing public keys:
 - Public-key Certificates (most widely used)
 
 
-**Public Announcement**
+### Public Announcement
 
 Each entity can broadcast his public key to the community at large (forums, mailing lists...)
 
@@ -86,16 +91,52 @@ Each entity can broadcast his public key to the community at large (forums, mail
 	*So, unless User A sees the trickery and alert users about it, the adversary can read everything that was supposed to be send to user A*
 
 
-**Public Directory**
+### Public Directory
 
 Every owner of a keypair places his public key in a public directory that is trusted (managed by a directory authority that verified the sender's identity beforehand).
 	*An authentication system (sign-in) works as well*
 
-This method is more secure than public announcement, but still introduces a risk if an adversary succeed in computing the directory authority's private key.
-Another issue we might encounter is that it can quickly become a bottleneck, as everyone will turn to the directory each time they have to acquire a public key (heavy traffic).
+This looks like a simple array (key-value pairs):
+
+| Owner   | Public key    |
+| ------- | ------------- |
+| goobert | 198ff81ab9... |
+| forax   | 99edf9233...  |
+| ...     | ...           |
+
+This method is more secure than public announcement, but still introduces a risk if an adversary succeed in gaining access to the directory and change the keys.
+	*This method does guarantee confidentiality, but not integrity as there is still a scenario where it's possible for someone to replace the keys and perform a MITM attack...*
+
+A second issue is that most of those directories are owned by governments (or large companies that have to comply with the government's orders and country's laws). If the government asks this company to change the keys (for espionage or manipulation/psyop purposes), they can do it. Same problem as the one above...
+
+Last issue we might encounter is that it can quickly become a bottleneck, as everyone will turn to the directory each time they have to acquire a public key (heavy traffic).
+	*This one is only performance-related, but it's still important to have a blazing fast system instead of a slow peace of crap*
+
 
 ****
 14/11/2024
 
-**Public-key Authority**
+### Public-key Authority
+
+This time, the authority sets up a **master key** for each participant, and encrypts the participant's public keys with it. **Only the participant knows the authority's public key, and the authority keeps it's private keys (one per participant public key to store) confidential**
+
+Unless the master keys are compromised, it is impossible for an adversary to modify a record, or adding fake keys to the collection. Unlike the aforementioned methods, keys are now **signed**.
+
+
+### Public-key Certificates
+
+A certificate is just a file provided to us by a complex structure called the **Public Key Infrastructure (PKI)**, more details [[10 - Key Management and Distribution#Public-key Infrastructure|here]].
+This document contains both a public key and the identity of its owner, signed by a trustworthy authority (CA)'s private key.
+
+
+****
+## X.509 Certificates
+
+X.509 Certificates are the most widely-used schemes of public-key certificates.
+	*Used in most network security applications (TLS, IPSec, S/MIME)*
+
+
+
+****
+## Public-key Infrastructure
 
