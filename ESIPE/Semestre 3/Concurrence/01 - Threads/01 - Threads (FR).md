@@ -2,6 +2,11 @@
 ****
 Note: The english version is slightly more detailed
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Concurrence ?
 
 La concurrence est un concept permettant l'exécution de plusieurs morceaux de code en même temps. Ce concept s'utilise dans deux cas: 

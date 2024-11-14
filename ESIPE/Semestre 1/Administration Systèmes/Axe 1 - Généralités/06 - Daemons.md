@@ -1,6 +1,7 @@
 [[Axe 1 - Généralités]]
 05/10/2022
 ****
+## Daemon
 
 **"Daemon"** est synonyme de **"service"**.
 Un service est un processus qui apporte des fonctionnalités : 

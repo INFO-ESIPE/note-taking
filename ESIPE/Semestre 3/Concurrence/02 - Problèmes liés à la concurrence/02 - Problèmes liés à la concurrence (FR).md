@@ -1,5 +1,11 @@
 [[Concurrence]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Problème actuel
 
 Les threads peuvent être **dé-schedulés en plein milieu d'un ensemble de lignes de code d'une fonction, mais surtout, en plein milieu d'une seule opération**. 
 Cela est du au fait que la majorité des opérations sont dites **non-atomiques** (ou "non-synchronisée"). 

@@ -1,5 +1,10 @@
 [[Design Pattern]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Encapsulation
 
 Fields represents the state of an object

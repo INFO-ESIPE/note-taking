@@ -1,6 +1,12 @@
 [[Web And Multimedia Technologies]]
 28/10/2024
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Internet
 
 Internet is a network of networks. It is based on the ARPANET project and follows the TCP/IP protocols
 	*The web is only a fraction of it that appeared a decade later (1989 at CERN, CH), it also includes VOIP, SSH/Telnet, FTP ...*

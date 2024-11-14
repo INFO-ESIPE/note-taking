@@ -1,6 +1,12 @@
 [[Axe 1 - Généralités]]
 30/09/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Bash
 
 **Bash** est un interpréteur de commande présent nativement sur linux. Il interprète des lignes de commandes dans un langage machine. 
 	*Il en existe d'autres plus modernes et configurables, comme zsh*

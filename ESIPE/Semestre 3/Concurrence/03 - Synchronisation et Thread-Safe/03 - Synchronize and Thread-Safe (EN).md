@@ -1,5 +1,10 @@
 [[Concurrence]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Mutex
 
 Non-atomicity of instructions is a major issue, as our threads might be de-scheduled in the middle of it, allowing other threads to see data in an incoherent state.

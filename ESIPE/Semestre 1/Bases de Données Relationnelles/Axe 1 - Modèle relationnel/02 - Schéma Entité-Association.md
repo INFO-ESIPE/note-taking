@@ -1,6 +1,12 @@
 [[Axe 1 - Modèle relationnel]]
 30/11/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Entité-Association
 
 Le schéma **EA (Entity-Relationship Diagram)** est un **modèle conceptuel de données (MCD)** qui va décrire le schéma d'organisation d'une BDD. 
 

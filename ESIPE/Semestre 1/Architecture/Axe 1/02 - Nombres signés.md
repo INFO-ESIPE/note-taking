@@ -1,6 +1,13 @@
 [[Axe 1]]
 02/10/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Signé
+
 Pour représenter un nombre négatif, on ajoute un bit de signe. Ce bit sera de poids fort (à gauche). 
 	0 = Positif 
 	1 = Négatif

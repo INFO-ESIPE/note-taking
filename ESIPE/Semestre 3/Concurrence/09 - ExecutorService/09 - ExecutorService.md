@@ -1,5 +1,11 @@
 [[Concurrence]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## `ExecutorService`
 
 We still have two problems with concurrency so far:
 - Platform threads (OS resources) are costly and slow to start

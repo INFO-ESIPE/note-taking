@@ -1,6 +1,7 @@
 [[Axe 2 - Administration basique]]
 04/10/2022
 ****
+## Logs
 
 Les fichiers de log sont en général situés dans le répertoire `/var/log`.
 

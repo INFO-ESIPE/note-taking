@@ -1,5 +1,11 @@
 [[Concurrence]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Atomicity
 
 Modern processors allows for atomic instructions in their assembly language
 	Exchange (`XCHG`), Compare and Exchange (`CMPXCHG`)...

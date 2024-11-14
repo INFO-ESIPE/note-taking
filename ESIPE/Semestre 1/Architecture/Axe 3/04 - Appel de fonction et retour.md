@@ -1,6 +1,11 @@
 [[Axe 3]]
 10/10/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Call
 
 On souhaite avoir accès à un mécanosme qui nous permet d'écrire des fonctions et de les appeler (comme pour un langage haut niveau standard).

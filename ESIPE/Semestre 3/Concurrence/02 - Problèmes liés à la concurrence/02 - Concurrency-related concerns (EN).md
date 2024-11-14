@@ -1,5 +1,11 @@
 [[Concurrence]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Current concern
 
 We have a big issue: Threads can be **de-scheduled right in the middle of a set of instructions, but even worse, right in the middle of a single instruction/operation**. 
 

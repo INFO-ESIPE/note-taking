@@ -1,5 +1,11 @@
 [[Concurrence]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Rendezvous mechanism
 
 For now, we have no way to set up a "rendezvous" mechanism
 

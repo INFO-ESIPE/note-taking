@@ -1,6 +1,7 @@
 [[Axe 2 - SQL]]
 05/01/2023
 ****
+## Ensemble
 
 Une opération ensembliste permet de **combiner deux requêtes SELECT **
 

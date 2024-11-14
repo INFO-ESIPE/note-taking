@@ -3,6 +3,11 @@
 ****
 **Note :** Slide 19 (DV technology) might be at the exam
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Analog
 
 For analog videos (interlaced), there were 3 different broadcast standards :

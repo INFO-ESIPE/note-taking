@@ -1,5 +1,11 @@
 [[Design Pattern]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## UML
 
 Unified Modelling Language (UML) is a standard that allows representation of classes (designed for OOP).
 	*Since it is a standard, it does not depend on any language. If a language implies some mechanics that aren't represented in UML, it is up to the developers to create their own. **What matters is that everyone understand***

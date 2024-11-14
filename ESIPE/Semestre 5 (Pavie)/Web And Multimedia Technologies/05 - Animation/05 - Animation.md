@@ -1,6 +1,12 @@
 [[Web And Multimedia Technologies]]
 17/10/2024
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Foreword
 
 It is important to understand that what we refer to as "animations" is different from videos.
 Usually, animations are artificially-made.

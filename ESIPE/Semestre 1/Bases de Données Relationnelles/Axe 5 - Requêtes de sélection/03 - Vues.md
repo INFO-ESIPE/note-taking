@@ -1,6 +1,12 @@
 [[Axe 5 - Requêtes de sélection]]
 11/01/2023
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Propriétés et objectifs
 
 Une vue est une structure de table qui est créée par une requête. Cela signifie que **la vue ne stocke aucune donnée**. La structure de la table de retour de la vue sera inchangée, mais les valeurs renvoyées seront différentes en fonction du contenu de la BDD. 
 

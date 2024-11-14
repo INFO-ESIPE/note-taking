@@ -1,6 +1,12 @@
 [[Axe 1 - Généralités]]
 30/09/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Linux et GNU/Linux
 
 Linux est le noyau de l'OS GNU/Linux 
 GNU/Linux est l'implémentation libre de l'OS UNIX (développé par AT&T dans les années 60) en 1991 par Linus Torvalds

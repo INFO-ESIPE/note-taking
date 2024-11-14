@@ -1,6 +1,12 @@
 [[Axe 1]]
 02/10/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Virgule Flottante
 
 A l'inverse de l'exemple précédent, qui mettait en place un principe de virgule fixe, cette norme prend en considération le principe de virgule flottante, pouvant être déplacé à gauche ou à droite. 
 

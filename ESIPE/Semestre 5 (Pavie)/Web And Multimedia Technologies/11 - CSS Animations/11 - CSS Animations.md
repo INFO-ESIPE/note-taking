@@ -3,6 +3,11 @@
 ****
 Note: All of those were introduced in CSS3
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Transforms
 
 Transformations applies on DOM elements when a specific event happens (hovering an element, clicking...)

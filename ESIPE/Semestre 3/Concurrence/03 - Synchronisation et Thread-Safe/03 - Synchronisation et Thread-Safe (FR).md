@@ -1,5 +1,10 @@
 [[Concurrence]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Mutex
 
 La non-atomicité des instructions ainsi que l'entrelacement des threads posent de gros problèmes qui nécessitent une solution permettant d'inclure une logique de synchronisation.

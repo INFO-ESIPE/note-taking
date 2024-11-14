@@ -1,6 +1,11 @@
 [[Web And Multimedia Technologies]]
 07/10/2024
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Representation
 
 Graphical information can either be :

@@ -1,6 +1,11 @@
 [[Web And Multimedia Technologies]]
 Cordoba
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Boxes
 
 When it comes to display, boxes can be :

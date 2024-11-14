@@ -1,6 +1,12 @@
 [[Axe 2 - SQL]]
 07/12/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Sélection
 
 Une requête `SELECT` permet d'interroger la BDD. Cette requête va créer une table temporaire (la réponse) à partir d'une ou plusieurs autres tables au sein de la BDD questionnée.
 

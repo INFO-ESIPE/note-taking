@@ -3,6 +3,12 @@ Cordoba
 ****
 **Note:** We are in Master 2 by the way. Learning HTML so far is wiiiiiiild but whatever mate
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## HTML
 
 HTML describes the content of a web page. It derives from Standard Generalised Markup
 Language (SGML)

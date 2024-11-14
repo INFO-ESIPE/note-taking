@@ -1,6 +1,11 @@
 [[Axe 4]]
 12/10/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Horloge
 
 Jusqu'ici, nous avons suivi une architecture simplifiée suivant l'architecture suivante :

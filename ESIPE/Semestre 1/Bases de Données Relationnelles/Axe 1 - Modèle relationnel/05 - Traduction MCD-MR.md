@@ -1,6 +1,12 @@
 [[Axe 1 - Modèle relationnel]]
 07/12/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Caractéristiques
 
 Chaque type d'entité devient une relation
 Chaque propriété d'une entité devient un attribut de la relation

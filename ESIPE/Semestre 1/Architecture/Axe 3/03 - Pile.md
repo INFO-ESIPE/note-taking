@@ -1,6 +1,13 @@
 [[Axe 3]]
 10/10/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Pile
+
 La pile est une zone de la mémoire dans laquelle des données peuvent être **empilée** (`push`) ou **dépilées** (`pop`).
 
 Comme mentionné précédemment dans le cours, le registre **ESP contient l'adresse de la tête de pile**, et **EBP permet de sauvegarder une position** dans la pile.

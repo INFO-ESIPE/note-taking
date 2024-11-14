@@ -1,6 +1,11 @@
 [[Axe 4 - Disques]]
 04/10/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Gestion des partitions 
 
 La mémoire de masse est un espace physique (palpable et concret).

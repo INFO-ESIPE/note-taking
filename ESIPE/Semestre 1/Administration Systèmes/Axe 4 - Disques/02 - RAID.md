@@ -1,6 +1,12 @@
 [[Axe 4 - Disques]]
 11/10/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Caractéristiques de base
 
 **RAID (Redundant Array of Independent/Inexpensive Disks)** permet de répartir des données sur plusieurs disques en même temps.
 	*Deux disques durs sont donc — au minimum — nécessaires*

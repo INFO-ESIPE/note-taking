@@ -1,6 +1,11 @@
 [[Axe 1]]
 02/10/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## American Standard Code for Information Interchange (ASCII)
 
 ASCII est un encodage introduit dans les années 60. En ASCII, un caractère est représenté sur un octet **avec un bit de poids fort valant systématiquement 0** (donc, factuellement les valeurs sont représentées sur 7 bits). Les valeurs de l'octet seront traduites en hexadécimal.

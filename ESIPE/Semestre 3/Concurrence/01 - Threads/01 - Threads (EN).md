@@ -1,5 +1,10 @@
 [[Concurrence]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Concurrency ?
 
 Concurrent programming is a paradigm that allows for different fragments of code to be executed at the same time. This mostly is applied in two scenarios: 

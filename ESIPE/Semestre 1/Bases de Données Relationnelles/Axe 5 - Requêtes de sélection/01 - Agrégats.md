@@ -1,6 +1,12 @@
 [[Axe 5 - Requêtes de sélection]]
 05/01/2023
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Objectifs
 
 Le but d'un agrégat est de regrouper les informations de plusieurs lignes d'une même table
 La requête `SELECT` extrait des données lignes par lignes, ce qui ne permet pas de répondre à des questions du type : 

@@ -2,6 +2,12 @@
 ****
 Note: Some content detailed here is already familiar to us so far
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Memory Model
 
 Java follows the **Write Once Run Anywhere (WORA)** paradigm.
 	*Java code can run on any OS/architecture, as long as this device can run the JVM*

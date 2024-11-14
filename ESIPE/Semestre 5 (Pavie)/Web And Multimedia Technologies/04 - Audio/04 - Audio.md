@@ -1,6 +1,12 @@
 [[Web And Multimedia Technologies]]
 17/10/2024
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Sound
 
 Perception of sound is due to variations in air pressure around the tympanum.
 	*When an object vibrates, it produces shifts of nearby air molecules that progressively propagate and arrive at our tympanum, which in turn vibrates.*

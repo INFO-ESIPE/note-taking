@@ -1,6 +1,12 @@
 [[Web And Multimedia Technologies]]
 Cordoba
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## CSS
 
 CSS is used to change the styling (appearance) of the HTML
 CSS can be applied to an HTML file in several ways :

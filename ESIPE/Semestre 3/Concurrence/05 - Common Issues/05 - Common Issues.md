@@ -1,5 +1,10 @@
 [[Concurrence]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Deadlocks
 
 What does this code prints ?

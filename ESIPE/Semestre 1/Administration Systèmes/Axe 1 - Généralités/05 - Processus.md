@@ -1,6 +1,12 @@
 [[Axe 1 - Généralités]]
 04/10/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Processus
 
 Comme mentionné précédemment, l'OS a pour but de mieux gérer et partager les ressources de l'ordinateur.
 

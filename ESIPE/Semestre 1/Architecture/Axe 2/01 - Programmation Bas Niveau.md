@@ -1,6 +1,11 @@
 [[Axe 2]]
 02/10/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Langage bas niveau
 
 Un langage bas niveau est un langage ayant une forte dépendance à la structure matérielle de la machine. 

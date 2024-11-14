@@ -1,6 +1,12 @@
 [[Web And Multimedia Technologies]]
 11/11/2024
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## XML
 
 EXtensible Markup Language (XML) is used to describe data
 	*Even though it was first designed to overcome some HTML limitations. That's why it appears with a similar `<tag>...</tag>` syntax*

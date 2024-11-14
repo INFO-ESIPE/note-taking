@@ -3,6 +3,12 @@
 **Note:** The following repository provides good details on various design patterns implementation in Java (some are mentioned in this class, others aren't but are still worth checking)
 https://github.com/forax/design-pattern-reloaded
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Adapter
 
 This pattern allows to use two libraries doing the same thing but without the same API
 The idea behind it is the following: We create a new API and implement each class per library on it. Those classes are the **adapters**

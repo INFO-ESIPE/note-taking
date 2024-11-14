@@ -1,6 +1,12 @@
 [[Axe 1 - Généralités]]
 30/09/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## File System
 
 Debian utilise **ext4fs** comme File System (FS). 
 Ext4fs est un FS journalisé

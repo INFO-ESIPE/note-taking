@@ -1,9 +1,15 @@
 [[Axe 2 - SQL]]
 14/12/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Problème
 
 Il est possible de spécifier plusieurs tables dans la clause `FROM` 
-	*La requête est effectuée sur le produit cartésien des tables en entrée, ce qui donne généralement un résultat non souhaité*
+La requête est effectuée sur le produit cartésien des tables en entrée, ce qui donne généralement un résultat non souhaité...
 
 Afin de régler ce problème, il faut spécifier dans la clause `WHERE` que la clef primaire de la table T' doit être identique à la clef étrangère de la table T. 
 

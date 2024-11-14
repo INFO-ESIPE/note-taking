@@ -1,5 +1,11 @@
 [[Concurrence]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Producer Consumer
 
 Producer/Consumer is an intuitive **Design Pattern** that **allows one or several threads producing data to communicate with one or several threads processing data**.
 

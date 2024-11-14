@@ -1,6 +1,12 @@
 [[Axe 3 - Bash]]
 05/10/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Objectifs de Bash
 
 Bash (Born Again Shell) est le langage que l'on manipule depuis le début dans le terminal. Bien qu'on ne l'utilisait que pour des lignes de commandes basique, il permet également de réaliser des tâches plus complèxes.
 

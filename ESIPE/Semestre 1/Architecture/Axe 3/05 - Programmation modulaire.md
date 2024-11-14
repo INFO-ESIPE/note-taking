@@ -1,6 +1,11 @@
 [[Axe 3]]
 12/10/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Etiquettes locales
 
 Il peut devenir difficile de gérer toutes les étiquettes d'un programme, car elles finiront par devenir nombreuses.

@@ -3,6 +3,11 @@
 ****
 **Note**: On utilise NASM pour mener à bien toutes les actions décrites ci-dessous.
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Compilation et édition de liens
 
 Pour assembler un programme écrit en assembleur à l'aide de **NASM**, on utilise la commande suivante :

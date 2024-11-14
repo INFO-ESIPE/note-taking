@@ -1,5 +1,11 @@
 [[Concurrence]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Alternative to `synchronize`
 
 Since Java 5, we can also use the `ReentrantLock` class (which implements the `Thread` interface) to define critical sections.
 - Real object with methods and more flexibility

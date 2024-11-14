@@ -1,6 +1,11 @@
 [[Web And Multimedia Technologies]]
 03/10/2024
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Models
 
 There are several **colour models** allowing classification of colours based on their features :

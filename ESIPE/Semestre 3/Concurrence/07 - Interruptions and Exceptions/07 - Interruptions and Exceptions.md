@@ -1,5 +1,11 @@
 [[Concurrence]]
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Reminder
 
 In Java, there are only two ways of getting out of a function:
 - `return` (implicit or explicit)
