@@ -8,7 +8,7 @@
 ****
 ## Système d'exploitation
 
-#### Role
+### Role
 
 L'OS est la couche intermédiaire entre les applications et la machine physique (le matériel).
 De ce fait, l'OS assure l'**aspect de portabilité** (indépendance par rapport au hardware)
@@ -19,7 +19,7 @@ On a deux types de ressources: 
 - **Ressource temporelle**: Durée "équitable" (fair) d'accès au CPU pour chaque application
 
 
-#### Typologie
+### Typologie
 
 **Multi-tâches** - Arrivé vers 1960, Permet une exécution simultanée de plusieurs programmes. 
 	*Tous les systèmes modernes le sont désormais.*
@@ -35,7 +35,7 @@ On a deux types de ressources: 
 	*Utilisé en particulier dans le domaine de l'industrie ou de l'aéronautique*
 
 
-#### Composition
+### Composition
 
 **Interface de programmation** - Mise à disposition d'une API (Application Programming Interface), un ensemble de fonctions que l'on peut appeler afin de signifier à l'OS ce qu'on souhaite réaliser — et qu'il le face à notre place.
 
@@ -80,7 +80,7 @@ Certains choix sont fait, à savoir de choisir si certaines fonctionnalités son
 	- Linux: Programme utilisateur (Serveur X)*
 
 
-#### Architecture
+### Architecture
 
 Il existe différent types d'architecture pour les noyaux :
 - **Monolithique**: Tout les fonctionnalités du système (Système de fichiers, Pilotes …) sont **exécutées dans l'espace noyau**. 
@@ -96,14 +96,15 @@ Il existe différent types d'architecture pour les noyaux :
 	*ExOS, Nemesis*
 
 
-#### Modes d'exécution
+### Modes d'exécution
 
 Deux modes d'exécution: 
 - **Mode utilisateur**: Dédié — en général — aux applications, shells et librairies, interdit certaines instructions liées au CPU, pas d'accès direct à la mémoire (Virtual memory à la place), et les crashs ne font pas planter le système (SIGSEGV, SIGFPE...).
 
 - **Mode kernel (ring 0)**: Dédié au noyau (kernel), aucune limitation d'accès à la mémoire et au CPU, les erreurs peuvent faire planter la machine. 
 
-*Note: Ce qui est inclus ou non dans l'espace kernel/utilisateur dépend de l'architecture du Kernel ([[#Architecture|cf. partie sur l'architecture des noyaux]])*
+*Note: Ce qui est inclus ou non dans l'espace kernel/utilisateur dépend de l'architecture du Kernel ([[#Architecture|cf. partie sur l'architecture des noyaux]])
+Pour plus de détails sur les CPU Protection rings, voir [[01 - Hardware Virtualization#CPU Virtualization|ici]].*
 
 
 On va constamment passer d'un mode à l'autre de manière tacite, ce qui occasionne des ralentissements. 
@@ -171,7 +172,7 @@ Linus Torvalds, ayant accès à tous les outils de GNU mais n'ayant pas les moye
 ****
 ## Familles d'OS
 
-#### Famille UNIX
+### Famille UNIX
 - **Distributions GNU/Linux** - Systèmes d'exploitation basés sur le noyau Linux, avec différentes distributions adaptées à divers usages.
     - **Fedora** : Distribution innovante sponsorisée par Red Hat, souvent à la pointe des nouvelles technologies.
     - **Ubuntu** : Distribution populaire, orientée vers l'utilisateur grand public, maintenue par Canonical.
@@ -196,14 +197,14 @@ Linus Torvalds, ayant accès à tous les outils de GNU mais n'ayant pas les moye
     - **OpenBSD** : BSD orienté sur la sécurité et la fiabilité.
 
 
-#### Famille Windows
+### Famille Windows
 - **Windows Desktop** - Systèmes d'exploitation de bureau et grand public développés par Microsoft.
     - **Windows 7, 10, 11** : Versions populaires et stables.
 - **Windows Server** - Versions spécifiques de Windows optimisées pour des environnements serveurs, avec des fonctionnalités adaptées aux entreprises.
     - **Windows Server 2008, 2012, 2016, 2019, 2022** : Différentes versions de Windows Server, évoluant avec les besoins des infrastructures réseaux.
 
 
-#### Mainframe
+### Mainframe
 - **1. IBM z/OS Family (Mainframe IBM)** - Les systèmes d'exploitation pour mainframes IBM (aussi appelés systèmes "Z") sont les plus courants et se répartissent en plusieurs familles, chacune avec des spécificités uniques.
 	- **z/OS** : Le principal système d'exploitation pour les mainframes IBM modernes, successeur de MVS (Multiple Virtual Storage). Il est capable de gérer des millions de transactions par seconde avec des fonctionnalités avancées de sécurité, de gestion des ressources et de compatibilité avec des applications anciennes et modernes.
 	- **z/VM** : Système d'exploitation de virtualisation (Virtual Machine) permettant de faire tourner plusieurs systèmes d'exploitation en parallèle sur un seul mainframe. Il est souvent utilisé pour créer des environnements virtuels sous Linux ou z/OS.
