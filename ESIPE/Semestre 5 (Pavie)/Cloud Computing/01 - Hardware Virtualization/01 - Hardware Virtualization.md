@@ -38,7 +38,7 @@ An hypervisor (HV) is **a special OS that runs and manages VMs** (and the guest 
 
 There are two types of hypervisors:
 - **Native (type 1)**: Bare metal, guest OSes are processes
-	Optimized for **maximum resource virtualization**
+	Optimised for **maximum resource virtualization**
 	Has only one big task: run OSes 
 	*Xen, Citrix...*
 
@@ -299,7 +299,7 @@ And this is how it looks for virtualization:
 **Question:** How do we implement the virtual MMU at the centre ?
 
 
-### Shadow Page Table
+### Shadow Table
 
 The traditional solution. 
 Make the hypervisor maintain a **shadow page table** to **map Guest Physical Address (GPA) to Host Physical Address (HPA)**, in addition to the guest OS’s own page table for Guest Virtual Address (GVA) to GPA.
@@ -314,7 +314,7 @@ This solution works, but trapping every guest page table change is computational
 
 ###  Second Level Address Translation (SLAT)
 
-SLAT is Hardware-assisted memory translation. It optimises memory virtualization by leveraging various hardware features
+SLAT (also known as **Nested paging**) is Hardware-assisted memory translation. It optimises memory virtualization by leveraging various hardware features
 	*Intel EPT (Extended Page Tables), AMD NPT (Nested Page Tables)*
 
 The CPU directly handles two levels of translation:
