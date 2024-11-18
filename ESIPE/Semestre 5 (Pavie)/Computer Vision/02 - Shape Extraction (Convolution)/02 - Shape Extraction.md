@@ -40,7 +40,7 @@ A simple way to apply our binarisation process is to use a **Bimodal distributio
 The thresholding is **applied on the [[03 - Histogram#Histogram|histogram]]** by dividing the pixels into two groups: **those below the threshold** (background) and **those above it** (foreground).
 	*Can be done manually or via dedicated methods like Otsu's algorithm*
 
-More details here [[03 - Histogram#Automatic thresholding|here]]
+More details [[03 - Histogram#Automatic thresholding|here]]
 
 
 ****
