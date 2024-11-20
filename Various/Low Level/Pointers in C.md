@@ -1,18 +1,13 @@
 From "Tetsuo": https://x.com/7etsuo/status/1834554218386194464
 05/11/2024
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 
 A pointer is a variable that stores the memory address of another variable. Instead of holding data directly, a pointer points to the location where the data is stored in memory.
-
-- Basics: Declaration, initialisation, and dereferencing.    
-- Pointer Arithmetic: Navigating through memory.
-- Arrays and Pointers: Understanding their close relationship.
-- Dynamic Memory Allocation: Managing memory at runtime.
-- Advanced Topics: Double pointers, function pointers, and more.
-- Practical Applications: Building interpreters and complex data structures.
-- Modern C Features: Utilising C11 enhancements for better pointer management.
-- Common Pitfalls: Avoiding mistakes like dangling and null pointers.
-
 
 ****
 ## Understanding Pointers
