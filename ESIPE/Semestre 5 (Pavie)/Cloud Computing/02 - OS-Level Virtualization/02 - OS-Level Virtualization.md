@@ -397,3 +397,75 @@ spec:
 				ports:
 					- containerPort: 8080
 ```
+
+
+****
+## Optional: Dockerfile tips
+
+**Multi-Stage build**
+By using several `FROM` statements:
+```Dockerfile
+# Build
+FROM node:latest AS build
+# Add metadata that describes the image
+LABEL version="1.0"
+LABEL maintainer="goobert@gmail.com" 
+
+WORKDIR /app
+COPY . .
+RUN npm install
+RUN npm run build
+
+# Prod
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+**Passing arguments during build**
+```Dockerfile
+ARG BASE_VERSION=latest
+FROM alpine:${BASE_VERSION}
+
+# ...
+```
+
+Command: `docker build --build-arg BASE_VERSION=latest -t my-app:latest .`
+
+**Healthchecks**
+Allows to define commands that will monitor how the container is doing
+```Dockerfile
+FROM nginx:alpine
+
+# Checks if nginx responds (executed every 30s)
+HEALTHCHECK --interval=30s --timeout=3s \
+	CMD wget -q0- http://localhost || exit 1
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+**Set Timezone**
+```Dockerfile
+FROM alpine:latest
+ENV TIMEZONE=UTC+1
+RUN apk add --no-cache tzdata && \ 
+	ln -snf /usr/share/zoneinfo/$TIMEZONE /etc/localtime && \ 
+	echo $TIMEZONE > /etc/timezone 
+	
+CMD ["date"]
+```
+
+
+**Adding User**
+(in general, we'd rather do this in docker-compose, but it's good to know we can do it like so):
+```Dockerfile
+FROM alpine:latest
+RUN useradd -ms /bin/bash newuser
+
+# Set this user as the default one
+USER newuser
+
+CMD ["bash"]
+```
