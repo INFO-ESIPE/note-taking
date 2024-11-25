@@ -309,3 +309,90 @@ elementFormDefault="qualified">
 
 ****
 ## XSL
+
+If we open an XML file on a browser, it will most likely display—on top of it—a message indicating that the file has no dedicated "style information".
+	*The browser will simply display the XML tree, but it seems to expect some styling attached to this XML (even though it is not HTML)*
+
+eXtensible Stylesheet Language (XSL) is a special stylesheet **for ANY XML** that specifies how the content was to be rendered by the browser.
+
+XSL Transformation (XSLT) is used to transform an XML language document into another XML language.
+	*Supported by all browsers*
+
+It looks like this:
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsl:stylesheet version="1.0"
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:template match="/">
+		<html>
+			<!-- ... -->
+			<body>
+				<h1>My CD collection</h1>
+				<table>
+					<tr>
+						<th>Title</th>
+						<th>Artist</th>
+					</tr>
+					<xsl:for-each select="catalog/cd">
+						<tr>
+							<td><xsl:value-of select="title"/></td>
+							<td><xsl:value-of select="artist"/></td>
+						</tr>
+					</xsl:for-each>
+				</table>
+			</body>
+		</html>
+	</xsl:template>
+</xsl:stylesheet>
+```
+
+
+****
+## Languages based on XML
+
+### XHTML
+
+Simply XML complying with XML rules.
+Main difference with HTML are:
+- tags **must** be in lowercase
+- The `name` attribute is substituted by the `id` attribute as they both should be unique (except for the `<input>` tag, as radiobuttons must share a similar name)
+- All attributes must have a value
+	`<td nowrap=" nowrap">`, but not `<td nowrap>`. So, some multimedia tag's attributes would not work with XHTML, suck as: `<audio controls>`
+
+### WML
+
+Wireless Markup Language (WML) is mostly used to **create Wireless
+Application Protocol (WAP) pages**.
+
+It is a **deck** composed of **cards**:
+```xml
+<?xml version="1.0"?>
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http//www.wapforum.org/DTD/wml_1.1.xml">
+<wml>
+	<card id="n1">
+		<p>Hello everybody!</p>
+	</card>
+	<card id="n2">
+		<p>Welcome to this WML example</p>
+	</card>
+</wml>
+```
+
+### SVG
+
+Scalable Vector Graphics (SVG) is used to describe static/dynamic vectors.
+```html
+<!DOCTYPE html>
+<html>
+	<body>
+		<svg width="400" height="180">
+			<rect x="50" y="20" width="150"
+			height="150" style="fill:blue;
+			stroke:pink; stroke-width:5;
+			fill-opacity:0.1; stroke-opacity:0.9" />
+			Unfortunately your browser does not
+			support SVG
+		</svg>
+	</body>
+</html>
+```
