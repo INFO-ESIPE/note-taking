@@ -214,10 +214,10 @@ And here is the DTD:
 ```
 
 **Element declaration:**
-`<!ELEMENT element-name (element-content)>` if the element contains other elements
-`<!ELEMENT element-name EMPTY>` if the element is empty
+- `<!ELEMENT element-name (element-content)>` if the element contains other elements
+- `<!ELEMENT element-name EMPTY>` if the element is empty
 	*E.g., `<br/>`*
-`<!ELEMENT element-name ANY>` if any content is allowed
+- `<!ELEMENT element-name ANY>` if any content is allowed
 
 **Data Types:**
 - **\#PCDATA** (**P**arsed **C**haracter **Data**): A text that will be analysed by a parser
@@ -246,6 +246,7 @@ And here is the DTD:
 ```
 *As we can see, we can not be precise on the number of occurrences (e.g., allowing 5 children), we can only specify a \*. If we want to be specific, we have to use an XML Schema*
 
+
 **Attribute declaration:**
 
 Follows this syntax:
@@ -256,7 +257,10 @@ Example:
 <!-- accepts any type of data -->
 <!ATTLIST classific id CDATA>
 
-<!-- two possible values, and default one is paper -->
+<!-- attribute is optional, and it accepts any type of data if filled -->
+<!ATTLIST classific id CDATA #IMPLIED>
+
+<!-- two possible values (paper and CD), and default one is paper -->
 <!ATTLIST classific media (paper|CD) "paper">
 ```
 
@@ -395,4 +399,68 @@ Scalable Vector Graphics (SVG) is used to describe static/dynamic vectors.
 		</svg>
 	</body>
 </html>
+```
+
+
+****
+## Example - XML & DTD
+==This kind of question will (very) probably be at the exam. We give you something to represent with your own XML language, and you do it (possibly with it's DTD)==
+
+Let's define an apartment entity with our XML language.
+It must contain:
+- Address
+- Floor
+- Price
+- Total size, and size per room
+
+We define: "Apartment located in Milan, via Verdi, n. 10, cap 28000, 3rd floor
+worth 450,000€, total size of 110 m². Size per room:
+- Kitchen: 25 m²
+- Living room: 25 m²
+- Bedroom: 15 m²
+- Bedroom: 25 m²
+- Bathroom: 20 m²"
+
+Let's define it with our own XML language:
+```xml
+<!-- Keep in mind, this is one way of doing it. Others are available, but some are very stupid and unpracticable -->
+<home type="apartment">
+	<address city="Milan" street="via Verdi" number="10" floor="3" pc="28000"/>
+	<price currency="euro">450000</price>
+	<size tsize="110" unit="sm">
+		<room name="kitchen">25</room>
+		<room name="living room">25</room>
+		<room name="bedroom">15</room>
+		<room name="bedroom">25</room>
+		<room name="bathroom">20</room>
+	</size>
+</home>
+```
+> We try to make the language as generic as possible (so we don't encounter issues if our data evolves, introducing new types of rooms, specific classifiers ...)
+
+Now, let's define the attached DTD:
+```dtd
+<!-- Again, those rules are arbitrary -->
+<!ELEMENT home (address, price, size)>`
+<!ATTLIST home type (house|apartment) "house">
+
+<!ELEMENT address EMPTY> 
+<!-- We can chain the attributes, its a better practice than defining them one by one in a dedicated <!ATTLIST> -->
+<!ATTLIST address 
+	city CDATA #IMPLIED 
+	street CDATA #IMPLIED
+	number CDATA #IMPLIED 
+	floor CDATA #IMPLIED 
+	pc CDATA #IMPLIED>
+
+<!ELEMENT price (#PCDATA)>
+<!ATTLIST price currency (euro|usd|yuan|pound) "usd">
+
+<!ELEMENT size (room+)>
+<!ATTLIST size 
+	tsize CDATA #IMPLIED
+	unit (sm|sf) "sm">
+
+<!ELEMENT room (#PCDATA)>
+<!ATTLIST room name CDATA #IMPLIED>
 ```
