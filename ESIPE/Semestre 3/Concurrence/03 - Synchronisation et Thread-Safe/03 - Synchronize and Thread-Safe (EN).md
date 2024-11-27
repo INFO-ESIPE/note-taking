@@ -17,7 +17,7 @@ A critical section is a block of code that accesses a shared resource and can’
 	*If a thread is inside one of the critical sections binded to a lock, no other thread can enter any critical section binded to the same lock.*
 
 When used correctly, this ensures that several threads can not access some code (and the data manipulation that goes with it) at the same time.
-The ultimate purpose it to **prevent thread 2 from attempting to read a value that thread 1 is currently modifying or reading, until the overall operation he carries is fully done**
+The ultimate purpose is to **prevent thread 2 from attempting to read a value that thread 1 is currently modifying or reading, until the overall operation he carries is fully done**
 
 
 However, **the lock does not guarantee that the thread wont be de-scheduled right in the middle of the critical section**. It just prevents the reading and execution of fragments of code by several threads, but does not guarantee the writing on RAM. 

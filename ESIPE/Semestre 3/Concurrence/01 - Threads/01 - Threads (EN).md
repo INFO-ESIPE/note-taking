@@ -46,11 +46,11 @@ We initialise and start a thread like so:
 var p = "Hello World!"
 
 // Before Java 19 (to avoid)
-Runnable runnable = () -> { // Runnable the thread will execute
+Runnable runnable = () -> {              // Runnable the thread will execute
 	System.out.println(p);
 };
 Thread preThread = new Thread(runnable); //  Creates thread
-preThread.start(); // Starts the thread 
+preThread.start();                       // Starts the thread 
 
 
 // Java 19 and beyound (to use)
@@ -61,7 +61,6 @@ Thread thread = Thread.ofPlatform().start(() -> { // Create and launch
 Thread unstartedThread = Thread.ofPlatform().unstarted(() -> { // Launch it later
 	System.out.println(p);
 });
-// ...
 unstartedThread.start();
 ```
 
