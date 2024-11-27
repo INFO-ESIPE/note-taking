@@ -206,14 +206,217 @@ private static int parseLevel(Iterator<String> it) {
 
 As briefly explained [[07 - Interruptions and Exceptions#Reminder|here]] For the compiler, only two kinds of Exceptions exists:
 - **Checked**: Exceptions we must check. They require the use of `throws`.
-- **Unchecked:** Exceptions that mostly happens due to programming errors
+- **Unchecked:** Exceptions that **does not need to/shouldn't be captured**, mostly happens due to programming errors or Errors. 
 
 So, any Exception which inherits from `Throwable` must be checked, except the ones inheriting from `RuntimeException` and `Error`.
+
+Obviously, a class must inherits from `Throwable` for it to be used along with the `throws` directive.
+Hierarchy of throwables:
+![[throw.png]]
+
+
+### Throwable usage
+
+An Exception is due to external conditions (`IOException`, `InterruptedException`). We must catch those and deal with them in order to have a stable program.
+
+An Error (`OutOfMemoryError`, `InternalError`) **MUST NEVER BE CATCHED**.
+
+A `RuntimeException` describes programming errors, mostly...
+
+
+This is a lot of stuff to catch, our odds of having a decent code are collapsing...
+Usually, a checked exception is declared with the `throws` directive, so it can be propagated:
+```java
+// We declare in the signature that our method can propagate an IOException
+// that should be handled by the calling method
+private static long parseTime(Iterator<String> it) throws IOException {
+	if (!it.hasNext()) {
+		Path current = Paths.get(".");
+		
+		// IOException can be raised here
+		return Files.getLastModifiedTime(current).toMillis();
+	}
+	// ...
+}
+```
+
+
+### Tunneling
+
+The problem (encountered [[08 - Serveur TCP Non-bloquant|here]]) is that methods throwing Checked Exceptions does not behave well with the rest of the code:
+```java
+private static long parseTime(Iterator<String> it) throws IOException {
+	if (!it.hasNext()) {
+		Path current = Paths.get(".");
+		return Files.getLastModifiedTime(current).toMillis();
+	}
+	// ...
+}
+
+private static Option parseArguments(String[] args) {
+	Option options = new Option();
+	
+	Map<String, Consumer<Iterator<String>>> actions = Map.of(
+		"-time", it -> options.time = parseTime(it), 
+		/* ... */);
+
+	for(Iterator<String> it = List.of(args).iterator(); it.hasNext();) {
+	 	Consumer<Iterator<String>> consumer = actions.get(it.next());
+	  	consumer.accept(it);
+	}
+	
+	return options;
+}
+```
+> This code does not compile. The `it -> options.time = parseTime(it)` lambda is converted into a `Consumer<...>`, however, the `accept()` method of the `Consumer` does not indicate that it propagates `IOException` (nor any other checked exception)
+
+We can solve this issue by putting the Checked Exception inside an Unchecked Exception, and retrieves the real cause of the Exception in the catch clause:
+```java
+private static long parseTime(Iterator<String> it) /* No throws anymore here */ {
+	try {
+		// ...
+	} catch(IOException e) {               // Catches the Checked Exception
+		throw new UncheckedIOException(e); // Throws it as an Unchecked Exception
+	}
+}
+
+private static Option parseArguments(String[] args) throws IOException {
+	Option options = new Option();
+	Map<String, Consumer<Iterator<String>>> actions = Map.of(
+		"-time", it -> options.time = parseTime(it), 
+		/* ... */);
+
+	for(Iterator<String> it = List.of(args).iterator(); it.hasNext();) {
+		Consumer<Iterator<String>> consumer = actions.get(it.next());
+		try {
+			consumer.accept(it);
+		} catch(UncheckedIOException e) { // Tunneling
+			throw e.getCause();
+		}
+	}
+	// ...
+	return options;
+}
+```
+
+
+### Summary
+
+If the error cannot be handled at this point, we use a throws declaration.
+If the error can be handled, we use a catch block.
+In the `run()` method of a Runnable or in the main method, we must use a catch block.
+
+We aim to handle the error as low as possible in the execution stack to avoid duplicating catch block code.
 
 
 ****
 ## Exceptions and I/O
 
+The `try-finally` block allows to force the execute of some code, even if an Exception is thrown in the `try`:
+```java
+BufferedReader reader = Files.newBufferedReader(path);
+try {
+	doSomething(reader);
+} finally {
+	// Even if a problem happens with "doSomething", we close the resources
+	reader.close();
+}
+```
+> This is very useful for [[06 - ReentrantLock|ReentrantLocks]] in concurrency.
+
+
+However, there is a problem with the previous code. `close()` can also throw an Exception **which can hide the Exception that was thrown in the `try` block**.
+A better solution is to use a `try-with-resources`, which will automatically close the resources for us:
+```java
+// We open the resource inside the try's parenthesis
+try(BufferedReader reader = Files.newBufferedReader(path)) {
+	doSomething(reader);
+	// ...
+} // When reaching the end of the block, close() is implicitly called for us
+```
+> If `close()` raises an Exception, it is stored as a **suppressed exception** which can be retrieved via `getSuppressed()`.
+
+We can initialise several variables in the `try-with-resources`, by separating them with a semicolon. In this case, files will be closed **in reverse order** (the variable declared in last will be closed first, etc)
+```java
+try(BufferedReader reader = Files.newBufferedReader(input); BufferedWriter writer = Files.newBufferedWriter(output)) {
+	doSomething(reader, writer);
+} // calls writer.close(), and then reader.close()
+```
+
 
 ****
 ## Exceptions and Design by contract
+
+As briefly explained in [[ESIPE/Semestre 3/Java/01 - Fundamentals/01 - Fundamentals#Encapsulation|this chapter]], each public method provides a usage contract (described in its Javadoc), and the implementation verifies:
+- Preconditions:
+    Properties of the arguments (e.g., non-null, positive).
+    Properties of the object (e.g., close() has not already been called).
+- Postconditions:
+    Properties of the return value (e.g., non-null, positive).
+    Properties of the object after the method call.
+- Invariants (class invariants):
+    Properties of the object that must always hold true.
+
+
+Unlike unit testing, which checks if the code behaves as expected when executed, programming by contract helps detect:
+- Invalid method calls (violating preconditions).
+- Incorrect implementations (violating postconditions and invariants), by embedding these checks directly into the code.
+
+In practice, preconditions are often the only ones explicitly written, as postconditions and invariants are usually handled by unit tests.
+
+**Example of contract:**
+```java
+public class Stack {
+	/**
+	* Create a stack with a given capacity
+	* @param capacity the stack capacity
+	* @throws IllegalArgumentException is capacity is negative or null
+	*/
+	public Stack(int capacity) {/* ... */}
+
+	/**
+	* Push an object on top of the stack
+	* @param object an object
+	* @throws NullPointerException if the object is null
+	* @throws IllegalStateException if the stack is full
+	*/
+	public void push(Object object) {/* ... */}
+
+	/**
+	* Remove and return the object on top of the stack
+	* @return the object on top of the stack
+	* @throws IllegalStateException if the stack is empty
+	*/
+	public Object pop() {/* ... */}
+}
+```
+
+Code that goes with it:
+```java
+public class Stack {
+	private final Object[] array;
+	private int top;
+	
+	public Stack(int capacity) {
+		if (capacity <= 0) {
+			throw new IllegalArgumentException("capacity is negative");
+		}
+		array = new Object[capacity];
+	}
+	
+	public void push(Object object) {
+		Objects.requireNonNull(object);
+		Objects.checkIndex(top, array.length);
+		array[top++] = object;
+	}
+	
+	public Object pop() {
+		if (top <= 0) {
+			throw new IllegalStateException("stack is empty");
+		}
+		Object object = array[top];
+		array[top--] = null; // Garbage Collector !
+		return object;
+	}
+}
+```
