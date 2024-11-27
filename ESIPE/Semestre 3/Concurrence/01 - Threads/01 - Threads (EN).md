@@ -23,7 +23,7 @@ A thread is **a lightweight unit of execution within a process**, allowing for c
 	*A program has at least one thread, but it can have several (hence the purpose of this class...)*
 
 Each thread **possesses its own stack** (managing function calls, parameters, local variables...), but **shares the same heap memory, global data, text segment (code) and data segment**.
-- In Java, tack contains local variables and function parameters. 
+- In Java, stack contains local variables and function parameters. 
 - In Java, the heap contains objects's properties.
 
 ![[threads.png]]
