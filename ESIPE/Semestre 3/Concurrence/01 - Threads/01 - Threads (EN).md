@@ -33,7 +33,7 @@ The **scheduler** is an OS-managed entity **deciding on threads' execution order
 
 Pretty much all programming languages shares a similar way of implementing concurrency. No language really craft or innovate concurrency concepts, they just use what the OS and CPU vendors provides.
 
-A `Thread` takes no parameter and returns nothing, it's a `Runnable`.
+A `Thread` takes no parameter and returns nothing, it's a [[02 - Lambdas#`Runnable`|Runnable]] .
 ```java
 @FunctionalInterface
 public interface Runnable {
