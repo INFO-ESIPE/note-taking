@@ -30,9 +30,9 @@ We obtain something that will look like this:
 ****
 ## `ExecutorService` creation
 
-We build an `ExecutorService` through the provided factory methods provided:
+We build an `ExecutorService` through the provided factory methods:
 - `Executors.newFixedThreadPool(int poolSize)` - Starts `poolSize` worker-threads which are **never stopped.**
-- `Executors.newCachedThreadPool()` - Starts as much worker-threads as necessary, but attempts to re-use them. **If a worker-thread is inactive since a minute, it is stopped.** 
+- `Executors.newCachedThreadPool()` - Starts as much worker-threads as necessary, but attempts to re-use them. **If a worker thread is inactive since a minute, it is stopped.** 
 - `Executors.newSingleThreadPool()` - Starts a single thread that is never stopped
 	*Equivalent to `Executors.newFixedThreadPool(1)`*
 
@@ -50,7 +50,7 @@ It is possible to go for a more granular and manual approach with a `ThreadPoolE
 
 An ExecutorService can be closed in two ways:
 - `shutdown()`: Prevents submission of new tasks and stop threads when all remaining tasks are completed
-- `shutdownNow()`: Attempts to interrupt all worker-threads. However, if some doesn't answer to the `interrupt()` signal, they will [[07 - Interruptions and Exceptions#Stop a Thread|never be stopped]]. 
+- `shutdownNow()`: Attempts to interrupt all worker threads. However, if some doesn't answer to the `interrupt()` signal, they will [[07 - Interruptions and Exceptions#Stop a Thread|never be stopped]]. 
 
 
 ****
@@ -118,7 +118,7 @@ The `future.state()` method allows to check the current state of the task:
 ## Invoke
 
 In fact, we often just use one of those two methods to manipulate our tasks:
-- `invokeAll`, which takes a collection of `Callable<T>`, blocks until they **ALL OF THEM** has been executed (whatever the result is), and returns a list of `Future<T>`.
+- `invokeAll`, which takes a collection of `Callable<T>`, blocks until **ALL OF THEM** has been executed (whatever the result is), and returns a list of `Future<T>`.
 - `invokeAny`, which takes a collection of `Callable<T>`, blocks until **ONE OF THEM** has been executed (without throwing an exception) and returns the value forwarded by the `Callable<T>`
 	*Here, we do not need a `Future<T>` to manage a possible Exception, since we know that the `Callable` completed successfully...*
 

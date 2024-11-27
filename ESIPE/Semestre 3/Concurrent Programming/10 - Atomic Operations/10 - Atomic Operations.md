@@ -37,7 +37,7 @@ public class Example {
 	
 	public void setFlag() { 
 		flag = true; // This write is visible to all threads immediately.
-	} 
+	}
 	
 	public void checkFlag() { 
 		if (flag) { 
@@ -48,7 +48,7 @@ public class Example {
 ```
 
 
-However, `volatile` variables does not natively allow for atomic **Compound Operations** (incrementing, checking-then-updating). Its basic shape is mostly designed for flags (status updates, signalling variables in concurrent applications).
+However, `volatile` variables does not natively allow atomic **Compound Operations** (incrementing, checking-then-updating). Its basic shape is mostly designed for flags (status updates, signalling variables in concurrent applications).
 
 
 If we want to have access to those atomic compound operations (and more), we have two ways:
@@ -132,7 +132,7 @@ public class ThreadSafeCounter {
 	public int nextValue() {
 		for(;;) {
 			int current = counter.get(); // (one) volatile read
-			int newValue = current + 1; // next based on already fetched value
+			int newValue = current + 1;  // next based on already fetched value
 			if (counter.compareAndSet(current, newValue)) { // volatile write
 				return current;
 			} // otherwise retry (a thread changed the value in the meantime)
@@ -172,8 +172,8 @@ Lookup lookup = MethodHandles.lookup();
 // Creates a VarHandle from a security context (lookup)
 VarHandle handle = lookup.findVarHandle(
 	ThreadSafeCounter.class, // Class containing the field
-	"counter", // Field name
-	int.class); // field type
+	"counter",               // Field name
+	int.class);              // field type
 ```
 
 
@@ -235,8 +235,8 @@ public class ThreadSafeCounter {
 	}
 
 	/*
-	VarHandle does not use diamond syntax :(
-	We are required to make an ugly cast to indicate return type
+	VarHandle does not use generics (diamond syntax) :(
+	We are required to make an ugly cast to indicate the return type
 	*/
 	public int nextValue() {
 	    return (int) COUNTER_REF.getAndAdd(this, 1);
@@ -293,7 +293,7 @@ public final class NotConcLinkedList {
 ```
 
 
-This implementation works with `AtomicInteger`:
+This implementation works with `AtomicReference`:
 ```java
 public class LockFreeLinkedList {
 	private record Entry(Object value, Entry next) {}

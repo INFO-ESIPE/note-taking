@@ -1,7 +1,5 @@
 [[Concurrence]]
 ****
-Note: Some content detailed here is already familiar to us so far
-****
 **Table of Contents**
 ```table-of-contents
 ```
@@ -22,7 +20,7 @@ Java has its own memory model that abstracts a machine's own memory model, thus 
 
 This memory model establishes the **happens-before** principle: an operation can see the state of a previous operation
 
-**Within a single thread:** When a thread reads a variable it previously wrote to, it will always see the last value it assigned (**visibility guarantee**).
+- **Within a single thread:** When a thread reads a variable it previously wrote to, it will always see the last value it assigned (**visibility guarantee**).
 ```java
 Point p = // ...
 p.x = 1;
@@ -31,7 +29,7 @@ int a = p.x; // <==> a = 3
 ```
 
 
-**Across Multiple Threads**: There is **no visibility guarantee** for fields accessed by several threads, unless synchronisation mechanisms are used (`final`, `volatile`, `synchronize`...)
+- **Across Multiple Threads**: There is **no visibility guarantee** for fields accessed by several threads, unless synchronisation mechanisms are used (`final`, `volatile`, `synchronize`...)
 ```java
 // Thread 1               Thread 2
 p.x = 1;                  p.x = 3;
