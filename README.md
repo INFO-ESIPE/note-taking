@@ -1,3 +1,9 @@
+This repository contains notes from classes I attended during engineering school. The structure and content align with what was taught and the materials (slides, laboratory classes) provided to us. I do not own anything that is shown here, I simply write it down in a convenient format for me (and others) to retrieve the concepts easily.
+
+Most of the notes are in English, but some remains in French...
+
+If you notice errors (incorrect/deprecated statements) or typos, feel free to correct them at your leisure.
+
 How to visualise the notes correctly:
 1. Download obsidian
 2. Install the `Automatic Table of Contents` plugin
