@@ -274,7 +274,7 @@ for (;;) {
 	switch (exit_reason) { 
 		case KVM_EXIT_IO: /* ... */ 
 		case KVM_EXIT_HLT: /* ... */ 
-	} 
+	}
 }
 ```
 
