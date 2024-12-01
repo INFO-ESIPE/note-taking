@@ -1,7 +1,8 @@
 [[Design Pattern]]
 ****
-**Note:** The following repository provides good details on various design patterns implementation in Java (some are mentioned in this class, others aren't but are still worth checking)
-https://github.com/forax/design-pattern-reloaded
+**Notes:** 
+1. This class isn't about Java, even though the examples are illustrated with this language. Most code snippets will not include all preconditions and all (for readability purpose, we want to get straight to the point: design pattern)
+2. The following repository provides good details on various design patterns implementation in Java (some are mentioned in this class, others aren't but are still worth checking): https://github.com/forax/design-pattern-reloaded
 ****
 **Table of Contents**
 ```table-of-contents
