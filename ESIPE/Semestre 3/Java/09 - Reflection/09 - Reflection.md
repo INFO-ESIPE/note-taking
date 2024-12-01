@@ -218,7 +218,7 @@ When calling `invoke()` and `newInstance()`, the default behaviour is to check t
 We can bypass the security by calling `setAccessible(true)`.
 
 The method can, however, raise an `InaccessibleObjectException` if it is impossible to bypass the security. This typically happens when a closed module exists.
-A module is a `module-info.java` file.
+A module is a `module-info.java` file, more information in [[10 - Packaging#Encapsulation|the next class]].
 	*Java classes (along with Spring/JEE Frameworks classes) are defined in closed module. If we do declare a module, it is closed by default.*
 
 
