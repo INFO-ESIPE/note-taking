@@ -1,0 +1,168 @@
+[[Web And Multimedia Technologies]]
+05/12/2024
+****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## DOM
+
+As explained [[08 - HTML#Tags|here]], the Document Object Model (DOM) is a cross-platform and language-independent convention for representing and interacting with objects in HTML, XHTML, and XML documents.
+	*Here, we mostly care about pure-HTML DOM*
+
+JavaScript provides a DOM API so we can manipulate the HTML tree easily:
+```html
+<div id="dom-example">
+	<h2>DOM Tree</h2>
+	<p>
+		We can manipulate and query the page !
+	</p>
+	<p>&nbsp;</p>
+</div>
+```
+```js
+let element = document.getElementById("dom-example"); // We get the HTML element
+element.toString();          // [object HTMLDivElement]
+element.tagName;             // DIV (tag name)
+element.attributes[0].name;  // id (first attribute is the id)
+element.attributes[0].value; // dom-example (value associated to it)
+element.children[0].tagName; // H2 (direct child is an h2 tag)
+element.children[1].tagName; // P (second child is a paragraph)
+```
+
+We can retrieve children of an element in two ways:
+- `element.children`: Returns children
+- `element.childNodes`: Returns children with text and comments
+```html
+<dl id="dom-example2">
+	<dt>element.children</dt>
+	<dd>Is the first way</dd>
+	<dt>element.childNodes</dt>
+	<dd>Is the second way</dd>
+</dl>
+```
+```js
+let element = document.getElementById("dom-example2");
+element.tagName;                 // DL
+let child = element.children[0];
+child.toString();                // [object HTMLElement]
+child.tagName;                   // DT
+let text = child.childNodes[0];
+text.toString();                 // [object Text]
+text.nodeValue;                  // element.children
+```
+
+Both those methods returns `HTMLCollection`, which aren't arrays. Only `length` and usage of `[]` works on them:
+```html
+<div id="dom-example3">
+	<h2>API DOM</h2>
+	<p>blabla</p>
+</div>
+```
+```js
+let element = document.getElementById("dom-example3");
+element.children.toString(); // [object HTMLCollection]
+element.children.length;     // 2 (an h2 and a paragraph)
+element.children[0].tagName; // H2
+element.children.forEach;    // undefined
+```
+
+### Search
+
+We can find individual (or grouped) elements of the DOM:
+- `document.getElementById(id)` retrieves an element by its id.
+	*Note that it only returns one element, as ids are supposed to be unique*
+- `document.getElementsByClassName(classname)` retrieves all elements using this class
+- `document.querySelectorAll(css_selector)` retrieves elements by a CSS selector
+```js
+let cs = document.getElementsByClassName("bad-container");
+let dts = document.querySelectorAll("dl#dom-example4 dt");
+```
+
+We can change the content of an element once it is retrieved:
+- `element.innerHTML` accepts new content as HTML
+- `element.innerText` accepts new content as a String
+```js
+let div1 = document.getElementById("dom-content1");
+div1.innerHTML = "<b>" + new Date() + "</b>";
+
+let div2 = document.getElementById("dom-content2");
+div2.innerText = "<b>" + new Date() + "</b>";
+```
+First output: **Tue Dec 03 2024 18:54:20 GMT+0100 (Central European Standard Time)**
+Second output: `<b>Tue Dec 03 2024 18:54:20 GMT+0100 (Central European Standard Time)</b>`
+	*tags are considered as text here, while in the first they are used to insert new bold tags in the DOM*
+
+### Events
+
+We can register events on a specific element on the DOM.
+A first common example is an `onClick` events, which is triggered when the user clicks on the element:
+```js
+let div = document.getElementById("dom-div");
+let button = document.getElementById("dom-button");
+
+ // Updates the "left" CSS property of the div each time we click on the button
+button.onclick = () => {
+  console.log(div.style.left);
+  div.style.left = 30 + parseInt(div.style.left) + "px";
+};
+```
+
+Another widely used event is `onkeyup` (or the `onkeydown` alternative):
+```html
+<input type="text" id="dom-input-text"></input>
+```
+```js
+let div = document.getElementById("dom-input-text-div");
+let inputText = document.getElementById("dom-input-text");
+
+// Each time an user types something in the input, the same text is displayed in
+// a text element bellow
+inputText.onkeyup = () => {
+  div.innerText = inputText.value;
+};
+```
+
+### Add elements
+
+`document.createElement` allows to create an element. We add it as the child of another element on the DOM via the `appendChild` function:
+```js
+let div = document.getElementById("dom-new");
+let button = document.getElementById("dom-new-button");
+
+// Each time we click on the button, a new box will be created
+button.onclick = () => {
+  var box = document.createElement("DIV");
+  div.appendChild(box);
+};
+```
+
+Text is considered as a node (`TextNode`) by the DOM, and it must be the child of another element:
+```js
+let div = document.getElementById("dom-new-text");
+let button = document.getElementById("dom-new-text-button");
+
+button.onclick = () => {
+  var element = document.createElement("DIV");
+  var text = document.createTextNode("Hello");
+  element.appendChild(text);
+  div.appendChild(element);
+};
+```
+
+
+****
+## Event Handlers
+
+JavaScript is typically **"event-driven"**, as its purpose is to allow interactions between the user and the web page.
+An event is simply something that occurs on the page, usually as a result of an user action
+	*We already covered some typical examples: [[16 - JavaScript and HTML#Events|clicking a button, typing]], but also resizing the window, a rollover...*
+
+So, an event handler is here to **define the JavaScript code that will be executed when a specific event happens**. For instance, each time the user types something in an email input, we call a JavaScript function that checks if what he entered is a valid email.
+
+==Checking data validity on the front-end side (with JavaScript) has for only purpose to guide the user, not to guarantee that the end data is correct and trustworthy.== Real control of data should be done on the back-end (with input sanitization), as the user can freely modify everything front-end related, or even intercept his own HTTP requests and manually modify the data he sends.
+What the user sends can never be trusted, in fact.
+
+
+

@@ -72,7 +72,7 @@ Furthermore, the JVM and the language does not share the same features.
 
 
 As explained [[Various/Compilers/01 - Fundamentals/01 - Fundamentals#Java|here]], Java code is compiled into an intermediate language called **bytecode** before execution. This bytecode is then interpreted during **runtime on the JVM**.
-	*The JIT compiler is also here at execution to make performance improvements*
+	*The JIT compiler is also here at execution to make performance improvements. More details on Java runtime [[11 - JVM|here]]*
 This allows Java to follow the Write Once Run Anywhere (WORA) paradigm
 	*Any machine can consistently run a java program as long as the Java Platform is installed on it.*
 
