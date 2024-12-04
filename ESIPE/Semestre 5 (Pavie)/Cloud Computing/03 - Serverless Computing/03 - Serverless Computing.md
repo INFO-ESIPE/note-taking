@@ -64,7 +64,7 @@ An important characteristic of the functions we provide is that they are **STATE
 	*If we want to keep track of a request's state, we have to rely on an API Gateway*
 
 We obtain the following ETL workflow for our serverless architecture:
-![[architecture.png]]
+![[ESIPE/Semestre 5 (Pavie)/Cloud Computing/03 - Serverless Computing/architecture.png]]
 
 We have provided environments so our code can run
 	*NodeJS, Java, Python...*

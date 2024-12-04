@@ -10,6 +10,6 @@ The final exam is a written test with a variable number of open questions (betwe
 Organisation:
 - 1st week: Introduction to cyber
 - Cryptography
-- Mutual trust (MAC/ARP Flooding, IP Spoofing)
+- MAC/ARP Flooding, IP Spoofing
 - Network Sec
 - Various other selected topics (if enough time)
