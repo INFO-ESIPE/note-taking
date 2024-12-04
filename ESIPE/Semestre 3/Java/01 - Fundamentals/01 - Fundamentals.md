@@ -63,7 +63,6 @@ A distribution must pass the Test Compatibility Kit (TCK) to be named "Java".
 Ultimately, Java is two things:
 - **The language**: Java Language Specification (JLS)
 - **The Platform**: Java Virtual Machine Specification (JVMS)
-
 > This distinction is important, as the Java language is not the only language to run on the Java platform
 	*Scala, Kotlin, Clojure and Groovy relies on it as well*
 
@@ -79,9 +78,8 @@ This allows Java to follow the Write Once Run Anywhere (WORA) paradigm
 
 Java evolves — like all maintained programming languages actually lol — as software needs evolves. An important thing to understand here is that **Java follows a backward-compatibility philosophy**, which (mostly) means two things:
 - **Bytecode compatibility**: Bytecode compiled with an older Java version can run on a modern JVM
-- **Source code compatibility**: A source code that was written on an old version and java can still be compiled in recent versions.
+- **Source code compatibility**: A source code that was written on an old Java version can still be compiled in recent versions.
 	*This means that the API must be kept. If a class (or one of its public methods) become deprecated, it must be kept !!!!*
-
 
 > For this class, we will use the OpenJDK 22, which includes a compiler `javac`, the JVM, and other useful materials. 
 
@@ -99,22 +97,22 @@ Animal myCat = new Cat();
 ```
 
 - **Late Binding**: (During execution) calls the method of the correct implementation
+	*`myCat.sound()` will call `Cat::sound`, and not `Animal::sound`*
 
 
 ### Encapsulation
 
-We say that a class encapsulates (protect) its data. 
+We say that a class encapsulates (protect) its data.
 The public API is what external classes can access in order to interact with the class
 	*public/protected methods*
 The implementation is the hidden part that defines how the API works under the hood 
-	*private fields, private methods, internal private classes*
+	*private fields, private methods, private inner classes*
 
 We can make a field **immutable** by specifying the `final` keyword.
 	*A definitive value must be assigned to the field at object's creation. It means we can not reassign this variable.*
 
-> Note: Fields of a class ARE ALWAYS PRIVATE (and final if possible) 
-> Only exception are constants (`static final`).
-
+==Fields of a class SHOULD ALWAYS BE PRIVATE== (and final if possible).
+Only exception for constants (`static final`), which can be public if needed.
 
 **We must follow this principle:**
 - Everything a class controls (its own fields and methods) is trustworthy
@@ -124,7 +122,7 @@ We can make a field **immutable** by specifying the `final` keyword.
 
 ### In practice
 
-Let's consider everything from the outside will attempt to jeopardise our class.
+Let's consider everything coming from the outside will attempt to jeopardise our class.
 Every public access point must be protected by **pre-conditions** and **defensive copies**, as we can not trust what others passes to us.
 
 Let's say I want to organise french classes for Erasmus students, but i don't want french students to be able to join it
@@ -170,7 +168,8 @@ class FrenchClass {
 	private List<String> students = new ArrayList<>();;
 	
 	public FrenchClass(String teacher) {
-		// Any object can be null. Always ensure it isn't when one is passed as a parameter
+		// Any object can be null. Always ensure it isn't when one
+		// is passed as a parameter
 		Objects.requireNonNull(teacher);
 		this.teacher = teacher;
 	}
@@ -196,8 +195,7 @@ var class = new FrenchClass("M. Maurice");
 var students = class.students();
 students.add(new Student("goobert", "french")); // oops
 ```
-
-In fact, the `students()` method returned the direct reference to our internal collection. This allows anyone to manipulate it from the outside.
+> In fact, the `students()` method returned the **direct reference** to our internal collection. This allows anyone to manipulate it from the outside.
 	*This way, we could add a french student to the class even though our `register()` method doesn't allow it. We bypassed the encapsulation...*
 
 We need to make a **defensive copy** each time we **return an internal collection (or any mutable class)**, or each time **we accept one from outside**:
@@ -227,10 +225,10 @@ class FrenchClass {
 ```
 
 
-The only big issue that remains here concerns our implementation. The class' properties can be final
+The only big issue that remains here is about our implementation. The class' properties can (and should) be final here.
 	*it is always a good practice to define all of our fields as final, and remove it later on if we realise we can not keep it immutable. In this case, the teacher name will not be changed after it was defined, and the collection remains the same (we modify it obviously, but don't REASSIGN a new collection)*
 
-Furthermore, we could use an `HashSet` instead of a List (which avoids us duplicate students issue).
+Furthermore, we could use an `HashSet` instead of a List (which avoids duplicate students issue).
 
 Let's fix all of this:
 ```java
@@ -271,7 +269,7 @@ Now our class is well-encapsulated and has a decent implementation (we could mak
 ## Types
 
 Java is **statically-typed**, so it expects its variables to be declared before they can be assigned values.
-	*Both primitives and Classes are considered as types*
+	*Both primitives and classes are considered as types*
 
 **Primitives:**
 - boolean (true/false)
@@ -285,12 +283,11 @@ Java is **statically-typed**, so it expects its variables to be declared before 
 **Object types:**
 - Reference (opaque representation)
 
-
 We can declare the type:
 - **Implicitly** (better)
 ```java
-var y = 10;
-var point = new Point(5, y);
+var y = 10; // int
+var point = new Point(5, y); // Point
 ```
 
 - **Explicitly**
@@ -304,7 +301,7 @@ Point point = new Point(x, 10);
 The **type** (on the left) is **for the compiler**.
 	*It is not necessarily kept during runtime.*
 The class (on the right) is for the **runtime environment**
-	*Allows to know the size on the heap (for a `new`)*
+	*Allows to know the size on the heap (for a `new`, we need to know how much space we must allocate in memory to store the object)*
 
 
 ### Boxing
@@ -313,12 +310,13 @@ Primitive types have object counterparts called **Wrapper Types**
 	`int` -> `Integer`
 	`long` -> `Long`
 	...
-**ALWAYS USE PRIMITIVE WHEN ITS POSSIBLE**, as it is way more performant
-	*Only exception will be for collections*
+**ALWAYS USE PRIMITIVES WHEN ITS POSSIBLE**, as it is way more performant
+	*Main exception to this rule will be for collections, as they require usage of Wrappers*
 
 > This separation is actually the biggest design flow of Java. It should be the JVM's job to decide if an `Integer` or an `int` should be used depending on the context, not the developer's. This forces Java to do boxing operations, which destroys performance.
 > 	 Kotlin fixed this issue
 
+Boxing:
 ```java
 // Auto-box
 int i = 3;
@@ -329,8 +327,8 @@ Integer large = i;
 Integer large = 3;
 int i = large;
 ```
-*Mind the commented line: Actually, a Wrapper's identity (memory address) is not well defined...
-We don't use `new` on a wrapper. It should even result in a compilation error in future Java versions*
+> Mind the commented line: Actually, a Wrapper's identity (memory address) is not well defined...
+> We don't use `new` on a wrapper. It should even result in a compilation error in future Java versions
 
 Another issue with java is about comparing values between Wrappers. The current implementation only shares values on a single signed byte (from -128 to 127).
 So, we get the following stupid situation:
@@ -344,7 +342,7 @@ Integer val2 = -200;
 val == val2 // can be true or false, we don't know (lol ???)
 ```
 
-So, we never use `==` and `!=` to compare two Wrappers. Use `equal()`, like all objects.
+So, we never use `==` and `!=` to compare two Wrappers. Use `equal()`, like for all objects.
 	*Actually you should get a warning if you attempt to do so*
 
 
@@ -355,8 +353,8 @@ The Liskov principle explains that if we manipulate two objects from two differe
 
 Example:
 ```java
-void foo(/* ... */) {
-	if (/* ... */) {
+void foo() {
+	if (/*...*/) {
 		v = new Car();
 	} else {
 		v = new Bus();
@@ -373,11 +371,9 @@ interface Vehicle { void drive(); }
 record Car() implements Vehicle { public void drive() { /* ... */ } }
 record Bus() implements Vehicle { public void drive() { /* ... */ } }
 ```
+> Interfaces are here for **typing**, not execution.
 
-Interfaces are here for **typing**, not execution.
-
-
-But how does the JVM knows to call the correct method ? Example:
+But how does the JVM knows how to call the correct method ? Example:
 ```java
 void driveAll(List<Vehicle> vehicles) {
 	for(Vehicle vehicle: vehicles) {
@@ -390,14 +386,14 @@ List<Vehicle> list = List.of(new Car(), new Bus());
 driveAll(list);
 ```
 
-Late binding allows this...
+Late binding allows this.
 
 
 ****
 ## Late Binding
 
 A Java Object is simply a memory pointer (reference) to an address we cannot directly access to.
-	Only the Garbage Collector can move Objects directly in memory*
+	*Only the Garbage Collector can move Objects directly in memory*
 
 An object's content is **allocated on the heap** (via the `new` instruction). It is **freed by the Garbage Collector (GC) in a non-predictable manner**.
 	*So, the stack just contains an address pointing to a zone in the heap (where the object's body is).*
@@ -416,7 +412,6 @@ class Car {
 }
 ```
 
-
 **All objects are aware of their corresponding class!**
 
 
@@ -427,7 +422,7 @@ This points to the **class' Virtual Table (vtable)**. All classes have a corresp
 ![[vtable.png]]
 
 If a method has an `Override`, their index in the vtable is the same
-	*So, the method `.toString()` of the two classes have the same index in the vtable*
+	*So, the method `.toString()` of the two classes shares a same index (0 here)*
 ![[vtable-override.png]]
 > In fact, the `vehicle.toString()` call will be transformed into `vehicle.vtable[index]()` by the JVM (so, at runtime)
 
@@ -485,8 +480,7 @@ public final class StudentList {
 ```
 
 
-==INHERITANCE IS A POOR CHOICE, IT IS BETTER TO USE INTERFACES INSTEAD. THERE ARE VERY FEW SCENARIOS WHERE INHERITANCE IS A GOOD SOLUTION TO SOLVE YOUR PROBLEMS==
-
+==INHERITANCE IS OVERALL A BAD DESIGN CHOICE, IT IS BETTER TO USE INTERFACES INSTEAD. THERE ARE VERY FEW SCENARIOS WHERE INHERITANCE IS A GOOD SOLUTION TO SOLVE YOUR PROBLEMS==
 > In fact, most modern languages (Go, Rust) doesn't support inheritance for this reason.
 
 
@@ -495,7 +489,7 @@ public final class StudentList {
 Are we allowed to use abstract classes ?
 - Never instead of an interface! An abstract class **mustn't be used as a type**
 - If we need a way to share code, then yes, but:
-	- The abstract class should only be used as an internal (so, **never public**)
+	- The abstract class should only be used as an inner (so, **never public**)
 	- The abstract class and its sub-classes **must be in the same package**
 
 
@@ -557,5 +551,4 @@ If there is no default, our program will refuse to compile until we fix the lack
 	The usual problem is the following: devs set a default that crashes the program. When they add new types in the `permit` clause of the interface, they forgot to deal with those new types in those `switch`. In general, the new type will fall into the `default` scenario, which is often an `Exception` we throw to alert that we encountered a type we did not expect.
 	**IT IS BETTER FOR OUR PROGRAM TO NOT COMPILE AS A REMINDER OF PLACES WHERE WE HAVE TO MAKE CORRECTIONS, INSTEAD OF FORGETTING ABOUT IT AND HAVING RUNTIME (PRODUCTION) ERRORS.
 	A COMPILE-TIME ERROR IS WAY BETTER THAN AN UNPREDICTABLE RUNTIME ERROR** 
-	
 

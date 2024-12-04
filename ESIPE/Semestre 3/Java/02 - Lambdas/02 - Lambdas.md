@@ -18,7 +18,6 @@ A good example of this is: `List.sort(comparator)`.
 - The sorting algorithm itself (re-usable)
 - The **comparator** (passed as an argument), which specifies how it should be ordered
 
-
 All languages have a way to abstract code. In Java, we use **Functional Interfaces**.
 
 
