@@ -116,8 +116,13 @@ Ces approches — simplistes — ont cependant des inconvénients majeurs : 
 - `encode()` va créer un bytebuffer à chaque appel 
 - `decode()` doit contenir tous les octets à décoder dans le bytebuffer passé en paramètres. Si l'on veut décoder un fichier de 2 Gb, le buffer devra contenir ces 2 Gb.
 
-On peut, à la place, utiliser les classes `CharsetEncoder` et `CharsetDecoder` :
-![[charset_decoder.png]]
+On peut, à la place, utiliser les classes `CharsetEncoder` et `CharsetDecoder`:
+```java
+charset.newDecoder()
+	.onMalformedInput(CodingErrorAction.REPLACE)
+	.onUnmappableCharacter(CodingErrorAction.REPLACE)
+	.decode(buffer);
+```
 
 
 L'état de sortie est indiqué par un objet de la classe `CoderResult`.  
@@ -131,8 +136,23 @@ Les sorties suivantes sont possibles : 
 
 ## FileChannel
 
-Permet de lire et écrire des octets à partir d'un fichier :
-![[filechannel.png]]
+Permet de lire et écrire des octets à partir d'un fichier:
+```java
+Path path = Paths.get("~/test.txt");
+// open in read-mode
+try (FileChannel fc = FileChannel.open(path, StandardOpenOption.READ)) {
+	// ...
+}
+
+// open in write-mode
+try (FileChannel fc = FileChannel.open(path,
+				     StandardOpenOption.CREATE,
+				     StandardOpenOption.WRITE,
+				     StandardOpenOption.TRUNCATE_EXISTING)){
+	// ...
+}
+```
+
 
 La méthode `fc.read(ByteBuffer bb)` lit depuis le fichier via le canal fc. La valeur de retour **se comporte comme scanf**, elle retourne le nombre d'octets lus et -1 si on atteint la fin du fichier.
 
@@ -140,9 +160,41 @@ La méthode `fc.read(ByteBuffer bb)` lit depuis le fichier via le canal fc. La v
 
 
 La méthode `fc.write(ByteBuffer bb)` écrit les `bb.remaining()` octets du buffer dans le canal.
-Exemple basique :
-![[fc_wirte.png]]
+Exemple basique:
+```java
+var path = Paths.get(args[1]);
+var buff = ByteBuffer.allocate(Integer.BYTES);  // 4 bytes
+try(FileChannel fc = FileChannel.open(path, StandardOpenOption.CREATE, 
+        StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+        Scanner scan = new Scanner(System.in)) {
+    while (scan.hasNextInt()) {
+        buff.putInt(scan.nextInt());
+        buff.flip();
+        fc.write(buff);
+        buff.clear();
+    }
+}
+```
 
-Exemple optimisé :
-![[fc_write_better.png]]
+Exemple optimisé:
+```java
+var path = Paths.get(args[1]);
+var buff = ByteBuffer.allocate(BUFFER_SIZE);
+    
+try(var fc = FileChannel.open(path, StandardOpenOption.CREATE, 
+        StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+        var scan = new Scanner(System.in)) {
+    while (scan.hasNextInt()) {
+        if (buff.remaining()<Integer.BYTES){
+            buff.flip();
+            fc.write(buff);
+            buff.clear();
+        }
+        buff.putInt(scan.nextInt());
+    }
+    buff.flip();
+    fc.write(buff);
+}
+```
+
 

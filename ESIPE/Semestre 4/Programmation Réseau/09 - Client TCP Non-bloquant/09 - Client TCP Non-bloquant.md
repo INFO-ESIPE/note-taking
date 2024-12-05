@@ -26,23 +26,52 @@ Il existe une méthode `socketChannel.finishConnect()` qui renvoi un booléen po
 Si le sélecteur est enregistré en `SelectionKey.OP_CONNECT`, alors on est notifié quand la connexion est établie.
 
 Ici on enregistre en `OP_CONNECT`:
-![[ESIPE/Semestre 4/Programmation Réseau/09 - Client TCP Non-bloquant/connect.png]]
+```java
+var sc = SocketChannel.open();
+sc.configureBlocking(false);
+sc.connect(serverAddress);
+var sKey = sc.register(selector, SelectionKey.OP_CONNECT);
+```
 
 Tant que ce status est actif, on appelle la méthode `doConnect(key)` car la connexion n'est toujours pas validée.  
 
 Comme pour les autres opérations, le sélecteur n'est pas 100% fiable (voir doc des sélecteurs) alors on vérifie que le signalement est bel et bien correct en appelant `finishConnect()`:
-![[check.png]]
+```java
+private void doConnect(SelectionKey key) throws IOException {
+	if (!sc.finishConnect()) {
+		return; // the selector gave a bad hint, it happens
+	}
+	key.interestOps(SelectionKey.OP_READ);
+}
+```
 
 Si la connexion est avérée (finishConnect renvoi `true`), alors on change notre champ d'intéressement (ici on passe à la lecture).
+
 
 ****
 ## Actions et Multithread
 
 On effectue une boucle de sélection similaire à celle du serveur non-bloquant, mais on y remplace doAccept par doConnect pour gérer les connexions en mode non-bloquant pour client:
-![[ESIPE/Semestre 4/Programmation Réseau/09 - Client TCP Non-bloquant/loop.png]]
-![[ESIPE/Semestre 4/Programmation Réseau/09 - Client TCP Non-bloquant/treatkey.png]]
+```java
+while (!Thread.interrupted()) {
+	selector.select(this::treatKey);
+}
 
-On gère les exceptions comme il faut, bien entendu (voir cours précédent).
+// ...
+
+void treatKey(SelectionKey key) {
+	if (key.isValid() && keu.isConnectable()) {
+		doConnect(key);
+	}
+	if (key.isValid() && keu.isWritable()) {
+		doWrite(key);
+	}
+	if (key.isValid() && keu.isReadable()) {
+		doRead(key);
+	}
+}
+```
+> On gère les exceptions comme il faut, bien entendu (voir cours précédent).
 
 
 **Le problème majeur est le suivant**: Les informations que l'on va envoyer via le thread principal (qui gère la boucle) vont provenir d'ailleurs (d'autres threads, celui responsable de lire au clavier en général).

@@ -25,8 +25,23 @@ Si un client se déconnecte (parce qu'il passe sous un tunnel ou une bétise du 
 
 
 Pour servir un client accepté, on effectue des read/write comme on a déja vu pour les `SocketChannel`. 
-On suivra le patterne basique suivant pour traiter les clients en mode bloquant :
-![[pattern.png]]
+On suivra le patterne basique suivant pour traiter les clients en mode bloquant:
+```java
+scc.bind(7777);
+
+c1 = scc.accept();
+c1.read(request);
+c1.write(response);
+c1.close();
+
+c2 = scc.accept();
+c2.read(request);
+c2.write(response);
+c2.close();
+
+// ...
+```
+
 
 **A noter**: Si c2 se connecte pendant qu'on sert c1, il est en état pending et est en attente d'accept par notre code (et donc la JVM). Cependant, si on prend trop de temps a accepter, l'OS va interrompre la connexion qu'il a accepté avec le client, il va le timeout (car il en déduit qu'un délai trop élevé à été dépassé et que le serveur n'est pas en état de traiter sa demande).
 

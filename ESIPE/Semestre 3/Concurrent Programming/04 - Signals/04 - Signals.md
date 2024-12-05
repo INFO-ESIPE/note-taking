@@ -93,8 +93,7 @@ public class Holder {
 ```
 
 
- Actually, the best way of doing it is through a get/display method inside the class, which implements the `synchronize` itself :
-
+ Actually, the best way of doing it is through a get/display method inside the class, which implements the `synchronize` itself (and avoid using the lock from outside) :
 ```java
 public class Holder {
 	private int value;
@@ -129,7 +128,6 @@ public class Holder {
 }
 ```
 
-
 This is better, but this does not resolve our busy waiting issue at all...
 We need the following mechanism to solve our issue:
 - Can pause a thread (de-scheduled)
@@ -153,10 +151,10 @@ while (!done) {
 
 `wait()`:
 1. Puts the current thread asleep
-2. Gives back its token for the `lock`
-3. When the thread is waken up later (by a notify signal), it takes back the `lock` token (if available). The thread has retrieved its execution flow.
+2. Gives back its token
+3. When the thread is waken up later (by a notify signal), it takes back the `lock` token (if available). The thread has recovered its execution flow.
 
-`notify()`: Wakes up **one random thread that is AWAITING ON THE LOCK**
+`notify()`: Wakes up **a random thread that is AWAITING ON THE LOCK**
 	*If there are several, the scheduler picks one randomly. If there are none, the notify signal does nothing and is lost (careful...)*
 	
 `notifyAll()`: Wakes up **all the threads AWAITING ON THE LOCK**. This should be used as few as possible, especially when a simple `notify()` can be used.

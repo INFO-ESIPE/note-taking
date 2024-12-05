@@ -1,7 +1,7 @@
 [[Information Security]]
 04/12/2024
 ****
-**Note:** Definitions given in [[11 - User Authentication#Authentication Principles|the first chapter]] must be known, and with the specific vocabulary used by the teacher (bold text). He was very insistent during the lecture, so it might be at the exam...
+**Note:** Definitions (especially the ones given in [[11 - User Authentication#Authentication Principles|the first chapter]]) must be known, and with the specific vocabulary used by the teacher (bold text). He is very demanding when it comes to the vocabulary we use, and was very insistent during the lecture, so it might be at the exam...
 ****
 **Table of Contents**
 ```table-of-contents

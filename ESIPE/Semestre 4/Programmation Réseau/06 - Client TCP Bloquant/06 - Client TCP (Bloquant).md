@@ -26,9 +26,16 @@ Comme pour UDP, plusieurs clients vont interragir avec un serveur via un socket 
 
 Le socket TCP est représenté par un objet `SocketChannel` qu'on créé, comme pour le `DatagramChannel`, via une méthode factory `.open()`. 
 
-On peut utiliser la méthode `.connect(SocketAddress)` sur le channel afin de se connecter.
-![[ESIPE/Semestre 4/Programmation Réseau/06 - Client TCP Bloquant/connect.png]]
+On peut utiliser la méthode `.connect(SocketAddress)` sur le channel afin de se connecter:
+```java
+// creation of the socket (not connected)
+SocketChannel sc = SocketChannel.open();
 
+SocketAddress serverAddress = new InetSocketAddress("www.google.com",80);
+
+// connection to server
+sc.connect(serverAddress);
+```
 
 Une fois connecté, on peut obtenir (`sc.read()`) des données depuis le serveur, ou en envoyer (`sc.write()`). 
 
@@ -40,12 +47,25 @@ Comme pour le `DatagramChannel`, les deux méthodes sont **bloquantes**. Read bl
 Pour le read, si le buffer est plus grand que ce qui est récupéré, alors il ne sera pas rempli. **Si ce buffer est trop petit, les données ne seront pas perdues, elles sont mises de côtées et seront ré-accessibles au prochain read.**
 
 La méthode renvoi le nombre d'octets lus, ou -1 si la connexion a été interrompue en écriture par l'interlocuteur *(note qu'on peut, donc, continuer à lui écrire mais qu'on ne recevra plus jamais rien de sa part):*
-![[close.png]]
+```java
+var buffer = ByteBuffer.allocate(BUFFER_SIZE);
+var read = sc.read(buffer);
 
+if (read == -1) {
+	System.out.println("Connection closed for reading");
+} else {
+	System.out.println("Read "+ read +" bytes");
+}
+```
 
-Pour le write, la **totalité de la zone de travail du buffer est envoyée**. La méthode bloque jusqu'a l'envoi de toute la zone :
-![[ESIPE/Semestre 4/Programmation Réseau/06 - Client TCP Bloquant/write.png]]
-
+Pour le write, la **totalité de la zone de travail du buffer est envoyée**. La méthode bloque jusqu'a l'envoi de toute la zone:
+```java
+var buffer = ByteBuffer.allocate(BUFFER_SIZE);
+buffer.putLong(1l);
+buffer.putLong(2l);
+buffer.flip();
+sc.write(buffer);
+```
 
 Fermeture du channel (et donc, de la connexion) : 
 - Seulement le canal d'écriture: `shutdownOutput()`; 
@@ -56,6 +76,7 @@ Fermeture du channel (et donc, de la connexion) : 
         
 - Tous: `close();` 
     - Libération complète des ressources systèmes
+
 
 ****
 ## Problématiques

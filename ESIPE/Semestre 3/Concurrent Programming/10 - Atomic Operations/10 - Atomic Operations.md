@@ -95,9 +95,9 @@ Here, the `getAndIncrement()` method is treated as a single atomic operation by 
 
 ****
 ## Compare and Set (CAS)
+*A variant of "compare and swap", but its pretty much the same*
 
 Unfortunately, all atomic operations aren't available on all processors. However, the foundational atomic operation across platforms **compare-and-set (CAS)** exists. 
-	*This is a variant of the compare-and-swap atomic instruction*
 
 Here is what the signature would look like in C:
 ```c
@@ -105,7 +105,6 @@ bool CAS(&field, expectedValue, newValue)
 ```
 
 If the field's value equals `expectedValue`, it is replaced by `newValue` and returns true. It returns false otherwise.
-
 
 Let's make our counter with a CAS:
 ```java
@@ -292,7 +291,6 @@ public final class NotConcLinkedList {
 }
 ```
 
-
 This implementation works with `AtomicReference`:
 ```java
 public class LockFreeLinkedList {
@@ -310,7 +308,6 @@ public class LockFreeLinkedList {
 	}
 }
 ```
-
 
 This implementation works with `VarHandle`:
 ```java
