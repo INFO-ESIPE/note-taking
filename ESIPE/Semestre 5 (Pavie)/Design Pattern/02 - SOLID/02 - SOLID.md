@@ -5,6 +5,8 @@
 ```
 
 ****
+## SOLID ?
+
 An object-oriented architecture must be easy to maintain, test, re-use and upgrade
 - **A class must represent a well-identified concept** (otherwise no tests and no re-usability)
 - **Limit dependencies in between classes** (otherwise no maintainability and boilerplate)
