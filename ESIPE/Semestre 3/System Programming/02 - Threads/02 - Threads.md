@@ -28,6 +28,30 @@ A thread has three states:
 
 
 ****
+## Interleaving and nondeterminism
+
+If we have two threads, we have:
+- Two sets of registers
+- Two sets of stacks
+![[stacks.png]]
+> But how do we position stacks, how do we chose their size, and how to prevent violations if a thread attempts to access another thread's stack (like a process violating his address area) ?
+
+Threads will execute at variable speed and in any order, so our task—as developers—is to design programs that can work with any schedule (thread-safe code).
+![[scenarios.png]]
+> As we can see here, threads are **non-deterministic** (can run and be suspended at any time by the scheduler).
+> Our program must work properly in any scenario, and avoid **race conditions**!
+
+As explained in the [[Concurrence|concurrent programming class]], several mechanisms are used to achieve this:
+- **Synchronisation**: Coordination among threads, usually regarding shared data
+- **Mutual Exclusion (MutEx)**: Ensuring only one thread does a particular thing at a time (one thread excludes the others)
+- **Critical Section**: Code exactly one thread can execute at once
+- **Lock**: An object only one thread can hold at a time
+	*The object providing mutual exclusion*
+
+
+****
+
+****
 ## `pthread`
 *We know how to do it in Java, now let's look at a deeper level*
 
@@ -49,20 +73,36 @@ void pthread_exit(void *value_ptr);
 // by the terminating thread is made available in the location referenced by
 // <value_ptr>
 int pthread_join(pthread_t thread, void **value_ptr);
+
+// Initializes mutex pointed to by <mutex> with attributes specified in <attr>
+// If <attr> is NULL, default attributes are used
+int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr);
+
+// Locks (acquire) the mutex pointed to by <mutex>
+// If the mutex is already locked by another thread, calling thread will block
+int pthread_mutex_lock(pthread_mutex_t *mutex);
+
+// Unlocks (release) the mutex pointed to by <mutex>
+// A blocked thread can now acquire the lock
+int pthread_mutex_unlock(pthread_mutex_t *mutex);
 ```
 
+**Example:**
+```c
+int common = 162;
+pthread_mutex_t common_lock = PTHREAD_MUTEX_INITIALIZER;
 
-****
-## Interleaving and nondeterminism
+void *fun(void *tid) {
+	long id = (long)threadid;
+	pthread_mutex_lock(&common_lock);   // critical section
+	int my_common = common++;           // critical section
+	pthread_mutex_unlock(&common_lock); // critical section
 
-If we have two threads, we have:
-- Two sets of registers
-- Two sets of stacks
-![[stacks.png]]
-> But how do we position stacks, how do we chose their size, and how to prevent violations if a thread attempts to access another thread's stack (like a process violating his address area) ?
+	printf("Thread #%lx stack: %lx common: %lx (%d)\n",
+			(unsigned long) &id,
+			(unsigned long) &common,
+			my_common);
 
-Threads will execute at variable speed and in any order, so our task—as developers—is to design programs that can work with any schedule (thread-safe code).
-![[scenarios.png]]
-> As we can see here, threads are **non-deterministic** (can run and be suspended at any time by the scheduler).
-> Our program must work properly in any scenario, and avoid **race conditions**!
-
+	pthread_exit(NULL);
+}
+```

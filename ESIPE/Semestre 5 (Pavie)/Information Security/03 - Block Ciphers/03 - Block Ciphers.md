@@ -142,7 +142,7 @@ Unlike previously-mentioned ciphers, AES decryption and encryption process is no
 ## Mode of Operation (Cipher Operation)
 *Useful resource:* https://www.youtube.com/watch?v=Rk0NIQfEXBA
 
-We know that block ciphers take a n-bits fixed length plaintext block — and a key — and output a n-bits fixed length ciphertext block.
+We know that block ciphers take a n-bits fixed length plaintext block—and a key—and output a n-bits fixed length ciphertext block.
 
 If the message is larger than n bits (most of the time it is, blocks are small), we have to split the message in multiple blocks, and **re-use the key** for each block.
 	*Dangerous... This makes our algorithm extremely predictive and vulnerable to cryptanalysis*
@@ -161,7 +161,7 @@ Thus, there are various ways of applying the block cipher. NIST designed the **(
 	*This can be applied on any symmetric block cipher, it does not matter*
 
 
-**Electronic Codebook (ECB)**
+### Electronic Codebook (ECB)
 *Parallel encoding (we can encode all blocks at the same time)*
 
 This is the operation mentioned above. We encode blocks separately with the same key, and concatenate each one to obtain the resulting ciphertext
@@ -172,7 +172,7 @@ This is not secure at all as :
 ![[ecb  penpen.png]]
 
 
-**Cipher Block Chaining (CBC)**
+### Cipher Block Chaining (CBC)
 *Sequential encoding of blocks (C1, then C2 ...*
 
 Base is similar as **ECB**, but the following step is added to solve the aforementioned problem:
@@ -187,12 +187,11 @@ Base is similar as **ECB**, but the following step is added to solve the aforeme
 We obtain a decent result if we now try to encode our penguin :
 ![[correct penpen.png]]
 
-
 Biggest issue with this method is that is is way slower. We lost our parallelism feature as each block requires the output of the previous one in order to be encoded correctly.
 Also, if a problem happens on a block (network issue, an adversary modify it), it impacts the following block, which will now contain gibberish value.
 
 
-**Counter Mode (CTR)**
+### Counter Mode (CTR)
 *Parallel encoding (we can encode all blocks at the same time)*
 
 We take a base nonce (an integer value that is unique to this communication).
@@ -219,7 +218,7 @@ There is, however, a more modern version of this operation called **Galois/Count
 
 
 ****
-## Galois Counter Mode (AES GCM)
+## Galois Counter Mode (AES GCM) - Out of class scope
 Note: this part is optional, this won't be in the exam at all.
 
 Counter Mode is good at preventing a cryptanalyst from understanding our communication, but it does not guarantee than an adversary manipulated the outputted ciphertext and turned some blocks to gibberish.
