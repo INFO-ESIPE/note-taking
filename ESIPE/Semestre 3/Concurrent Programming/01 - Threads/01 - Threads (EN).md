@@ -17,7 +17,7 @@ Concurrent programming is a paradigm that allows for different fragments of code
 ****
 ## Threads and processes
 
-When a program is executed, a process is created by the OS. This process has its isolated virtual address space. It is composed of **execution thread**.
+When a program is executed, a process is created by the OS. This process has its isolated virtual address space, and encapsulates **execution thread(s)**.
 
 A thread is **a lightweight unit of execution within a process**, allowing for concurrent operations.
 	*A program has at least one thread, but it can have several (hence the purpose of this class...)*
@@ -27,7 +27,7 @@ Each thread **possesses its own stack** (managing function calls, parameters, lo
 - In Java, the heap contains objects's properties.
 
 ![[threads.png]]
-
+> In fact, a process is only an entity that provides an isolated virtual address space. The entities responsible for executing instructions are the threads inside it.
 
 The **scheduler** is an OS-managed entity **deciding on threads' execution order and alive time**. We will use the `java.lang.Thread` class to manage threads.
 
@@ -105,7 +105,7 @@ In order to properly balance the various execution threads on all the CPU cores,
 	*A thread runs on a full core*
 
 Since an OS runs way more threads than cores available, it is the scheduler job to put some threads at rest, and launch others in the meantime. Execution of threads rotates, so everyone can be in the foreground for a moment.
-
+	*Threads are **Non-deterministic** as the scheduler decides on its own which thread runs, which thread is suspended, and for how long. We have no control over its decision*
 
 A thread occupies it's designated core: 
 - Until the next blocking call (I/O) 

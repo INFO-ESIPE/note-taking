@@ -23,7 +23,7 @@ Parmi celles-ci, il y a: 
 Afin de mener à bien ces objectifs, des instructions particulières ont été mises en places. Ces instructions spéciales — **interruptions** — sont des demandes spéciales envoyées au système d'exploitation pour qu'il prenne temporairement le contrôle et exécute une routine dédiée (souvent appelée **gestionnaire d'interruption**).
 
 
-On appelle une interruption — ou le processeur va interrompre le programme en cours et passer temporairement la main au noyau de l'OS — via la commande suivante (pour une architecture x86) : 
+On appelle une interruption le fait qu'une instruction va interrompre le programme en cours et passer temporairement la main au noyau de l'OS — via la commande suivante (pour une architecture x86): 
 ```
 int 0x80
 ```
