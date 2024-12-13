@@ -4,8 +4,8 @@
 For the exam, one is expected to understand the steps composing the Diffie-Hellman exchange.
 
 **Useful :** 
-Diffie-Hellman Key Exchange : https://www.youtube.com/watch?v=NmM9HA2MQGI
-Diffie-Hellman Mathematics : https://www.youtube.com/watch?v=Yjrfm_oRO0w
+Diffie-Hellman Key Exchange: https://www.youtube.com/watch?v=NmM9HA2MQGI
+Diffie-Hellman Mathematics: https://www.youtube.com/watch?v=Yjrfm_oRO0w
 ****
 **Table of Contents**
 ```table-of-contents

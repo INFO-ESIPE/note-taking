@@ -1,8 +1,6 @@
 [[Information Security]]
 03/10/2024
 ****
-**IMPORTANT NOTICE:** Teacher has very bad taste when it comes to Cinema, do not trust him.
-****
 **Table of Contents**
 ```table-of-contents
 ```

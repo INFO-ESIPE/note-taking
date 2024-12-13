@@ -152,7 +152,7 @@ The process is straightforward and convenient so far :
 	P2 -> E(K) -> C2
 	...
 	Pn -> E(K) -> Cn
-	C1 + ... + Cn = ciphertext
+> C1 + ... + Cn = ciphertext
 
 But we would like to make it harder for a cryptanalyst to break the cipher by looking at ciphertext samples.
 
@@ -168,53 +168,54 @@ This is the operation mentioned above. We encode blocks separately with the same
 
 This is not secure at all as :
 - It gives away too much information to the cryptanalyst
-- If two blocks are identical, their ciphertext version will also be identical. This is a problem well-illustrated by the **ECB Penguin**. Pixel data was encrypted and should appear completely obfuscated to us, but this is not the case at all as we can still perceive the shape of it :
+- If two blocks are identical, their ciphertext version will also be identical.
 ![[ecb  penpen.png]]
+> This problem is well-illustrated by the **ECB Penguin**. Pixel data (colour) was encrypted and should appear completely obfuscated to us, but this is not the case at all as we can still perceive the shape of it due to pixels sharing the same colour and resulting in the same cipher block.
 
 
 ### Cipher Block Chaining (CBC)
-*Sequential encoding of blocks (C1, then C2 ...*
+*Sequential encoding of blocks (C1, then C2, etc.)*
 
 Base is similar as **ECB**, but the following step is added to solve the aforementioned problem:
 - An **Initialisation Vector (IV)** will XOR the first plaintext block with a pseudo-random value before processing to the encryption of the block
-	*This IV is not a secret, it can be revealed. The only point is to avoid the situation where two identical blocks shares the same ciphertext*
+	*This IV is not a secret, it can be revealed. The only point is to avoid the situation where two identical blocks returns the same ciphertext block.*
 - We take our first ciphertext block **C1**
 - We XOR it with the next plaintext block **P2**
 - This XOR becomes the new **P2**
+> We link the output of a block with the input of the next one, and so forth...
 
-*We link the output of a block with the input of the next one...*
-
-We obtain a decent result if we now try to encode our penguin :
 ![[correct penpen.png]]
+> If we now try to encode our penguin, we obtain a result that does not disclose any pattern or similarity in between plaintext blocks.
 
-Biggest issue with this method is that is is way slower. We lost our parallelism feature as each block requires the output of the previous one in order to be encoded correctly.
+Biggest issue with this method is that it is way slower. 
+	*We lost our parallelism feature as each block requires the output of the previous one in order to be encoded correctly.*
 Also, if a problem happens on a block (network issue, an adversary modify it), it impacts the following block, which will now contain gibberish value.
 
 
 ### Counter Mode (CTR)
 *Parallel encoding (we can encode all blocks at the same time)*
 
-We take a base nonce (an integer value that is unique to this communication).
+We take a base **nonce** (an integer value that is unique to this communication).
+We will have `n` nonces, one for each block. Each block nonce will be incremented by one as we go forward in the blocks.
+	*In other words, the algorithm will do `nonce++` for each block*
 
-We will have n nonces, one for each block. Each block nonce will be incremented by one as we go forward in the blocks.
-
-We encode each nonce with our algorithm and our secret key, which will produce n ciphertexts-version of nonces (one per block) :
+We encode each nonce with our algorithm and our secret key, which will produce `n` ciphertexts-version of nonces (one per block):
 	base nonce = 10; 3 blocks
 	nonce + 1 -> E(k) -> CN1: 1001...
 	nonce + 2 -> E(k) -> CN2: 0101...
 	nonce + 3 -> E(k) -> CN3: 1101...
 
-We then XOR each plaintext block with it's ciphertext nonce :
+We then XOR each plaintext block with it's ciphertext nonce:
 	P1 XOR CN1 -> C1
 	P2 XOR CN2 -> C2
 	P3 XOR CN3 -> C3
 
 
 This is the best operation out of everything.
-The most important part is to **NEVER reuse the nonce** on another block (that's why we are doing this trivial incrementation thing on each block, we ensure each block nonce is unique).
+The most important part is to **NEVER reuse the nonce** on another block
+	*that's why we are doing this trivial incrementation on each block, we ensure each block nonce is unique*
 
-
-There is, however, a more modern version of this operation called **Galois/Count Mode (GCM)** — used by AES — which uses the exact same principle, but applies a **Galois Message Authentication Code** (**GMAC**) that ensure nothing has been altered (similar to a hash).
+There is, however, a more modern version of this operation called Galois/Count Mode (GCM)—used by AES—which relies on the same principle, but applies a Galois Message Authentication Code (GMAC) that ensures nothing has been altered (similar to a hash).
 
 
 ****
