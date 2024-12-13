@@ -47,10 +47,10 @@ Here are the most common and secure cryptographic hash algorithms :
 
 Authentication of a message can be done through **Keyed Hash functions (MACs)**
 A MAC is a function that takes the message and a secret key as parameters, and return a **tag (MAC value)**
-	*The two parties shares the secret key. It works for symmetric ciphers*
+	*As this works on symmetric ciphers, the two parties must share the secret key.*
 
 1. Once generated, the sender append the MAC tag to the original message and forwards it
-2. The recipient separates the MAC tag and the message, and produces his own MAC tag —via the shared secret key and the message he receives. 
+2. The recipient separates the MAC tag and the message, and produces his own MAC tag —via the shared secret key and the message he receives.
 3. If the tags matches, the message has not been forged
 	*This security is ensured as long as the attacker remains unaware of the secret key*
 
@@ -59,7 +59,7 @@ A MAC is a function that takes the message and a secret key as parameters, and r
 
 ****
 ## Digital Signature
-Useful : https://www.youtube.com/watch?v=s22eJ1eVLTU&t=120s
+Useful: https://www.youtube.com/watch?v=s22eJ1eVLTU&t=120s
 
 As explained [[05 - Asymmetric Ciphers#Fields of application|here]], we use public key encryption this way to digitally sign a file:
 - The **signer (authority)** encrypt the file's hash with the private key
@@ -80,8 +80,8 @@ More details in [[09 - Digital Signatures|in the dedicated class]]
 ****
 ## Simple Hash Functions
 
-Where n is the size of the hash (e.g. 256 bits for SHA-256):
-1. Split the file/message into blocks of n-bit each
+Where `n` is the size of the hash (e.g. 256 bits for SHA-256):
+1. Split the file/message into blocks of `n`-bits each
 2. Process each block sequentially: each bit position across all blocks using XOR
 3. Result for each bit in hash: XOR of corresponding bits from each block
 
@@ -90,10 +90,6 @@ An improvement called **Rotated Bitwise XOR** exists, as it does a **one-bit cir
 1. Set the beginning hash value to 0
 2. For each block, rotate the current hash value by one bit (left), and then XOR the block into the hash value
 
-![[rotate.jpg]]
-
-
 Aforementioned methods does not protect from a **collision**.
-	*We call the **preimage** the body we try to get the hash of. Collision is when a hash has several preimages (it is an issue, but we cannot avoid it)*
-
+	*We call the **preimage** the body we try to get the hash of. Collision is when a hash has several preimages (we cannot avoid this issue)*
 If a cryptographic hash is **collision resistant** (computationally infeasible to find a pair of preimages that shares the same hash), it is called a **Strong hash function**
