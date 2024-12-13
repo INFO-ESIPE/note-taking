@@ -10,16 +10,15 @@ Cordoba
 
 Digital signatures are the biggest feature introduced by public-key cryptography, as it can not be implemented with symmetric cryptography.
 
-The purpose of digital signatures authenticity and integrity of a document. **The signatory claims ownership of the document**
-
-1. Authority A — who wants to sign a document — will generate a hash of the document to sign (SHA-512), and encrypt this hash with their private key.
+The purpose of digital signatures authenticity and integrity of a document. **The signatory claims ownership of the document.**
+1. Authority A—who wants to sign a document—will generate a hash of the document to sign (SHA-512), and encrypt this hash with its private key.
 2. The authority now publishes the document along with the signature, so people can download both of them. 
 3. Downloader generates the SHA-512 for the file he downloaded, and decrypt the signature with the authority's public key
 4. If the file's hash matches the decrypted signature's hash, the file has been signed by Authority A.
-*As long as no one has Authority A's private key, no one can imitate their signature.*
-
+> As long as no one has Authority A's private key, no one can imitate their signature.
 
 **Symmetric encryption protects two parties from a third one attempting to alter the message, but it does not protect the two parties against each other (big problem!)**
+
 Digital signature satisfies those three properties:
 - Authenticate the content (file hash encryption)
 - Verifiable by third parties (public-key cryptography)

@@ -66,12 +66,13 @@ If the calculated and received MACs match:
 ****
 ## Advantages of MAC
 
-1. MAC functions do not require reversibility, unlike encryption algorithms, which reduces vulnerability to certain attacks.
+1. MAC functions do not require reversibility (unlike encryption algorithms) which reduces vulnerability to certain attacks.
 2. Less vulnerable to being broken than simple encryption.
 3. Message encryption can be applied before or after MAC calculation.
+	*Practical example of this is shown in the [[12 - TLS#Handshake|TLS handshake protocol]]*
 4. Separating authentication (MAC) from encryption supports flexible system designs.
 
-Even though symmetric encryption can also serve as a basic form of authentication, MAC design is more suitable for several scenarios :
+Even though symmetric encryption can also serve as a basic form of authentication, MAC design is more suitable for several scenarios:
 - High-demand applications (e.g., broadcast messages to multiple recipients or authenticated software execution)
 - Decryption-less (MACs provide efficient and selective authentication without requiring decryption.)
 
