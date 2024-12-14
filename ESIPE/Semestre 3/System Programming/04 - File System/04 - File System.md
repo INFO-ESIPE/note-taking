@@ -14,7 +14,7 @@ The file system is here to create structure around raw data:
 
 We can represent I/O operations like this:
 ![[iceberg io.png]]
-> In this lesson, we will focus on both High-level and Low-level I/O, along with getting familiar with the concept of File System.
+> In this lesson, we will focus on both High-level and Low-level I/O, along with getting familiar with the concept of File System (we will take a deeper dive in how file system works in the future).
 > 	*Other concepts, such as Drivers or Sockets, will be studied in another lesson*
 
 ### File System Layout
@@ -251,6 +251,27 @@ ssize_t read(int fd, void *buf, size_t count);
 ssize_t write(int fd, const void *buf, size_t count);
 ```
 > There is no re-check of permissions after an `open()`! Which means, if permission on the file changes after a process acquired the file descriptor, the process can still act on the file like nothing happened.  
+
+
+### Differences between Low-level and High-Level API
+
+Alright, we now see that there are two ways of doing it, but what are the fundamental differences between high and low level operations?
+
+For High-level API, Streams are **(line-)buffered in user memory**:
+```c
+printf("Beginning of line ");
+sleep(10);
+printf("and end of line\n");
+```
+> Everything is printed at once. In other words, we have to wait 10 seconds for something to print (because the first `printf` doesn't end with `\n`).
+
+On the other hand, Low-level API operations are visible immediately:
+```c
+write(STDOUT_FILENO, "Beginning of line ", 18);
+sleep(10);
+write("and end of line \n", 16);
+```
+> "Beginning of line " printed 10 seconds earlier than “and end of line”.
 
 
 ### Standard Streams
