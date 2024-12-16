@@ -26,6 +26,11 @@ A thread has three states:
 - READY: eligible to run, but not currently running
 - BLOCKED: ineligible to run
 
+Thread shares:
+- Heap
+- Global variables
+- The kernel context (file descriptors, streams, signals, etc.)
+
 
 ****
 ## Interleaving and nondeterminism
@@ -50,29 +55,25 @@ As explained in the [[Concurrence|concurrent programming class]], several mechan
 
 
 ****
-
-****
 ## `pthread`
 *We know how to do it in Java, now let's look at a deeper level*
 
 OS provides an API for threads: `pthreads` (POSIX threads):
 ```c
-// thread is created executing <start_routine> with <arg> as its sole argument
+// Thread is created executing <start_routine> with <arg> as its sole argument.
 // <attr> will contain infos such as the scheduling policy or the stack size
 int pthread_create(pthread_t *thread, 
 				   const pthread_attr_t *attr, 
 				   void *(*start_routine)(void*), 
 				   void *arg);
 
-// Terminates the thread executing this instruction
-// <value_ptr> becomes available for any successful join
-void pthread_exit(void *value_ptr);
+// Terminates the thread executing this instruction 
+// with the return value <retval>
+void pthread_exit(void* retval);
 
-// suspends execution of the calling thread until the target thread terminates
-// On return with a non-NULL <value_ptr> the value passed to pthread_exit()
-// by the terminating thread is made available in the location referenced by
-// <value_ptr>
-int pthread_join(pthread_t thread, void **value_ptr);
+// Suspends execution of the calling thread until thread <tid> finishes.
+// (Non-NULL) return value of targeted thread is stored in <retval>.
+int pthread_join(pthread_t tid, void **retval);
 
 // Initializes mutex pointed to by <mutex> with attributes specified in <attr>
 // If <attr> is NULL, default attributes are used
@@ -105,4 +106,40 @@ void *fun(void *tid) {
 
 	pthread_exit(NULL);
 }
+```
+
+
+### Mutex
+*For generic details, see [[03 - Synchronize and Thread-Safe (EN)#Mutex|this class]].*
+
+They are represented by the type `pthread_mutex_t`.
+```c
+// Initialise - Two methods:
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;       // 1
+int pthread_mutex_init(ptread_mutex_t *m, 
+					   const pthread_mutexattr_t *attr); // 2
+
+// Usage
+int pthread_mutex_lock(pthread_mutex_t *mutex));
+int pthread_mutex_trylock(pthread_mutex_t *mutex);
+int pthread_mutex_unlock(pthread_mutex_t *mutex);
+
+// Termination
+int pthread_mutex_destroy(pthread_mutex_t *mutex);
+```
+
+### Atomic Operations
+*For generic details, see [[10 - Atomic Operations|this class]]*
+
+C11 defines a set of functions that perform operations executed atomically:
+```c
+C atomic_fetch_add(volatile A *object, M operand);
+_Bool atomic_flag_test_and_set(volatile atomic_flag *object);
+```
+
+Furthermore, C11 also defines atomic types. Any operation on those types will be atomic:
+```c
+_Atomic int var;  // First method
+_Atomic(int) var; // Second method
+// ...
 ```

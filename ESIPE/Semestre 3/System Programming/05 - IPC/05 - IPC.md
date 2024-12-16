@@ -5,7 +5,7 @@
 ```
 
 ****
-## Concept
+## Pipes - Concept
 *Details: `man 7 pipe`*
 
 Pipe provides an **unidirectional communication channel** from one process to another.
@@ -269,4 +269,185 @@ CC
 	                              |         |------|     |--------|
 	                              \-------> | FIFO | --> |   wc   |
 	                                        |------|     |--------|
+```
+
+
+***
+## (POSIX) Semaphores
+
+A semaphore is an OS-managed object holding a **non-negative integer value** defining its availability, and a **waiting queue containing pointers towards threads awaiting to access the semaphore**. 
+	*Its a primitive FIFO synchronisation mechanism—initially based on Dijkstra. As long as the integer value hasn't reached 0, it can be used atomically by a thread.*
+
+Once declared, only two operations are permitted:
+- `wait()`: Atomic operation that waits for semaphore to become positive, then decrements it by 1
+	*So, this is a blocking action. Sometimes also called `P()`, which stands for **P**roberen te verlage (**TRY** to decrease)*
+- `post()`: Atomic operation that increments the semaphore by 1, waking up a waiting P, if any.
+	*Equivalent to a `signal()`. Sometimes also called `V()`, which stands for **V**erhogen (increase)*
+> This means that we can not directly read/write the integer value after initialisation, it is **opaque**. Furthermore, those two methods must necessarily be atomic (so if several `P()` occurs at the same time, the integer value cannot drop bellow 0).
+
+Try to represent it like a traffic light turning red when the integer reaches 0, thus blocking all access via `P()` until someone uses `V()` to come back:
+![[semaphore.png]]
+
+
+```c
+#include <semaphore.h>
+#include <fcntl.h>     // handy for oflag
+
+/*
+* Initializes or opens a named semaphore.
+* The name is given by <name>, which must start with a '/'.
+* 
+* <oflag> determines whether to create a new semaphore or open an existing one.
+* - O_CREAT: Create a new semaphore if it doesn’t exist.
+* - O_EXCL: Ensure a new semaphore is created (fails if it already exists).
+* 
+* <mode> defines permissions for the semaphore.
+* (Used only if O_CREAT is specified).
+* Logic is similar to file permissions (e.g., 0666 for read/write access).
+* 
+* <value> is the initial positive integer value for the semaphore 
+* (Used only if O_CREAT is specified).
+* 
+* Returns a pointer to the semaphore or NULL on failure.
+*/
+sem_t *sem_open(const char *name, int oflag, mode_t mode, unsigned int value);
+
+/*
+* Removes a named semaphore.
+* The name is given by <name>, which must start with a '/'.
+* 
+* - The semaphore will no longer be accessible by this name.
+* - If processes still have the semaphore open, it will remain available 
+*   until all references are closed (e.g., with sem_close()).
+* 
+* Returns:
+* - 0 on success.
+* - -1 on failure (e.g., if the semaphore does not exist or permission is
+*    denied).
+* 
+* Typical use:
+* - Ensure proper cleanup of named semaphores when they are no longer needed.
+*/
+int sem_unlink(const char *name);
+
+/*
+* Initializes an anonymous semaphore.
+* The semaphore is given by <sem>.
+* 
+* <pshared>:
+* - If 0, the semaphore is shared only between threads of the same process.
+* - If non-zero, the semaphore is shared between processes (requires shared
+*   memory segment).
+* 
+* <value>: The initial positive integer threshold for the semaphore.
+*/
+int sem_init(sem_t *sem, int pshared, unsigned int value);
+
+/*
+* Destroys an anonymous semaphore.
+* The semaphore is given by <sem>.
+* 
+* - Frees any resources allocated for the semaphore.
+* - Can only be called when no threads or processes are waiting on the semaphore.
+*/
+int sem_destroy(sem_t *sem);
+
+
+
+/*
+* Decrements (locks) the semaphore.
+* The semaphore is given by <sem>.
+* 
+* - If the semaphore's value is greater than zero, decrements it and continues.
+* - If the semaphore's value is zero, blocks until it becomes greater than zero.
+* - Ensures access control by blocking threads/processes until resources are
+*   available.
+*/
+int sem_wait(sem_t *sem);
+
+/*
+* Increments (unlocks) the semaphore.
+* The semaphore is given by <sem>.
+* 
+* - Increments the semaphore's value by 1.
+* - If there are threads or processes blocked on sem_wait(), wakes one of them.
+* - Used to signal that a resource has been released and is available.
+*/
+int sem_post(sem_t *sem);
+```
+
+### Use
+
+Mostly two ways of using a semaphore:
+- As a MutEx (initial value = 1)
+```c
+sem_t mutex;
+
+void* critical_section(void* arg) {
+    sem_wait(&mutex); // Lock
+    printf("Thread %d in critical section\n", *(int*)arg);
+    sem_post(&mutex); // Unlock
+    // ...
+}
+```
+
+- As a scheduling constraint (initial value = 0) to control order of thread execution.
+	*Allow thread 1 to wait for a signal from thread 2. thread 2 schedules thread 1 when a given event occurs.*
+Example: Manual implementation of `pthread_join` which must wait for thread to terminate:
+```c
+sem_t done;
+
+void* thread1_code(void* arg) {
+    printf("Thread 1 waiting for Thread 2 to finish...\n");
+    sem_wait(&done); // Wait signal
+    printf("Thread 1 resuming work\n");
+    return NULL;
+}
+
+void* thread2_code(void* arg) {
+	// ...
+    printf("Thread 2 finished, signaling Thread 1\n");
+    sem_post(&done); // Sends signal to thread1
+    return NULL;
+}
+```
+
+
+***
+## Monitors
+
+Improvement of semaphores: We use a lock for mutual exclusion, and a **condition** variable for scheduling constraints.
+
+Monitors represent the synchronisation logic of the program
+- We wait if necessary
+- We signal when change something so any waiting threads can proceed
+
+This is something we know well, it is what we have been doing in Java for the [[04 - Signals|concurrent programming class]].
+	*Java provides this feature natively... A monitor is only a **paradigm** of concurrent programming.*
+
+We use those methods to simulate it in C:
+```c
+int pthread_cond_init(pthread_cond_t *cond, const pthread_mutexattr_t *attr);
+
+// lock.wait()
+int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
+
+// lock.notify()
+int pthread_cond_signal(pthread_cond_t *cond);
+
+// lock.notifyAll()
+int pthread_cond_broadcast(pthread_cond_t *cond);
+```
+
+So, a **Mesa Monitor** program will have this structure we know well:
+```c
+lock
+while (need to wait) { // Again, we always put a wait in a while loop
+	condvar.wait();    // in case of spurious wakeup
+}
+unlock
+
+lock
+condvar.signal();
+unlock
 ```
