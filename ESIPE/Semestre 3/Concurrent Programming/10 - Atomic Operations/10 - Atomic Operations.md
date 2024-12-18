@@ -130,14 +130,23 @@ public class ThreadSafeCounter {
 	public int nextValue() {
 		for(;;) {
 			int current = counter.get(); // (one) volatile read
-			int newValue = current + 1;  // next based on already fetched value
-			if (counter.compareAndSet(current, newValue)) { // volatile write
+			if (counter.compareAndSet(current, current + 1)) { // volatile write
 				return current;
 			} // otherwise retry (a thread changed the value in the meantime)
 		}
 	}
+
+	// Better way of doing it
+	public int nextValue2() {
+		int current;
+        do { 
+		    current = counter.get();
+        } while (!counter.compareAndSet(current, current + 1));
+        return current;
+	}
 }
 ```
+> If you look at how `getAndIncrement` is implemented, you'll see that it does a `weakCompareAndSetInt` inside a do-while loop. This is kind of what we are manually doing here.
 
 With the introduction of lambdas, we can use the `getAndUpdate(UnaryOperator)` method to make a CAS with a loop, and pass it our next-value function:
 ```java
@@ -276,12 +285,17 @@ They either use a `ReentrantLock`, or went for a **lock-free implementation** (`
 
 Let's try to make this basic linked list concurrent:
 ```java
-public final class NotConcLinkedList {
-	private record Entry(Object value, Entry entry) {}
-	private Entry head;
+public final class NotConcLinkedList<E> {
+	private record Link<E>(E value, Link<E> next) {  
+		private Link {  
+			Objects.requireNonNull(value);  
+		}
+	}
+	private Link<E> head;
 	
-	public void add(Object value) {
-		this.head = new Entry(value, this.head);
+	public void addFirst(E value) {
+		Objects.requireNonNull(value);
+		head = new Link<>(value, head);
 	}
 	// ...
 }
@@ -289,50 +303,57 @@ public final class NotConcLinkedList {
 
 This implementation works with `AtomicReference`:
 ```java
-public class LockFreeLinkedList {
-	private record Entry(Object value, Entry next) {}
-	private final AtomicReference<Entry> reference = new AtomicReference<>();
-
-	public void add(Object value) {
-		for(;;) {
-			Entry head = this.reference.get();
-			Entry entry = new Entry(value, head);
-			if (this.reference.compareAndSet(head, entry)) {
-				return;
-			}
+public class LockFreeLinkedList<E> {
+	private record Link<E>(E value, Link<E> next) {  
+		private Link {  
+			Objects.requireNonNull(value);  
 		}
+	}
+	
+	private final AtomicReference<Link<E>> head = new AtomicReference<>();
+
+	public void addFirst(E value) {
+		Objects.requireNonNull(value);
+		Link<E> head;
+		do {
+			head = this.head.get();
+		} while (!this.head.compareAndSet(head, new Link<>(value, head));
 	}
 }
 ```
 
 This implementation works with `VarHandle`:
 ```java
-public class LockFreeLinkedList {
-	private record Entry(Object value, Entry next) {}
-	private volatile Entry head;
-	private static final VarHandle COUNTER_REF;
+public class LockFreeLinkedList<E> {
+	private record Link<E>(E value, Link<E> next) {  
+		private Link {  
+			Objects.requireNonNull(value);  
+		}
+	}
+	
+	private volatile Link<E> head;
+	private static final VarHandle HANDLE;
 
 	static {
-		Lookup lookup =	MethodHandles.lookup();
+		var lookup = MethodHandles.lookup();
 		try {
-			COUNTER_REF = lookup.findVarHandle(
+			HANDLE = lookup.findVarHandle(
 				LockFreeLinkedList.class, 
 				"head",
-				Entry.class)
-				.withInvokeExactBehavior();
+				Link.class);
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new AssertionError(e);
 		}
 	}
 
-	public void add(Object value) {
-		for(;;) {
-			Entry head = this.head; // volatile read
-			Entry entry = new Entry(value, head);
-			if (HEADER_REF.compareAndSet(this, head, entry)) { // volatile write
-				return;
-			}
-		}
+	public void addFirst(E value) {
+		Objects.requireNonNull(value);
+		Link<E> head;
+        do {
+            head = this.head;
+        } while (!HANDLE.compareAndSet(this, head, new Link<>(value, head)));
 	}
 }
 ```
+
+*We could chose other names for intermediate variables, to avoid usage of `this`. Its up to you.*
