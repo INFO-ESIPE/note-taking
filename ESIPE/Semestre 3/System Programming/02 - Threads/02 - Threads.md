@@ -127,19 +127,3 @@ int pthread_mutex_unlock(pthread_mutex_t *mutex);
 // Termination
 int pthread_mutex_destroy(pthread_mutex_t *mutex);
 ```
-
-### Atomic Operations
-*For generic details, see [[10 - Atomic Operations|this class]]*
-
-C11 defines a set of functions that perform operations executed atomically:
-```c
-C atomic_fetch_add(volatile A *object, M operand);
-_Bool atomic_flag_test_and_set(volatile atomic_flag *object);
-```
-
-Furthermore, C11 also defines atomic types. Any operation on those types will be atomic:
-```c
-_Atomic int var;  // First method
-_Atomic(int) var; // Second method
-// ...
-```

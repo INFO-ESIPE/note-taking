@@ -28,7 +28,6 @@ p.x = 3;
 int a = p.x; // <==> a = 3
 ```
 
-
 - **Across Multiple Threads**: There is **no visibility guarantee** for fields accessed by several threads, unless synchronisation mechanisms are used (`final`, `volatile`, `synchronize`...)
 ```java
 // Thread 1               Thread 2
@@ -40,12 +39,9 @@ p.x ? /* 1 or 3 */        p.x ? /* 3 or 1 */
 `thread.start()` guarantees that all previous writings are visible to the starting thread:
 ```java
 Point p = new Point();
-Runnable runnable = () -> {
+Thread t = Thread.ofPlatform().start(() -> {
 	System.out.println(p); // guarantee that p is non null
-};
-
-Thread t = new Thread(runnable);
-t.start();
+});
 ```
 
 `thread.join()` guarantees that writings made by the joined thread will be visible by the current thread:
@@ -59,7 +55,7 @@ class MyRunnable implements Runnable {
 });
 
 MyRunnable runnable = new MyRunnable();
-Thread t = new Thread(runnable);
+Thread t = Thread.ofPlatform().start(runnable);
 // ...
 t.join();
 System.out.println(runnable.result); // 3
@@ -80,11 +76,11 @@ class A {
 	}
 	
 	public static void main(String[] args) {
-		new Thread(() -> {
-			if (a != null) {
-				System.out.println(a.value); // 7
-			}
-		}).start();
+		Thread.ofPlatform().start(() -> {
+            if (a != null) {
+                System.out.println(a.value); // 7
+            }
+        });
 		a = new A(7);
 	}
 }
@@ -114,9 +110,10 @@ class A {
 	
 	public static void main(String[] args) {
 		A a = new A();
-		Thread t = new Thread(() -> {
-			a.init(9);
-		}).start();
+		Thread.ofPlatform().start(() -> {
+            a.init(9);
+        });
+
 		if (a.done) { // volatile read, cache invalidation
 			System.out.println(a.value); // must be re-loaded from RAM, so 9
 		}
@@ -131,9 +128,10 @@ class A {
 	*This guarantees visibility of changes to any thread that later synchronises on the same monitor.*
 ```java
 class A {
-	private int value; // no volatile needed
+	private int value;    // no volatile needed
 	private boolean done; // no volatile needed
-	private final Object lock = new Object(); // if not final, publication problem!
+	private final Object lock = new Object(); // if not final,
+											  // publication problem!
 
 	public void init(int value) {
 		synchronized(lock) {
@@ -144,11 +142,12 @@ class A {
 
 	public static void main(String[] args) {
 		A a = new A();
-		Thread t = new Thread(() -> {
-			a.init(9);
-		}).start();
-
-		// Note: this would be better to have a "done" method that does the synchronize for us
+		Thread.ofPlatform().start(() -> {
+            a.init(9);
+        });
+        
+		// Note: this would be better to have a "done" method
+		// that does the synchronize for us
 		synchronized(a.lock) { 
 			if (a.done) { // done and value are re-loaded from RAM
 				System.out.println(a.value); // 9

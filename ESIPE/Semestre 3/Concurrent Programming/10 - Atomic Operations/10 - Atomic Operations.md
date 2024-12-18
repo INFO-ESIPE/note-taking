@@ -7,7 +7,7 @@
 ****
 ## Atomicity
 
-Modern processors allows for atomic instructions in their assembly language
+Modern processors allows for atomic instructions in their assembly language. They even directly runs to completion, or not at all. 
 	Exchange (`XCHG`), Compare and Exchange (`CMPXCHG`)...
 
 We can access this kind of instructions via the `java.util.concurrent.atomic` package (without the need of making our classes thread-safe with critical sections)
@@ -19,15 +19,15 @@ We can access this kind of instructions via the `java.util.concurrent.atomic` pa
 We call a variable volatile if it can be read or modified asynchronously by something other than the current thread of execution.
 	*It provides a lightweight synchronisation mechanism, ensuring that updates to the variable are always visible to all threads*
 
-*Note: Implementation of this concept varies depending on the language (volatile in C/C++ is different from volatile in Java)*
+*Note: Implementation of this concept varies depending on the language (volatile in C/C++ is [[05 - IPC#Volatile|different]] from volatile in Java)*
 
 
-Volatile comes with several guarantees:
+In our situation, `volatile` comes with several guarantees:
 - Reads and writes are **atomic** if it concerns a **primitive value or a reference value** (not to any Object)
 - When a thread writes to a `volatile` variable, the new value is **immediately visible** to other threads that subsequently read the variable.
 	*This is achieved by preventing the compiler and the processor from caching the variable value in thread-local memory, forcing every read to get the latest value directly from main memory.*
 - `volatile` also introduces a **"happens-before" (ordering)** relationship: Any write to a `volatile` variable happens-before every subsequent read of that same variable by any thread. This ensures that changes made to a `volatile` variable are seen in the correct order across threads.
-	*This memory barrier provides the same memory visibility guarantees as a `synchronized` block, but without the mutual exclusion guarantees that comes with it...*
+	*This memory barrier provides the same memory visibility guarantees as a `synchronized` block, but without the mutual exclusion guarantees that comes with it... This mechanism isn't provided in C by default, for instance.*
 
 
 We can declare a `volatile` variable like so:
@@ -49,7 +49,6 @@ public class Example {
 
 
 However, `volatile` variables does not natively allow atomic **Compound Operations** (incrementing, checking-then-updating). Its basic shape is mostly designed for flags (status updates, signalling variables in concurrent applications).
-
 
 If we want to have access to those atomic compound operations (and more), we have two ways:
 - **Atomic Classes** (`java.util.concurrent.atomic.AtomicInteger`...)
@@ -95,13 +94,13 @@ Here, the `getAndIncrement()` method is treated as a single atomic operation by 
 
 ****
 ## Compare and Set (CAS)
-*A variant of "compare and swap", but its pretty much the same*
+*A variant of "compare and swap" as explained [[05 - IPC#Compare And Swap (CAS)|here]], but its pretty much the same*
 
-Unfortunately, all atomic operations aren't available on all processors. However, the foundational atomic operation across platforms **compare-and-set (CAS)** exists. 
+Unfortunately, all atomic operations aren't available on all processors. However, the foundational atomic operation across platforms "**compare-and-set**" exists. 
 
 Here is what the signature would look like in C:
 ```c
-bool CAS(&field, expectedValue, newValue)
+bool CAS(int *ptr, int expectedValue, int newValue)
 ```
 
 If the field's value equals `expectedValue`, it is replaced by `newValue` and returns true. It returns false otherwise.
@@ -140,7 +139,6 @@ public class ThreadSafeCounter {
 }
 ```
 
-
 With the introduction of lambdas, we can use the `getAndUpdate(UnaryOperator)` method to make a CAS with a loop, and pass it our next-value function:
 ```java
 public class ThreadSafeCounter {
@@ -162,7 +160,6 @@ public class ThreadSafeCounter {
 
 Since Java 9, `ava.lang.invoke.VarHandle` allows to solve those issues, but comes with a more complex API...
 
-
 A `VarHandle` acts as **a pointer ("handle") on a volatile field** or array cell:
 ```java
 // Ask for security context at this call position
@@ -183,8 +180,8 @@ public class ThreadSafeCounter {
 	private static final VarHandle COUNTER_REF;
 
 	/*
-	Static initializer block: used to initialize static fields or perform setup
-	tasks when the class is first loaded.
+	* Static initializer block: used to initialize static fields or perform setup
+	* tasks when the class is first loaded.
 	*/
 	static {
 		Lookup lookup =	MethodHandles.lookup();
@@ -196,8 +193,8 @@ public class ThreadSafeCounter {
 				int.class);
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			/*
-			NoSuchFieldException can be thrown if specified field does not exist
-			IllegalAccessException can be thrown if there is an access issue
+			* NoSuchFieldException can be thrown if specified field doesn't exist
+			* IllegalAccessException can be thrown if there is an access issue
 			*/
 			throw new AssertionError(e);
 		}
@@ -234,8 +231,8 @@ public class ThreadSafeCounter {
 	}
 
 	/*
-	VarHandle does not use generics (diamond syntax) :(
-	We are required to make an ugly cast to indicate the return type
+	* VarHandle does not use generics :(
+	* We are required to make a cast to indicate the return type
 	*/
 	public int nextValue() {
 	    return (int) COUNTER_REF.getAndAdd(this, 1);
@@ -250,7 +247,6 @@ public class ThreadSafeCounter {
 
 
 Our counter is now pretty performant, only one small detail remains. By default, the `VarHandle` API is doing **boxing** (int -> Integer ...)
-	*This is one of the biggest problem with Java by the way, as this poor design choice destroys performance (this behaviour was fixed in Kotlin)*
 
 We will prevent the autoboxing feature on our `VarHandle` like so:
 ```java
@@ -275,8 +271,8 @@ static {
 ****
 ## Data Structures
 
-In fact, **almost all concurrent data structures** (present in the `ava.util.concurrent` package) natively included in Java **doesn't use `synchronized` blocks.**
-We either use a `ReentrantLock`, or go with a **lock-free implementation** (`volatile` or Atomic operations).
+In fact, **almost all concurrent data structures** (present in the `ava.util.concurrent` package) natively included in Java **doesn't rely on `synchronized` blocks.**
+They either use a `ReentrantLock`, or went for a **lock-free implementation** (`volatile` or Atomic operations).
 
 Let's try to make this basic linked list concurrent:
 ```java

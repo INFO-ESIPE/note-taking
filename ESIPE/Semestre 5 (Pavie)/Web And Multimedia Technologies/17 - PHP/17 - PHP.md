@@ -1,8 +1,7 @@
 [[Web And Multimedia Technologies]]
 16/12/2024
 ***
-**Note:** Like for JavaScript, this class only teaches things in a superficial manner. If you want to grasp the basics of this language, use this website: https://www.learn-php.org/fr/
-	*With uBlock origin turned on*
+**Note:** If you want to grasp the basics of this language, use this website: https://www.learn-php.org/fr/ (With uBlock origin turned on)
 ***
 **Table of Contents**
 ```table-of-contents

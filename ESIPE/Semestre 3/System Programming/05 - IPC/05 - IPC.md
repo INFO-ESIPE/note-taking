@@ -4,7 +4,14 @@
 ```table-of-contents
 ```
 
-****
+***
+## IPC ?
+
+**Inter-Process Communication (IPC)** refers to the mechanisms an OS provides to allow processes to manage shared data and communicate with each other. It allows those processes to communicate, signal events, synchronise actions, and share resources.
+	*Sockets will have a dedicated chapter*
+
+
+***
 ## Pipes - Concept
 *Details: `man 7 pipe`*
 
@@ -417,13 +424,12 @@ void* thread2_code(void* arg) {
 ## Monitors
 
 Improvement of semaphores: We use a lock for mutual exclusion, and a **condition** variable for scheduling constraints.
-
 Monitors represent the synchronisation logic of the program
 - We wait if necessary
 - We signal when change something so any waiting threads can proceed
 
 This is something we know well, it is what we have been doing in Java for the [[04 - Signals|concurrent programming class]].
-	*Java provides this feature natively... A monitor is only a **paradigm** of concurrent programming.*
+	*Java provides this feature natively with the `synchronized` keyword...*
 
 We use those methods to simulate it in C:
 ```c
@@ -451,3 +457,90 @@ lock
 condvar.signal();
 unlock
 ```
+
+
+***
+## Atomicity
+*Already studied [[10 - Atomic Operations|here]]*
+
+As we have mentioned some synchronisation mechanisms above, it might be worth it to look into atomic operations.
+	*Those are instructions that will necessarily complete in one step, or not at all. The hardware is responsible for implementing this correctly (for both uniprocessors and multiprocessors)*
+
+By default, an instruction modifying a variable is non-atomic.
+For instance, `x++` is done in three steps:
+```
+register = load(x)
+register ++
+x = store (register)
+```
+> As we know, this is a problem. What if the scheduler interrupts the thread right in the middle of it?
+
+On most machines, memory references and assignments (i.e. loads and stores) of
+words are atomic
+
+### Volatile
+
+The keyword `volatile` tells the compiler not to optimise the variable's access because its value might change unexpectedly (e.g., due to hardware or another thread), but it does not:
+- **guarantee atomicity**: Multiple threads could still encounter race conditions when accessing a `volatile` variable without proper synchronisation.
+- **ensure memory ordering**: Proper memory barriers or atomic constructs are required for thread-safe operations.
+
+### C11+
+
+C11 defines a set of functions that perform operations executed atomically:
+```c
+C atomic_fetch_add(volatile A *object, M operand);
+_Bool atomic_flag_test_and_set(volatile atomic_flag *object);
+```
+
+Furthermore, C11 also defines atomic types. Any operation on those types will be atomic:
+```c
+_Atomic int var;  // First method
+_Atomic(int) var; // Second method
+// ...
+```
+
+### Test and set
+
+Atomically sets a flag and returns its previous value.
+```c
+int test_and_set(volatile int* flag) {
+	int old = *flag; // Fetch the current value
+	*flag = 1;       // Set the flag atomically
+	return old;      // Return the previous value
+}
+```
+> Commonly used for simple spinlocks.
+
+### Compare And Swap (CAS)
+
+As explained [[10 - Atomic Operations#Compare and Set (CAS)|here (variant)]], it compares a memory location to an expected value. If they match, it updates the location with a new value. 
+This is a foundational building block for many **lock-free** algorithms.
+```c
+bool compare_and_set(volatile int* obj, int expected, int desired) {
+	if(*obj == expected) {  // Compare memory location with expected value
+		*obj = desired;     // Set new value atomically
+		return true;        // Successful CAS
+	}
+	return false;           // Failed CAS
+}
+```
+> Usually, you would place this inside a while loop, so it retries until it passes (note that it isn't the same as busy waiting)
+
+### Fetch and Add
+
+Retrieves the value of a memory location, increments it by a given value, and returns the previous value.
+```c
+int fetch_and_add(volatile int* obj, int value) {
+	int old = *obj;     // Fetch current value
+	*obj = old + value; // Increment value atomically
+	return old;         // Return the previous value
+}
+```
+
+### Notes
+
+The code examples above assume atomicity at the hardware level. On modern systems, these operations are often implemented using **atomic CPU instructions** like `LOCK XADD` (for fetch-and-add) or `CMPXCHG` (for CAS).
+
+If atomic operations are implemented directly in C or C++, care must be taken to ensure **correct memory ordering** using explicit memory barriers
+	*`std::atomic` since C++11
+
