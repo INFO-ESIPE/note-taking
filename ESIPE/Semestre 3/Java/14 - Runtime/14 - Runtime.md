@@ -191,7 +191,7 @@ The specification does, however, defines the machine independent `.class` file a
 	*So, all JVMs must understand that*
 
 The standard defines the following components:
-![[ESIPE/Semestre 3/Java/11 - Runtime/architecture.png]]
+![[ESIPE/Semestre 3/Java/14 - Runtime/architecture.png]]
 
 As explained [[09 - Reflection#Concept|here]], types are gone after compilation. During runtime, we only manipulate values with dedicated operands which only give clues on what the values are supposed to be (e.g., `iadd`, `fadd`).
 
@@ -199,5 +199,5 @@ The **HotSpot JVM** (among a few other JVMs) profiles the code during interpreta
 These parts are optimised and compiled into native code by the JIT, and is then stored in the **code cache** in non-heap memory.
 	*All threads can access it*
 
-The HotSpot JVM includes four [[11 - Runtime#Generational Garbage Collection|generational garbage collection algorithms]], and chose to use the Z Garbage Collector (ZGC) since JDK 11.
+The HotSpot JVM includes four [[14 - Runtime#Generational Garbage Collection|generational garbage collection algorithms]], and chose to use the Z Garbage Collector (ZGC) since JDK 11.
 

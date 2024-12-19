@@ -1,6 +1,11 @@
 [[Axe 4 - Manipulation de tables]]
 05/01/2023
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
 ## Suppression de table
 
 ```sql

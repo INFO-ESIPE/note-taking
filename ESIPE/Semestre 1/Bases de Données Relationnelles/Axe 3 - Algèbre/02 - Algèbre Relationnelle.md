@@ -1,6 +1,12 @@
 [[Axe 3 - Algèbre]]
 14/12/2022
 ****
+**Table of Contents**
+```table-of-contents
+```
+
+****
+## Concept
 
 Une formule d’algèbre relationnelle est une expression composée des relations du schéma relationnel connectées par des opérateurs définis: 
 

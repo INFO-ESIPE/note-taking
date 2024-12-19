@@ -71,7 +71,7 @@ Furthermore, the JVM and the language does not share the same features.
 
 
 As explained [[Various/Compilers/01 - Fundamentals/01 - Fundamentals#Java|here]], Java code is compiled into an intermediate language called **bytecode** before execution. This bytecode is then interpreted during **runtime on the JVM**.
-	*The JIT compiler is also here at execution to make performance improvements. More details on Java runtime [[11 - Runtime|here]]*
+	*The JIT compiler is also here at execution to make performance improvements. More details on Java runtime [[14 - Runtime|here]]*
 This allows Java to follow the Write Once Run Anywhere (WORA) paradigm
 	*Any machine can consistently run a java program as long as the Java Platform is installed on it.*
 
@@ -495,6 +495,7 @@ Are we allowed to use abstract classes ?
 
 ****
 ## Pattern Matching
+*More details [[04 - Pattern Matching|here]]*
 
 it is possible to write a same code by either using **late binding** or **an ugly cascade of `instanceof`**:
 ```java
@@ -552,3 +553,104 @@ If there is no default, our program will refuse to compile until we fix the lack
 	**IT IS BETTER FOR OUR PROGRAM TO NOT COMPILE AS A REMINDER OF PLACES WHERE WE HAVE TO MAKE CORRECTIONS, INSTEAD OF FORGETTING ABOUT IT AND HAVING RUNTIME (PRODUCTION) ERRORS.
 	A COMPILE-TIME ERROR IS WAY BETTER THAN AN UNPREDICTABLE RUNTIME ERROR** 
 
+
+***
+## RegEx
+
+`java.util.regex.Pattern` represents a finite state machine created from a regular expression. `java.util.regex.Matcher` class uses this machine to traverse text with three main semantics:
+- `matcher.matches()`: Checks if the entire text matches the pattern.
+- `matcher.lookingAt()`: Checks if the beginning of the text matches the pattern.
+- `matcher.find()`: Searches for any substring in the text that matches the pattern.
+```java
+var pattern = Pattern.compile("a+");
+var matcher = pattern.matcher("aaaa");
+
+if (matcher.find()) { // true
+    System.out.println(matcher.group()); // aaaa
+}
+
+System.out.println(matcher.matches()); // true
+System.out.println(matcher.lookingAt()); // true
+System.out.println(matcher.find()); // false
+```
+
+### Composing
+
+Different components can be combined to form regex patterns:
+    Word: `hello`
+    Repetition: `+`, `*`, `?`
+    Alternation: `foo|bar`
+    Character sets: `[abc]`, `[a-z]`
+    Character classes: `\d`, `\p{Digit}`, `\p{Alpha}`
+    Capture groups: `(a+)`
+```java
+// Matches one or more "a"
+var pattern = Pattern.compile("a+");
+System.out.println(pattern.matcher("aaa").matches()); // true
+
+// Matches a floating-point number
+pattern = Pattern.compile("[0-9]+\\.[0-9]*");
+System.out.println(pattern.matcher("12.5").matches()); // true
+
+// Matches signed integers
+pattern = Pattern.compile("-?[0-9]+");
+System.out.println(pattern.matcher("-14").matches()); // true
+
+// Matches valid identifiers
+pattern = Pattern.compile("[A-Za-z][A-Za-z_0-9]*");
+System.out.println(pattern.matcher("old_regex3").matches()); // true
+
+// Matches valid identifiers using Unicode classes
+pattern = Pattern.compile("\\p{Alpha}\\w*");
+System.out.println(pattern.matcher("old_regex3").matches()); // true
+```
+
+### `matches()` vs `lookingAt()`
+
+```java
+var pattern = Pattern.compile("a+");
+
+System.out.println(pattern.matcher("aaa").matches()); // true
+System.out.println(pattern.matcher("aaab").matches()); // false
+System.out.println(pattern.matcher("aaab").lookingAt()); // true
+```
+
+### `find()`
+
+`matcher.start()` / `matcher.end()` / `matcher.group()` allows to extract matched values.
+```java
+var text = """
+The quick brown fox jumps over the lazy dog
+""";
+var pattern = Pattern.compile("the|fox", Pattern.CASE_INSENSITIVE);
+var matcher = pattern.matcher(text);
+
+while (matcher.find()) {
+    var start = matcher.start();
+    var end = matcher.end();
+    var group = matcher.group();
+    System.out.println(start + " " + end + " " + group);
+}   // 0 3 The
+    // 16 19 fox
+    // 31 34 the
+```
+
+### Capture Groups
+
+Parentheses in a regex pattern can be used to mark parts of the match for extraction.
+```java
+var pattern = Pattern.compile("(\\d+)/(\\d+)/(\\d+)");
+var matcher = pattern.matcher("2015/7/23");
+
+if (matcher.matches()) {
+    for (var i = 1; i <= matcher.groupCount(); i++) {
+        var start = matcher.start(i);
+        var end = matcher.end(i);
+        var group = matcher.group(i);
+        System.out.println(start + " " + end + " " + group);
+    }
+}   // 0 4 2015
+    // 5 6 7
+    // 7 9 23
+```
+> Note: Groups are indexed starting from 1.
