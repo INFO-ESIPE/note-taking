@@ -102,7 +102,7 @@ It will look like this (on an array of 48 cells):
 ****
 ## Configure Fork / Join
 
-As we have seen [[13 - Fork Join#Fork / Join|above]], we need to set a static `SMALL` threshold that defines **the size of the smallest task** that should be processed. We need to set this value correctly:
+As explained above, we need to set a static `SMALL` threshold that defines **the size of the smallest task** that should be processed. We need to set this value correctly:
 - Too big: Not enough tasks, so not enough parallelism
 - Too small: Too much tasks, which results in a lot of allocations and an accumulation of tasks in the queues (dangerous)
 
@@ -118,10 +118,13 @@ We need to look into it...
 We will use the `java.util.concurrent.ForkJoinPool` class to represent our pool.
 	*As I've mentioned, this class is literally extending the `AbstractExecutorService` class, and implements a **work-stealing** feature on it...
 ```java
-/* Create our own custom and separate pool (pool size of 5 threads) */
+// Create our own custom and separate pool (pool size of 5 threads)
 ForkJoinPool pool = new ForkJoinPool(5);
 
-/* Get the instance of the "common pool". If a ForkJoinTask isn't submitted to any specific pool, it will be executed here. It is usually more performant than a manual pool as it reduces resource usage (threads are slowly reclaimed during periods of non-use, and reinstated upon subsequent use) */
+/* Get the instance of the "common pool". 
+* If a ForkJoinTask isn't submitted to any specific pool, it will be executed here. 
+* It is usually more performant than a manual pool as it reduces resource usage (threads are slowly reclaimed during periods of non-use, and reinstated upon subsequent use) 
+*/
 ForkJoinPool commonPool = ForkJoinPool.commonPool();
 ```
 
@@ -166,16 +169,16 @@ private static class Fibonacci extends RecursiveTask<Integer> {
 		
 		var fib1 = new Fibonacci(n - 1);
 		var fib2 = new Fibonacci(n - 2);
-		f1.fork(); // sends to the ForkJoinPool
+		f1.fork();                    // sends to the ForkJoinPool
 		var result2 = fib2.compute(); // calculates in current thread
-		var result1 = f1.join(); // awaits result
-		return result1 + result2; // + is associative
+		var result1 = f1.join();      // awaits result
+		return result1 + result2;     // + is associative
 	}
 }
 // ... 
 var pool = ForkJoinPool.commonPool();
 var fibo = new Fibonacci(15);
-var result = pool.invoke(fibo); // awaiting end of calculation
+var result = pool.invoke(fibo);       // awaiting end of calculation
 ```
 
 
@@ -187,7 +190,12 @@ private static class MultiplyBy2 extends RecursiveAction {
 	private final int[] array;
 	private final int start;
 	private final int end;
-	private MultiplyBy2(...) { this.array = array; this.start = start; this.end = end; }
+	
+	private MultiplyBy2(...) { 
+		this.array = array; 
+		this.start = start; 
+		this.end = end; 
+	}
 	
 	@Override
 	protected void compute() {
@@ -207,7 +215,7 @@ private static class MultiplyBy2 extends RecursiveAction {
 // ...
 var pool = ForkJoinPool.commonPool();
 var fibo = new MultiplyBy2(array, 0, array.length);
-var future = pool.submit(fibo); // get a future
+var future = pool.submit(fibo);   // get a future
 // ...
 System.out.println(future.get()); // retrieve the value
 ```

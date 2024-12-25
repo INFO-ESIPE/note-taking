@@ -88,13 +88,12 @@ public class ThreadSafeCounter {
 	}
 }
 ```
-
-Here, the `getAndIncrement()` method is treated as a single atomic operation by the JIT compiler.
+> Here, the `getAndIncrement()` method is treated as a single atomic operation by the JIT compiler.
 
 
 ****
 ## Compare and Set (CAS)
-*A variant of "compare and swap" as explained [[05 - IPC#Compare And Swap (CAS)|here]], but its pretty much the same*
+*A variant of "compare and swap" as explained [[05 - IPC#Compare And Swap (CAS)|here]], but it's pretty much the same*
 
 Unfortunately, all atomic operations aren't available on all processors. However, the foundational atomic operation across platforms "**compare-and-set**" exists. 
 
@@ -120,8 +119,8 @@ public class BadCounter {
 	}
 }
 ```
+> This code is **wrong**. Here, we call `counter.get()` two times. It is possible for the value to change in between of those two calls !
 
-This code is **wrong**. Here, we call `counter.get()` two times. It is possible for the value to change in between of those two calls !
 It is mandatory to base the next value on the `current` variable's value, like so:
 ```java
 public class ThreadSafeCounter {
@@ -148,7 +147,7 @@ public class ThreadSafeCounter {
 ```
 > If you look at how `getAndIncrement` is implemented, you'll see that it does a `weakCompareAndSetInt` inside a do-while loop. This is kind of what we are manually doing here.
 
-With the introduction of lambdas, we can use the `getAndUpdate(UnaryOperator)` method to make a CAS with a loop, and pass it our next-value function:
+With the introduction of lambdas, we can use the `getAndUpdate(UnaryOperator)` method to make a CAS with a loop:
 ```java
 public class ThreadSafeCounter {
 	private final AtomicInteger counter = new AtomicInteger();
@@ -168,7 +167,6 @@ public class ThreadSafeCounter {
 - It requires a memory indirection to retrieve the value (which may cause a potential cache miss).
 
 Since Java 9, `ava.lang.invoke.VarHandle` allows to solve those issues, but comes with a more complex API...
-
 A `VarHandle` acts as **a pointer ("handle") on a volatile field** or array cell:
 ```java
 // Ask for security context at this call position
@@ -220,7 +218,6 @@ public class ThreadSafeCounter {
 }
 ```
 
-
 This code works, but we can optimise it. There is an equivalent to the `getAndIncrement()` method for `AtomicInteger`: the static `VarHandle.getAndAdd()` method:
 ```java
 public class ThreadSafeCounter {
@@ -254,9 +251,7 @@ public class ThreadSafeCounter {
 }
 ```
 
-
 Our counter is now pretty performant, only one small detail remains. By default, the `VarHandle` API is doing **boxing** (int -> Integer ...)
-
 We will prevent the autoboxing feature on our `VarHandle` like so:
 ```java
 // ...
@@ -355,5 +350,4 @@ public class LockFreeLinkedList<E> {
 	}
 }
 ```
-
-*We could chose other names for intermediate variables, to avoid usage of `this`. Its up to you.*
+> *We could've chosen other names for intermediate variables to avoid usage of `this`. Its up to you.*
