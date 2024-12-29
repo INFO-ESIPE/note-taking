@@ -328,3 +328,177 @@ To be considered an AVL, our BST must comply to two rules:
 - The tree **must be rebalanced using rotations after insertions or deletions**.
 ![[avl.png]]
 
+A node has the following structure:
+```c
+typedef struct _node {
+	int data;
+	int height;
+	struct _node *left;
+	struct _node *right;
+} node;
+```
+
+### Rotation
+
+Rotations are tree transformations used to restore balance in an AVL tree after insertion/deletion of a node.
+Four types of rotations in total
+
+#### Right rotation (single)
+
+Occurs when a left-heavy tree (`Balance Factor =+2`) has a left-heavy child (`Balance Factor = +1`).
+1. Promote the left child to root.
+2. Demote the original root to the right child.
+3. Adjust the subtrees accordingly.
+
+```c
+node* rotate_right(node *y) {
+    node *x = y->left;
+    y->left = x->right;
+    x->right = y;
+
+    update_height(y);
+    update_height(x);
+
+    return x;  // New root
+}
+```
+![[rotate_right.png]]
+
+#### Left rotation (single)
+
+Similar idea to right rotation, but for the left side...
+
+```c
+node* rotate_left(node *x) {
+    node *y = x->right;
+    x->right = y->left;
+    y->left = x;
+
+    update_height(x);
+    update_height(y);
+
+    return y;
+}
+```
+
+#### Left-Right Rotation (double)
+
+Occurs when a **left-heavy** tree (`Balance Factor = +2`) has a **right-heavy** child (`Balance Factor = −1`).
+1. Perform a left rotation on the left child.
+2. Perform a right rotation on the root.
+```bash
+Before:
+       z
+      / \
+     x   D
+    / \
+   A   y
+      / \
+     B   C
+
+After Left Rotation on x:
+       z
+      / \
+     y   D
+    / \
+   x   C
+  / \
+ A   B
+
+After Right Rotation on z:
+       y
+      / \
+     x   z
+    / \ / \
+   A  B C  D
+```
+> [!note]
+> We will implement this during labs
+
+#### Right-Left Rotation (double)
+
+Similar idea but opposite
+
+
+### Maintaining Balance in AVL Trees
+
+How to insert a value at the root:
+1. Insert the node as in a normal BST.
+2. Update the heights of all nodes along the path from the insertion point to the root.
+3. Perform rotations if the **balance factor** of any node becomes −2 or +2.
+
+```c
+node *insert_at_root(node *t, elt) {
+	if (t == NULL) t = create_node(elt, NULL, NULL);
+	else if (t->data > elt) {
+		t->left = insert_at_root(t->left, elt);
+		t = rotate_right(t);
+	} else if (t->data < elt) {
+		t->right = insert_at_root(t->right, elt);
+		t = rotate_left(t);
+	}
+	return t;
+}
+```
+> [!info]
+> The balance factor of a node is the height difference between his left subtree and right subtree.
+> Refresher: An empty tree's height is -1
+
+Here is a strategy to follow when inserting a node on the tree:
+```c
+node *insert_balanced(node *t, int elt) {
+	if (t == NULL) return create_node(elt, NULL, NULL);
+	else if (t->data > elt) t->left = insert_balanced(t->left, elt);
+	else if (t->data < elt) t->right = insert_balanced(t->right, elt);
+	update_height(t);
+	t = rebalance(t);
+	return t;
+}
+```
+![[avl_insert.png]]
+
+
+***
+## Other types of trees
+
+### Red-Black Trees
+
+Self-balancing BST where each node is assigned a colour (red or black). The tree maintains balance using a set of rules involving these colours.
+![[redblack_tree.png]]
+
+It follows those properties:
+- Every node is either **red** or **black**.
+- The root node is always **black**.
+- Red nodes cannot have red children (**no consecutive red edges**).
+- Every path from the root to a `NULL` pointer contains the same number of black nodes (**black-height invariant**).
+
+The height of a Red-Black Tree is at most: 
+$$Height≤2log⁡2(n)$$
+> [!info]
+> This guarantees `O(log n)` for all operations (search, insert, delete).
+> Red-Black trees are implemented in Java as `TreeMap`, and C++ as `std::map`.
+
+
+Similarly to AVL, Red-black trees also leverage a rotation mechanism to stay balanced. However, rotations are more relaxed here than they are for AVLs (easier to implement!)
+
+
+### B-Trees
+
+Self-balancing search tree optimised for systems that read and write large blocks of data, such as databases and file systems. Unlike binary trees, B-Trees can have more than two children.
+![[btree.png]]
+
+It follows those properties:
+- A node contains up to `M − 1` keys and `M` children (where `M` is a fixed order of the tree).
+- All leaves are at the same level.
+- Internal nodes duplicate keys to guide the search.
+- Keys in a node are sorted, and subtrees follow the search tree property:
+    Keys in the left subtree are less than the current node’s keys.
+    Keys in the right subtree are greater than the current node’s keys.
+
+The height of a B-Tree is at most: 
+$$Height≤logM/2​(n)$$
+
+An insertion works as follows:
+- Add the key to the correct leaf.
+- If a node overflows (>M−1> M-1>M−1 keys), split the node and propagate upward.
+![[btree_insert.png]]
