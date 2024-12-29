@@ -11,7 +11,7 @@
 To crystallise the idea of softwares built from prefabricated components, Component-Based Software Engineering (CBSE) was introduced.
 	*Purpose was to have faster development cycles (faster Time-to-market), smaller costs, easy to manage system construction...*
 
-> In this context, software products where now seen as "Product families" sharing a same infrastructure and applying the same standards. This allowed programmers to focus on developing and testing new features only.
+In this context, software products where now seen as "Product families" sharing a same infrastructure and applying the same standards. This allowed programmers to focus on developing and testing new features only.
 
 ### Software Component
 

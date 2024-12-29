@@ -42,9 +42,3 @@ We call an object immutable if it's state can not change after it was initialise
 **If we can make an object immutable, it's better!** (No concurrency issues, no incoherent state, cool !!!)
 	*Obviously, if it has to be done, then you do it... There is still a performance issue if you re-create an object each time you want to change one of its value instead of making it mutable*
 
-
-****
-## SOLID
-
-A concept = a class
-A class = a single role

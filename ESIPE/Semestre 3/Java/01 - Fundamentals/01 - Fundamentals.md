@@ -111,7 +111,8 @@ The implementation is the hidden part that defines how the API works under the h
 We can make a field **immutable** by specifying the `final` keyword.
 	*A definitive value must be assigned to the field at object's creation. It means we can not reassign this variable.*
 
-==Fields of a class SHOULD ALWAYS BE PRIVATE== (and final if possible).
+> [!caution]
+> Fields of a class SHOULD ALWAYS BE PRIVATE (and final if possible).
 Only exception for constants (`static final`), which can be public if needed.
 
 **We must follow this principle:**
@@ -159,9 +160,10 @@ class FrenchClass {
 	}
 }
 ```
+> [!fail] Problems
+> A few problems here. First, **our public API has no protection**.
+> We need to add pre-conditions that ensures what we manipulate is reliable
 
-A few problems here. First, **our public API has no protection**.
-We need to add pre-conditions that ensures what we manipulate is reliable:
 ```java
 class FrenchClass {
 	private String teacher;
@@ -188,17 +190,18 @@ class FrenchClass {
 	}
 }
 ```
-
-This is better, but there is a subtle problem that allows an user to break the encapsulation. Here, it is possible to bypass the nationality restriction:
-```java
-var class = new FrenchClass("M. Maurice");
-var students = class.students();
-students.add(new Student("goobert", "french")); // oops
-```
+> [!bug]- Bug - Encapsulation problem
+> This is better, but there is a subtle problem that allows an user to break the encapsulation.
+> Here, it is possible to bypass the nationality restriction:
+> ```java
+> var class = new FrenchClass("M. Maurice");
+> var students = class.students();
+> students.add(new Student("goobert", "french")); // oops
+> ```
 > In fact, the `students()` method returned the **direct reference** to our internal collection. This allows anyone to manipulate it from the outside.
-	*This way, we could add a french student to the class even though our `register()` method doesn't allow it. We bypassed the encapsulation...*
+> 
+> This way, we could add a french student to the class even though our `register()` method doesn't allow it. We bypassed the encapsulation...*
 
-We need to make a **defensive copy** each time we **return an internal collection (or any mutable class)**, or each time **we accept one from outside**:
 ```java
 class FrenchClass {
 	private String teacher;
@@ -223,14 +226,16 @@ class FrenchClass {
 	}
 }
 ```
-
+> [!success] Preserve encapsulation
+> We need to make a **defensive copy** each time we **return an internal collection (any mutable object)**, or each time **we accept one from outside**
 
 The only big issue that remains here is about our implementation. The class' properties can (and should) be final here.
-	*it is always a good practice to define all of our fields as final, and remove it later on if we realise we can not keep it immutable. In this case, the teacher name will not be changed after it was defined, and the collection remains the same (we modify it obviously, but don't REASSIGN a new collection)*
 
-Furthermore, we could use an `HashSet` instead of a List (which avoids duplicate students issue).
+> [!tip]
+> It is always a good practice to define all of our fields as final at first, and remove it later if we realise we can not keep it immutable. 
+> In our case, the teacher name will not be changed after it was defined, and the collection remains the same (we modify it obviously, but don't REASSIGN a new collection)*
 
-Let's fix all of this:
+Let's fix this (and use an `HashSet` instead of a List to avoid duplicate students) :
 ```java
 class FrenchClass {
 	private final String teacher;
@@ -241,7 +246,8 @@ class FrenchClass {
 		this.teacher = teacher;
 	}
 
-	public boolean register(Student newStudent) { // signature changed for set
+	// signature changed for set
+	public boolean register(Student newStudent) {
 		Objects.requireNonNull(newStudent);
 		if (newStudent.isFrench()) {
 			throw new IllegalArgumentException("Only Erasmus students allowed");
@@ -251,18 +257,20 @@ class FrenchClass {
 	}
 
 	/*
-	Note: External classes are not aware that we use a HashSet to store our 
-	students. It is good convention to return it as a(n immutable) List
+	* Note: External classes are not aware that we use a HashSet
+	* to store our students. 
+	* It is good convention to return it as a(n immutable) List
 	*/
 	public List<Student> students() {
 		return List.copyOf(students);
 	}
 }
 ```
-
-Now our class is well-encapsulated and has a decent implementation (we could make pre-conditions for students/teacher names as well if we were meticulous).
-	*Even though both our properties are final, we don't make a Record out of it. Even if we could, the Record's philosophy is that we NEVER should be able to modify it. 
-	Since our collection is mutable, we respect this convention and don't use a record.*
+> [!success] Good!
+> Now our class is well-encapsulated and has a decent implementation (we could make pre-conditions for students/teacher names as well if we were meticulous).
+> 
+> *Even though both our properties are final, we don't make a Record out of it. Even if we could, the Record's philosophy is that we NEVER should be able to modify it. 
+> Since our collection is mutable, we respect this convention and don't use a record.*
 
 
 ****
@@ -310,11 +318,13 @@ Primitive types have object counterparts called **Wrapper Types**
 	`int` -> `Integer`
 	`long` -> `Long`
 	...
-**ALWAYS USE PRIMITIVES WHEN ITS POSSIBLE**, as it is way more performant
-	*Main exception to this rule will be for collections, as they require usage of Wrappers*
 
+> [!caution]
+> **ALWAYS USE PRIMITIVES WHEN ITS POSSIBLE**, as it is way more performant than their Wrapper counterpart.
+> Main exception to this rule will be for collections, as they require usage of Wrappers.
+> 
 > This separation is actually the biggest design flow of Java. It should be the JVM's job to decide if an `Integer` or an `int` should be used depending on the context, not the developer's. This forces Java to do boxing operations, which destroys performance.
-> 	 Kotlin fixed this issue
+> (Kotlin fixed this issue)
 
 Boxing:
 ```java
@@ -327,8 +337,10 @@ Integer large = i;
 Integer large = 3;
 int i = large;
 ```
+> [!bug]
 > Mind the commented line: Actually, a Wrapper's identity (memory address) is not well defined...
-> We don't use `new` on a wrapper. It should even result in a compilation error in future Java versions
+> We don't use `new` on a wrapper. 
+> (It should even result in a compilation error in future Java versions)
 
 Another issue with java is about comparing values between Wrappers. The current implementation only shares values on a single signed byte (from -128 to 127).
 So, we get the following stupid situation:
@@ -341,9 +353,9 @@ Integer val = -200;
 Integer val2 = -200;
 val == val2 // can be true or false, we don't know (lol ???)
 ```
-
-So, we never use `==` and `!=` to compare two Wrappers. Use `equal()`, like for all objects.
-	*Actually you should get a warning if you attempt to do so*
+> [!bug]
+> So, we never use `==` and `!=` to compare two Wrappers. Use `equal()`, like for all objects.
+> (You should get a warning if you attempt to do so)
 
 
 ****
@@ -371,7 +383,6 @@ interface Vehicle { void drive(); }
 record Car() implements Vehicle { public void drive() { /* ... */ } }
 record Bus() implements Vehicle { public void drive() { /* ... */ } }
 ```
-> Interfaces are here for **typing**, not execution.
 
 But how does the JVM knows how to call the correct method ? Example:
 ```java
@@ -397,7 +408,7 @@ A Java Object is simply a memory pointer (reference) to an address we cannot dir
 
 An object's content is **allocated on the heap** (via the `new` instruction). It is **freed by the Garbage Collector (GC) in a non-predictable manner**.
 	*So, the stack just contains an address pointing to a zone in the heap (where the object's body is).*
-It looks like this:
+	It looks like this:
 ![[ESIPE/Semestre 3/Java/01 - Fundamentals/memory.png]]
 
 An object obviously possesses its own fields, but also a **header**.
@@ -418,12 +429,15 @@ class Car {
 So far so good, but what about the methods ?
 Well, an instance method (executed on the object) is represented inside the object's heap as a **function pointer**.
 This points to the **class' Virtual Table (vtable)**. All classes have a corresponding vtable, which is a mechanism used by many OOP languages—including Java—to support **dynamic method dispatch**.
-	*All non-static and non-final methods of a class are stored in a vtable. Static and final methods are resolved at compile-time (static binding)*
 ![[vtable.png]]
+> [!info]
+> All non-static and non-final methods of a class are stored in a vtable. Static and final methods are resolved at compile-time (static binding)
 
-If a method has an `Override`, their index in the vtable is the same
-	*So, the method `.toString()` of the two classes shares a same index (0 here)*
+If a method has an `Override`, their index in the vtable is the same:
 ![[vtable-override.png]]
+> [!info]
+> So, the method `.toString()` of the two classes shares a same index (0 here)
+> 
 > In fact, the `vehicle.toString()` call will be transformed into `vehicle.vtable[index]()` by the JVM (so, at runtime)
 
 
@@ -452,8 +466,8 @@ A static field (owned by the class itself, not an instance of it) is stored in t
 Inheritance implies **subtypes** (like an interface), **copy of fields and methods** (pointers) and **method override**.
 
 This introduces a serious problem: Copying members implies a **strong relationship** between the parent and child(ren) class(es).
-- What if we update the parent class but don't update the children ?
-- What if the parent class is non-mutable but the children are ?
+- What if we update the parent class but don't update the children?
+- What if the parent class is non-mutable but the children are?
 
 This is the main issue with inheritance, it makes the code **really hard to maintain**.
 	*Also, as explained in [[02 - SOLID#**L**iskov substitution principle|design pattern]] classes, inheritance breaks the SOLID principle, which is an important concept in OOP.*
@@ -479,8 +493,9 @@ public final class StudentList {
 }
 ```
 
-
-==INHERITANCE IS OVERALL A BAD DESIGN CHOICE, IT IS BETTER TO USE INTERFACES INSTEAD. THERE ARE VERY FEW SCENARIOS WHERE INHERITANCE IS A GOOD SOLUTION TO SOLVE YOUR PROBLEMS==
+> [!caution]
+> INHERITANCE IS OVERALL A BAD DESIGN CHOICE, IT IS BETTER TO USE INTERFACES INSTEAD. THERE ARE VERY FEW SCENARIOS WHERE INHERITANCE IS A GOOD SOLUTION TO SOLVE YOUR PROBLEMS.
+> 
 > In fact, most modern languages (Go, Rust) doesn't support inheritance for this reason.
 
 
@@ -542,16 +557,17 @@ public void drive(Vehicle vehicle) {
 	}
 }
 ```
-
-==**Why no default ?**==
-Pattern matching fits Data-Oriented programming, where data is more important than the code.
-If our huge project with a lot of files evolves, and allows the interface to permit new classes, we need our switch cases to deal with those new types too.
-
-If there is no default, our program will refuse to compile until we fix the lack of exhaustiveness.
-	*This is a very good behaviour, it serves as a reminder of every point where we need to change the code. 
-	The usual problem is the following: devs set a default that crashes the program. When they add new types in the `permit` clause of the interface, they forgot to deal with those new types in those `switch`. In general, the new type will fall into the `default` scenario, which is often an `Exception` we throw to alert that we encountered a type we did not expect.
-	**IT IS BETTER FOR OUR PROGRAM TO NOT COMPILE AS A REMINDER OF PLACES WHERE WE HAVE TO MAKE CORRECTIONS, INSTEAD OF FORGETTING ABOUT IT AND HAVING RUNTIME (PRODUCTION) ERRORS.
-	A COMPILE-TIME ERROR IS WAY BETTER THAN AN UNPREDICTABLE RUNTIME ERROR** 
+> [!important]- Important: Why no default ?
+> Pattern matching fits Data-Oriented programming, where data is more important than the code.
+> If our huge project with a lot of files evolves, and allows the interface to permit new classes, we need our switch cases to deal with those new types too.
+> 
+> If there is no default, our program will refuse to compile until we fix the lack of exhaustiveness.
+> 
+> This is a very good behaviour, it serves as a reminder of every point where we need to change the code. 
+> The usual problem is the following: devs set a default that crashes the program. When they add new types in the `permit` clause of the interface, they forgot to deal with those new types in those `switch`. In general, the new type will fall into the `default` scenario, which is often an `Exception` we throw to alert that we encountered a type we did not expect.
+> 
+> **IT IS BETTER FOR OUR PROGRAM TO NOT COMPILE AS A REMINDER OF PLACES WHERE WE HAVE TO MAKE CORRECTIONS, INSTEAD OF FORGETTING ABOUT IT AND HAVING RUNTIME (PRODUCTION) ERRORS.
+> A COMPILE-TIME ERROR IS WAY LESS PROBLEMATIC THAN AN UNPREDICTABLE RUNTIME ERROR** 
 
 
 ***
@@ -653,4 +669,5 @@ if (matcher.matches()) {
     // 5 6 7
     // 7 9 23
 ```
-> Note: Groups are indexed starting from 1.
+> [!info]
+> Groups are indexed starting from 1.

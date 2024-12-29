@@ -46,5 +46,4 @@ MPEG-1/MPEG-2 Audio Layer III (MP3) is the most common audio format, as it is ve
 
 MP3 audio quality is alike CD quality. It offers a lossy data compression based on 
 
-
 Advanced Audio Coding (AAC) was designed to be a successor of MP3. It is part of the MPEG-2 and **MPEG-4** specifications.

@@ -11,8 +11,7 @@
 Internet is a network of networks. It is based on the ARPANET project and follows the TCP/IP protocols
 	*The web is only a fraction of it that appeared a decade later (1989 at CERN, CH), it also includes VOIP, SSH/Telnet, FTP ...*
 
-The web is simply a service — on the internet — that exploits hypertext
-technology to distribute documents
+The web is simply a service—on the internet—that exploits hypertext technology to distribute documents
 
 Machines are identified on the internet by an IP address
 
@@ -26,9 +25,11 @@ Resources are located via their unique **Uniform Resource Locator (URL)**
 ****
 ## Client-Server architecture
 
-The **server** is the hardware that provides a service. It is constantly waiting for incoming connections, and then serves them until the connection is interrupted
-	*Each service is associated to a port. For HTTP, it is 80; For HTTPS (TLS over HTTP), it is 443. This allows a server to host various services and clearly separate each.
-	For instance, a web server will — most of the time — supports both HTTP and HTTPS*
+The **server** is the hardware that provides a service. It is constantly waiting for incoming connections, and then serves them until the connection is interrupted.
+
+> [!info]
+> Each service is associated to a port. For HTTP, it is 80; For HTTPS (TLS over HTTP), it is 443. This allows a server to host various services and clearly separate each.
+> For instance, a web server will—most of the time—supports both HTTP and HTTPS
 
 The **client** is the hardware that contacts the remote service
 
@@ -59,7 +60,7 @@ Host: http://igm.univ-eiffel.fr/
 | HEAD       | Same as GET, but without the response's body (only metadata is retrieved) |
 | CONNECT    | Establishes a tunnel to the server identified by the target resource.     |
 | OPTIONS    | Describes the communication options for the target resource.              |
-	*There are two others we don't care about. The most important are the bold ones*
+> [!info] There are two others we don't care about. The most important are the bold ones
 
 
 HTTP Response (from the server)  :

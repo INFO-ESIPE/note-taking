@@ -92,5 +92,6 @@ A CMS just ends up being a rudimentary two columns array :
 - A column containing three (or four, if CMYK) values (original colour on the device)
 - Another column that gives the absolute representation of the other column's values
 
+> [!info]
 *For a printer, the first column will be the four values matching his CMYK colour model, and the second column will be the translation into CIE L\*a\*b.
 For a monitor, the first column will be the standard L\*a\*b representation of the colour, and the second column will be it's translation in RGB.*

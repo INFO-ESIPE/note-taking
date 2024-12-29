@@ -27,7 +27,7 @@ All languages have a way to abstract code. In Java, we use **Functional Interfac
 A functional interface is simply **an interface with a single abstract method**.
 	*Its here to represent a type of function, when you think about it... Take a look at the functional interfaces provided by Java and see for yourself*
 
-> A Functional interface can have as much default, static or private methods as necessary, the only requirement to respect is the one about the unique abstract method...
+A Functional interface can have as much default, static or private methods as necessary, the only requirement to respect is the one about the unique abstract method...
 
 Example:
 ```java
@@ -50,20 +50,24 @@ Those native functional interfaces are in the `java.util.function` package.
 ### `Runnable`
 
 Equivalent to `() -> void`. 
-	*We take nothing, we return nothing.*
+
 ```java
 Runnable code = () -> { System.out.println("hello"); }
 code.run();
 ```
+> [!info]
+> We take nothing, we return nothing.
 
 ### `Supplier`
 
 `Suplier<T>` is equivalent to `() -> T`
-	*We take nothing, and return an object of any kind*
+
 ```java
 Supplier<String> factory = () -> "hello";
 System.out.println(factory.get());
 ```
+> [!info]
+> We take nothing, and return an object of any kind
 
 There are equivalent for primitives (`[Int|Long|Double]Supplier`):
 ```java
@@ -74,18 +78,20 @@ System.out.println(factory.getAsInt());
 ### `Consumer`
 
 `Consumer<T>` is equivalent to `(T) -> void`
-	*We take a generic, and return nothing... we devour it.........*
+
 ```java
 Consumer<String> printer = s -> System.out.println(s);
 printer.accept("hello");
 ```
+> [!info]
+> We take a generic, and return nothing... we devour it.........
 
 Same as `Supplier`, equivalent for primitives exists.
 
 ### `Predicate`
 
 `Predicate<T>` is equivalent to `(T) -> boolean`
-	*This is very useful for filters*
+
 ```java
 Predicate<String> isSmall = s -> s.length() < 5;
 System.out.println(isSmall.test("hello"));
@@ -94,6 +100,8 @@ System.out.println(isSmall.test("hello"));
 LongPredicate isPositive = v -> v >= 0;
 System.out.println(isPositive.test(42L));
 ```
+> [!example]
+> This is very useful for filters
 
 ### `BiPredicate`
 
@@ -103,11 +111,13 @@ System.out.println(isPositive.test(42L));
 ### `Function`
 
 `Function<T, U>` is equivalent to `(T) -> U`
-	*Take a type, return a type*
+
 ```java
 Function<String, String> fun = s -> "hello " + s;
 System.out.println(fun.apply("function"));
 ```
+> [!info]
+> Take a type, return a type. Both objects can be of the same type, but it is better to use an [[02 - Lambdas#`UnaryOperator`|UnaryOperator]] in that situation.
 
 There are two sets for primitives (mind the difference):
 - `[Int|Long|Double]Function<T>`, equivalent to `(int|long|double) -> T`
@@ -131,7 +141,7 @@ System.out.println(stringLength.applyAsInt("hello"));
 ### `UnaryOperator`
 
 `UnaryOperator<T>` is equivalent to `(T) -> T`
-	*We take a type, and return the same type. Usually this is used when we apply modifications on an object*
+
 ```java
 UnaryOperator<String> op = s -> "hello " + s;
 System.out.println(op.apply("unary operator"));
@@ -140,6 +150,8 @@ System.out.println(op.apply("unary operator"));
 IntUnaryOperator negate = x -> - x;
 System.out.println(negate.applyAsInt(7));
 ```
+> [!info]
+> We take a type, and return the same type. Usually this is used when we apply modifications on an object
 
 ### `BinaryOperator`
 
@@ -156,7 +168,6 @@ It allows to view a method as an instance from a Functional Interface.
 
 The compiler, in order to find the correct method, will use parameters types and return type of the abstract method to understand which method is referenced by `::`.
 ![[find.png]]
-
 
 There are four different usages of the `::` operator.
 
@@ -216,6 +227,7 @@ john.isOlderThan(somePerson);
 Here, `john::isOlderThan` is a reference that binds the object `john` to the `isOlderThan` method of the `Person` class.
 When this reference is used (e.g., in a `Predicate`), it behaves as if you're calling `john.isOlderThan(person)` for any given `person`.
 
+> [!info] 
 > This is similar to Haskell's partial application, where you "attach" one argument of a function (in this case, `john` as the receiver) and leave others open to be provided later (the `person` argument).
 
 ### Constructor and Array constructor
@@ -318,7 +330,8 @@ Predicate<String> predicate = Utils::lambda$1;
 ```
 
 
-> Tip: it is not mandatory to specify the parameters' type (like for `::`, the types are already specified in the functional interface)
+> [!tip] 
+> It is not mandatory to specify the parameters' type (like for `::`, the types are already specified in the functional interface)
 ```java
 @FunctionalInterface
 interface Comparator<T> {
@@ -388,9 +401,8 @@ static void foo() {
     }
 }
 ```
-
+> [!info]
 > C# and JavaScript (with `let`) are smarter and have a specific scenario for this, but in Java we have to do it manually ...
-
 
 We can also implicitly capture `this`:
 ```java

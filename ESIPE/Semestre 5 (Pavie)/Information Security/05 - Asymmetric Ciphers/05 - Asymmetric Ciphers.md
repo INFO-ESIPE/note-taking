@@ -37,9 +37,10 @@ Works on a **keypair**:
 - **Public key**: This one can—and should—be shared publicly
 - **Secret Key**: This one should remain unknown to everyone else
 
-Algorithm just generates **two mathematically-linked keys**. It is up to you to chose which key does what, and which one is public or private.
-	*If I encrypt with key A, I can only decrypt with key B
-	If I encrypt with key B, I can only decrypt with key A
+> [!important]
+> Algorithm just generates **two mathematically-linked keys**. It is up to you to chose which key does what, and which one is public or private.
+> 	*If I encrypt with key A, I can only decrypt with key B
+> 	If I encrypt with key B, I can only decrypt with key A
 
 Each key can have the opposite role depending on what we want to achieve:
 - **Private Key for encryption** if you are interested in **Authenticity**

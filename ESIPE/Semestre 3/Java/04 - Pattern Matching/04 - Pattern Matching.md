@@ -34,6 +34,7 @@ switch(value) {
 		//...
 }
 ```
+> [!info]
 > Cases will be checked in order (so, `case a`, then `case b`, then `default` if none fits). We can only enter one case (so if our value suits several cases, it will only enter the first one it encounters).
 > So, the logic is the following: **We go from the most precise to the most generic case**
 
@@ -68,6 +69,7 @@ switch(value) {
 	}
 }
 ```
+> [!info]
 > The old (C-like) switch still exists—for compatibility purposes—but it is bad practice to use it. An arrow switch cannot be mixed with a C-like switch (`:` case and `->` case).
 
 ### Types
@@ -152,7 +154,9 @@ switch(cake) {
 	// ...
 }
 ```
-> A guarded case must be placed before its non-guarded counterpart. If we placed `case Cookie cookie` before `case Cookie cookie && cookie.chunky`, our code would not compile... And it makes sense actually, just think about it for a second...
+> [!caution]
+> A guarded case must be placed before its non-guarded counterpart. 
+> If we placed `case Cookie cookie` before `case Cookie cookie && cookie.chunky`, our code would not compile... And it makes sense actually, just think about it for a second...
 
 
 ****

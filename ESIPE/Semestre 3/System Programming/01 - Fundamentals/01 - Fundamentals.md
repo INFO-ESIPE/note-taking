@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 Something "strange" happens: both our programs (`id 24113` and `id 24114`) have allocated the exact same memory address (`0x00200000`), which shouldn't be possible, right?
 You might have guessed it already by reading this chapter's name, but each running program has its own private memory, instead of sharing the same physical memory with other running programs. The OS is **virtualising memory** so each process can have it's own **private address space** that is mapped to the real memory under the hood.
 
-*(Hardware) Virtualisation is a concept that extends to virtual machines, more details [[01 - Hardware Virtualization|in this class]].*
+> [!info] *(Hardware) Virtualisation is a concept that extends to virtual machines and beyound, more details [[01 - Hardware Virtualization|in this class]].*
 
 ### Program
 
@@ -82,7 +82,9 @@ All this binary corresponds to instructions. And that's what a running program i
 1. The processor fetches an instruction from the machine code area
 2. It decodes it (figures out which instruction this is)
 3. It executes it (add two numbers together, access memory, jump to a function ...)
-*Note that an instruction is supposed to be doing one simple task, unlike our high-level programming language code which does several things per line. This is a behaviour you clearly notice when you look at those instructions in the assembly format.*
+
+> [!info]
+Note that an instruction is supposed to be doing one simple task, unlike our high-level programming language code which does several things per line. This is a behaviour you clearly notice when you look at those instructions in the assembly format.
 
 What we described above is the basics of the Von Neumann model of computing:
 ![[neumann.png]]
@@ -90,7 +92,10 @@ What we described above is the basics of the Von Neumann model of computing:
 ### Process
 
 The OS encapsulates a running program in a process. Each process has its own address space (as we briefly explained [[ESIPE/Semestre 3/System Programming/01 - Fundamentals/01 - Fundamentals#Virtualisation|here]]), at least one thread where the execution flow really happens, and associated system states (opened files, opened network connections ...).
-	*Each process has an unique identifier (the `pid`), which we used in the C code above. Since a process can launch other ones, we often represent them as a tree (processes also have a `ppid`, which is the `pid` of the direct parent).*
+
+> [!info] How to uniquely identifies processes running on the OS?
+> Each process has an unique identifier (the `pid`), which we used in the C code above. 
+> Since a process is able to [[03 - Process Management#`exec`|launch other processes]], we often represent them as a tree (processes also have a `ppid`, which is the `pid` of its direct parent).
 
 ![[process.png]]
 
@@ -117,12 +122,15 @@ Furthermore, only the OS should be allowed to perform critical operations (I/O, 
 ### Concurrency
 
 This term refers to a host of problems that arise, and must be addressed, when working on many things at once (concurrently) **in the same program**.
-	*This gives room for **parallelism**, as we  take advantage of actual hardware parallelism (multicore), and also allows to handle blocking actions (I/O) and simultaneous events.
+	*This gives room for **parallelism**, as we take advantage of actual hardware parallelism (multicore), and also allows to handle blocking actions (I/O) and simultaneous events.
 
-As explained [[01 - Threads (EN)|here]], the backbone of concurrency is the concept of **thread**, which is simply a single unique execution context in the process.
+As explained [[01 - Threads (EN)|here]], the backbone of concurrency is the concept of **thread**, which is simply an execution context in the process.
 When executing, a thread takes an entire CPU core when it is **resident** in the processor registers. So, a thread is a **virtual core**.
-	*Resident means the registers hold the context (A.K.A. root state) of the thread. 
-	In other words, the thread is active and its properties are loaded into memory: its own stack, its own instructions, its own local variables, its **Program Counter (PC)** which indicates the next instruction to execute, and the registers.*
+
+> [!info] Resident?
+> Resident means the registers hold the context (A.K.A. root state) of the thread. 
+> In other words, the thread is active and its properties are loaded into memory: its own stack, its own instructions, its own local variables, its **Program Counter (PC)** which indicates the next instruction to execute, and the registers.
+
 If a thread's state is not loaded into the processor (so, not a resident), it is **suspended**.
 
 #### Multiple Processors
@@ -131,6 +139,7 @@ Before digging into concurrency, let's see how the OS switches between threads.
 The problem is: The OS has to run a higher number of threads than cores available on our CPU. 
 Let's assume we only have one core, how do we run all of our threads? Multiplex in time:
 ![[vcores.png]]
+> [!info] 
 > Each case is a specific thread. There is a rotation in the flow of execution by the OS so every thread can get the spotlight for a moment. Thread 1 is executed, then it is suspended and thread 2 is executed, and so forth.
 
 If `vCPU1` (thread 1) is resident (actively executed), it is on the real physical core while `vCPU2` and `vCPU3` are saved in their respective chunk of memory called the **Thread Control Block (TCB)**. 
@@ -176,6 +185,7 @@ B&B is a simple memory protection mechanism relying on:
 In other words, the mechanisms ensure that the process only manipulates memory in his  range: `baseRegister ≤ <addr> < boundRegister`
 
 ![[b&b.png]]
+> [!info]
 > Here, the manipulated address is `0x1010`. Since it is in between the boundaries (`0x1000` and `0x1100`), everything is alright.
 
 #### Relocation
@@ -198,7 +208,9 @@ The x86 architecture uses segment registers (`CS`, `SS`, etc.) to **define the s
 
 #### Paged Virtual Address Space
 
-To ensure isolation and prevents direct access to physical addresses, processes operates in a virtual address space. But how is the physical address **translated** into virtual addresses?
+> [!question]
+> To ensure isolation and prevents direct access to physical addresses, processes operates in a virtual address space. 
+> But how is the physical address **translated** into virtual addresses?
 
 We go with a **paging mechanism** that divides memory into equal-sized **pages** in the virtual address space and **frames** in physical memory. Now, those pages can be mapped to any physical frame, which offers great flexibility!
 ![[page.png]]
@@ -209,6 +221,7 @@ We go with a **paging mechanism** that divides memory into equal-sized **pages**
 As we know, a program is executed as a process. A process is simply an execution environment with its dedicated address space, encapsulating one or more threads.
 	*A program can be on several processes, via `fork` and `exec`, but we will talk about this later on.*
 ![[multithread.png]]
+> [!info] 
 > Here we have a visual representation of what we claimed previously: Each thread has its own registers and stack, but the machine code, heap and **file descriptors** are shared among all threads.
 
 Processes guarantee **security and reliability**: a malicious or compromised process can’t read or write other
@@ -238,6 +251,7 @@ mov ebx, 0 ; will contain the exit value
 mov eax, 1
 int 0x80   ; "int" stands for "interrupt", not "integer"...
 ```
+> [!info]
 > This syscall stops the program.
 
 #### Interrupt Vector
@@ -257,10 +271,10 @@ Similarly to TCBs, a PCB contains information about a process:
 The **Scheduler** maintains a data structure containing all the PCBs, and the scheduler's algorithm (round-robin, priority-based...) picks manages which threads inside those PCBs can run or not.
 	*The scheduler is the entity that manages which threads are running or not, as we have described [[ESIPE/Semestre 3/System Programming/01 - Fundamentals/01 - Fundamentals#Multiple Processors|here]] *
 ```c
-if (readyThreads(TCBs)) {         // Check if there are threads ready to run
+if (readyThreads(TCBs)) { // Check if there are threads ready to run
     nextTCB = selectThread(TCBs); // Select the next thread to run
     run(nextTCB);                 // Run the selected thread
 } else {
-    run_idle_thread();            // No threads are ready, run the idle thread
+    run_idle_thread();    // No threads are ready, run the idle thread
 }
 ```

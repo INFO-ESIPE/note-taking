@@ -45,13 +45,12 @@ Available solutions:
  4. If A and B each has an encrypted connection to a **third party C**, C can **deliver a key on the encrypted links to A and B**
 	*Again, C must be a trustworthy proxy, but this is the most widely-used method as it offers a good **symmetric distribution system**.*
 
-
-### Reliability
-
-As we can see, a lot of assumptions are made (the proxy is trustworthy, the last key was never leaked ...). This is why distributing symmetric keys via symmetric keys is relatively inconvenient, as it requires a master key for every pair of people we want to help in the exchange of key. 
-	*Furthermore, a share authority solution is also dangerous, as it will end up storing all the master keys (the safe becomes pretty much like a treasure cave that every cryptanalyst or adversary will attempt to break into).*
-
-**We need to find another solution, this is not reliable enough**
+> [!fail]- Is it reliable? Not really...
+> As we can see, a lot of assumptions are made (the proxy is trustworthy, the last key was never leaked ...). This is why distributing symmetric keys via symmetric keys is relatively inconvenient, as it requires a master key for every pair of people we want to help in the exchange of key. 
+>
+> Furthermore, a share authority solution is also dangerous, as it will end up storing all the master keys (the safe becomes pretty much like a treasure cave that every cryptanalyst or adversary will attempt to break into).*
+>
+> **We need to find another solution, this is not reliable enough**
 
 
 ****
@@ -71,8 +70,9 @@ A first naive solution would be the **Simple Secret Key Distribution**:
 5. A purges `PUa` and `PRa`, and B purges `PUa`
 	*We don't want to leave traces of the exchange as it gives clues (or even the entire answer) if an adversary can put his hands on it.*
 
-This works but introduces some issues, including identity assumptions.
-	*A must trust B, and B must trust the identifier A forwards him)*
+> [!fail]- Is it safe? No...
+> This works but introduces some issues, including identity assumptions.
+>	*A must trust B, and B must trust the identifier A forwards him)*
 
 
 ### Mutual Authentication
@@ -95,18 +95,16 @@ Instead, we tend to use the following **mutual authentication** procedure (which
 
 6. **B retrieves the secret key:** B decrypts the outer layer using it's private key (`PRb`), then decrypts the inner layer using A’s public key (`PUa`) to retrieve `Ks`.
 
-### Reliability
-
-Both parties now share the secret key (`Ks`) for further communication, and each party is assured they are communicating with the owner of the other's keypair due to the use of **nonces** and **public/private key pairs**.
-
-While this protocol authenticates the **keypair owners**, it does **not** guarantee the identity of the entities (A and B). For instance:
-	*The only statement we can do is: Owner of keypair A can trust and communicate with owner of keypair B.*
-
-The strongest statement we can make is:  **The owner of keypair A trusts they are communicating with the owner of keypair B.**
-
-
-This solution is way better than relying on symmetric encryption like in the first chapter as it introduces **mutual authentication**, ensures **confidentiality** and **integrity**.
-However, it requires a trusted way to **publish and verify public keys**, which leads to the need for a **Public Key Infrastructure (PKI)**.
+> [!caution]- Is it reliable? Somehow, but not ideal...
+> Both parties now share the secret key (`Ks`) for further communication, and each party is assured they are communicating with the owner of the other's keypair due to the use of **nonces** and **public/private key pairs**.
+>
+> While this protocol authenticates the **keypair owners**, it does **not** guarantee the identity of the entities (A and B). For instance:
+> 	*The only statement we can do is: Owner of keypair A can trust and communicate with owner of keypair B.*
+>
+> The strongest statement we can make is:  **The owner of keypair A trusts they are communicating with the owner of keypair B.**
+>
+> This solution is way better than relying on symmetric encryption like in the first chapter as it introduces **mutual authentication**, ensures **confidentiality** and **integrity**.
+> However, it requires a trusted way to **publish and verify public keys**, which leads to the need for a **Public Key Infrastructure (PKI)**.
 
 
 ****
@@ -122,7 +120,9 @@ There are four ways of distributing public keys:
 ### Public Announcement
 
 Each entity can broadcast his public key to the community at large (forums, mailing lists...)
-	**Convenient, but weak**: Susceptible to forgery; anyone can pretend to be you.
+
+> [!fail]- Is it safe? No... 
+> Convenient, but weak: Susceptible to forgery; anyone can pretend to be you.
 
 
 ### Public Directory
@@ -138,13 +138,14 @@ This looks like a simple array (key-value pairs):
 | forax   | 99edf9233...  |
 | ...     | ...           |
 
-This method is more secure than public announcement, but still introduces a risk if an adversary succeed in gaining access to the directory and change the keys.
-	*This method does guarantee confidentiality, but not integrity as there is still a scenario where it's possible for someone to replace the keys and perform a MITM attack...*
-
-A second issue is that most of those directories are owned by governments (or large companies that have to comply with the government's orders and country laws). If the government asks the company to change the keys (for espionage or manipulation/psyop purposes), they can do it. Integrity issue once again...
-
-Last issue we might encounter is that it can quickly become a bottleneck, as everyone will turn to the directory each time they have to acquire a public key (heavy traffic).
-	*This one is only performance-related, but it's still important to have a blazing fast system instead of a slow peace of crap*
+> [!fail]- Is it safe? No...
+> This method is more secure than public announcement, but still introduces a risk if an adversary succeed in gaining access to the directory and change the keys.
+> 	This method does guarantee confidentiality, but not integrity as there is still a scenario where it's possible for someone to replace the keys and perform a MITM attack...*
+> 	
+> A second issue is that most of those directories are owned by governments (or large companies that have to comply with the government's orders and country laws). If the government asks the company to change the keys (for espionage or manipulation/psyop purposes), they can do it. Integrity issue once again...
+> 
+> Last issue we might encounter is that it can quickly become a bottleneck, as everyone will turn to the directory each time they have to acquire a public key (heavy traffic).
+>	*This one is only performance-related, but it's still important to have a blazing fast system instead of a slow peace of crap*
 
 
 ****
@@ -166,8 +167,10 @@ It works like this:
 
 As mentioned, **it is mandatory for the requester to possess the authority's public key** to decrypt user B's public key. The question is, how can we get it on our machine ?
 
+> [!info]- But how do we get all the public keys? 
 > Trusted authorities' public keys are **pre-installed in most operating systems and web browsers**. Trusted **Certificate Authorities (CAs)** like "Let's Encrypt", "DigiCert", and others have their public keys embedded in a **"root certificate store,"** which is maintained and updated by the OS or browser developers.
 
+> [!success] Is it reliable? Yes
 
 ### Public-key Certificates
 
@@ -192,8 +195,9 @@ It works like this:
     - Your browser checks the certificate’s digital signature using the CA’s public key (which is pre-installed in the browser).
     - If everything matches, you know the public key belongs to the real website, so you can safely send encrypted information.
 
-This is safe unless the Certificate Authority gets his private key leaked (or uses it to issue fraudulent certificates), which happened in the past:
-https://blog.mozilla.org/security/2011/03/25/comodo-certificate-issue-follow-up/
+> [!success]- Is it reliable? Yes
+> Well, this is safe unless the Certificate Authority gets his private key leaked (or uses it to issue fraudulent certificates), which happened in the past:
+> https://blog.mozilla.org/security/2011/03/25/comodo-certificate-issue-follow-up/
 
 
 ****

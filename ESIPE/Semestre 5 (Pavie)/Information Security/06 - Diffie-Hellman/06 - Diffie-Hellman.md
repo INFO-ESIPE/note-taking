@@ -20,15 +20,14 @@ The purpose of Diffie-Hellman is to **securely share a symmetric key over an ins
 We obviously do not directly share the key in clear text over the network. Instead, each side will exchange public variables and combine those to private variables it generated and never shared. When each side assembles his private variable with the public variables from the other side, they **should obtain the same symmetric key**.
 
 
-An **active adversary** — which is conventionally called Darth — can read and manipulate anything that is exchanged between **User A (Alice)** and **User B (Bob)**.
-A **passive adversary** — which is conventionally called **Oscar** — can only read (sniff) it.
+An **active adversary**—conventionally called Darth—can read and manipulate anything that is exchanged between **User A (Alice)** and **User B (Bob)**.
+A **passive adversary**—conventionally called **Oscar**—can only read (sniff) it.
 
 
 ****
 ## Diffie-Hellman demonstration
 
-We will illustrate a Diffie-Hellman key exchange between Alice and Bob. **Anything that is exchanged between them via the network is visible to Oscar** :
-
+We will illustrate a Diffie-Hellman key exchange between Alice and Bob. **Anything that is exchanged between them via the network is visible to Oscar**:
 1. When the handshake between the two sides, both parties agree on two **public** values :
 	- A very large prime number `n`
 		*A big value is required to guarantee good security. `n` must be between 2 Kb and 4 Kb long*
@@ -66,8 +65,9 @@ We will illustrate a Diffie-Hellman key exchange between Alice and Bob. **Anythi
 6. Each side can now use this computed value `abg` as a symmetric key that can encrypt their communications.
 
 
-Oscar can not retrieve `a` nor `b` even though he does possess a lot of clear text information. No computer can — so far — solve a **discrete logarithm problem**, so this Diffie-Hellman exchange method is safe to use.
+Oscar can not retrieve `a` nor `b` even though he does possess a lot of clear text information. No computer can—for now—solve a **discrete logarithm problem**, so this Diffie-Hellman exchange method is safe to use.
 	*If a quantum computer could one day be performant enough to efficiently retrieve the private keys, we would be in a big mess really*
+
 
 ****
 ## MITM
@@ -76,7 +76,4 @@ Diffie-Hellman is **secured against passive MITM attacks**. The adversary observ
 However, **it is vulnerable to active MITM attacks** — which can occur if the adversary establishes the DE procedure with Alice and pretends to be Bob.
 	There is no **mutual authentication** (Alice is sure that she is talking to Bob, and likewise) that mitigates this issue*
 
-
-MITM attacks are extremely common in the wild
-	*Mail delivery, Proxies, Routers, TOR Network ...*
 

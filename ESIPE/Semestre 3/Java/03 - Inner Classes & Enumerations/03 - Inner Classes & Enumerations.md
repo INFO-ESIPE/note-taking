@@ -103,6 +103,7 @@ class Foo {
 
 Foo.Bar bar = new Foo.Bar();
 ```
+> [!info]
 > Here, `Foo` is **not loaded into memory**.
 
 You probably have guessed it already, but since they are independent, they cannot access each other's private properties anymore **unless they are static**.
@@ -150,6 +151,7 @@ class Foo {
 	}
 }
 ```
+> [!info]
 > As explained before, the inner class depends on the enclosing class (when not static)
 
 For this reason, an instance of the enclosing class must be there so we can instantiate the inner class on it:
@@ -239,25 +241,27 @@ class Foo {
 	}
 }
 ```
+> [!info]
 > The logic is that this anonymous class will implement/extend the given interface/class
 
 Again, an anonymous class can capture effectively final variables (like a local class).
 
 
-**Tip:** We can make a combo of lambda + var + anonymous class to declare a mutable field:
-```java
-void foo() {
-	var value = 3;
-	IntSupplier supplier = () - > value++; // does not compile
-}
-
-void foo() {
-	var box = new Object() {
-		private int value = 3;
-	};
-	IntSupplier supplier = () - > box.value++; // ok !
-}
-```
+> [!tip]
+> We can make a combo of lambda + var + anonymous class to declare a mutable field:
+> ```java
+> void foo() {
+> 	var value = 3;
+> 	IntSupplier supplier = () - > value++; // does not compile
+> }
+> 
+> void foo() {
+> 	var box = new Object() {
+> 		private int value = 3;
+> 	};
+> 	IntSupplier supplier = () - > box.value++; // ok !
+> }
+> ```
 
 
 ****
@@ -267,6 +271,7 @@ An enum lists all of its instances by their name:
 ```java
 enum Pet { DOG, CAT, LION }
 ```
+> [!info]
 > DOG, CAT and LION are **instances of Pet** (the `new` is implicit).
 
 In fact, an enum is simply a class that—implicitly—inherits from `java.lang.Enum`.
@@ -305,10 +310,10 @@ Pet[] pets = Pet.values();
 // Retrieve a constant by its name
 Pet dog = Pet.valueOf("DOG");
 ```
+> [!info]
 > Those methods are automatically added by the compiler
 
 ### Mutable Enum
-==It's a bad idea, avoid using it==
 
 An enum can have a private/package constructor (not public!):
 ```java
@@ -321,6 +326,8 @@ public enum Coin {
 	}
 }
 ```
+> [!caution]
+> It's a bad idea, avoid using this feature
 
 ### Enum and Anonymous Class syntax
 
@@ -338,6 +345,7 @@ public enum Pet {
 	public abstract void sound();
 }
 ```
+> [!info]
 > If this feature is used, those constants are considered as inner classes of the Enum.
 > In this case, the enum is `sealed` instead of `final`.
 

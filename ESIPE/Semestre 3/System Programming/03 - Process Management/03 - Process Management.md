@@ -32,11 +32,13 @@ To handle syscalls safely, kernel has to protect itself:
 *For more details on each function, use `man 2 <function>`*
 
 Everything running outside of the kernel is a process. But how do we launch one, stop it, make it launch another process..?
-	*And if processes are launched by other processes, how is the first process created ?*
+
+> [!question]
+> If processes are launched by other processes, how is the first process created ?*
 
 The first process (called `init`) is started by the kernel. After that, any process is created by another process.
 
-### Foreword: the `try()` macro
+### Convenience: the `try()` macro
 
 Most syscalls must be checked for error values (usually -1). This is pretty redundant and not useful to the class, so we will—sometimes—use the following macro which was written by one of my teacher:
 ```c
@@ -121,8 +123,9 @@ int main(int argc, char *argv[]) {
 ```
 > An `if-elseif-else` can be used as well but its way less elegant and comprehensible. `default` comes handy in this situation as **we cannot predict the child's pid**, but since it will necessarily be a value greater than 0, it will fall in the `default`.
 
-==The parent may run before or after the child, its the scheduler who decides...==
-In our example above, we can't know for sure which thread (child or parent process) will print first.
+> [!important]
+> The parent may run before or after the child, its the scheduler who decides...
+> In our example above, we can't know for sure which thread (child or parent process) will print first.
 
 ### `wait`
 
@@ -165,9 +168,10 @@ int main(void) {
 			int wstatus;
 			pid_t pid = try(wait(&wstatus));
 			if (WIFEXITED(wstatus))
-				printf("child %ld exited with status %d\n", (long) pid,
-														    WEXITSTATUS(wstatus)
-				); 
+				printf("child %ld exited with status %d\n", 
+						(long) pid,
+						WEXITSTATUS(wstatus)
+				);
 			}
 			break;
 }
@@ -202,8 +206,9 @@ In fact `exec` is a family, where each function expects specific parameters:
 - `int execl(const char *path, const char *arg0, ... /* (char *) NULL */);` -Receives a list of arguments `arg0`, `arg1`, . . . , `argn` instead of an `argv` vector.
 - A few others: `execvpe()`, `execlp()`, `execle()`
 
-You don't really need to learn those by heart, here is a mnemonic:
-`v`: vector, `l`: list, `p`: path, `e`: environment
+> [!tip]
+> You don't really need to learn those by heart, here is a mnemonic:
+> `v`: vector, `l`: list, `p`: path, `e`: environment
 
 ### fork-exec pattern
 

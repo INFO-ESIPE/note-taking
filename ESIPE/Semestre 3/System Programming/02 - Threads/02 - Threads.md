@@ -43,6 +43,7 @@ If we have two threads, we have:
 
 Threads will execute at variable speed and in any order, so our task—as developers—is to design programs that can work with any schedule (thread-safe code).
 ![[scenarios.png]]
+> [!info]
 > As we can see here, threads are **non-deterministic** (can run and be suspended at any time by the scheduler).
 > Our program must work properly in any scenario, and avoid **race conditions**!
 

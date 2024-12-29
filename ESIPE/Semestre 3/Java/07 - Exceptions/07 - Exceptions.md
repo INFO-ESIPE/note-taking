@@ -18,7 +18,8 @@ We will try to solve those basic questions in a correct manner:
 An `Exception` is a mechanism that **reports a situation to the calling method (recursively)**. 
 	*So, if one error throws an exception, it will propagate to the method that called it, and it will keep propagating until we reach the main function*
 
-==An Exception is not necessarily an error (e.g., `InterruptedException` for threads==
+> [!caution]
+> An Exception is not necessarily an error (e.g., `InterruptedException` for threads).
 
 ```java
 static class Option {
@@ -46,6 +47,7 @@ public static void main(String[] args) {
 	// ...
 }
 ```
+> [!bug] 
 > This code can crash at four different locations (+ an awful `FIXME`)
 
 An Exception possesses:
@@ -113,6 +115,7 @@ public static void main(String[] args) {
 	// ...
 }
 ```
+> [!info]
 > `catch()` is doing an `instanceof` on the Exception's type, so it only captures the type we are interested in.
 
 We can make a multi-catch (a `catch` clause can intercept several kinds of Exception), and we can also chain the catch clauses. They will be checked in order:
@@ -129,6 +132,7 @@ try {
 	return;
 }
 ```
+> [!caution]
 > Just like for switch cases, we must be careful to organise errors by hierarchy if one is a parent of another (e.g., `NoSuchElementException` inherits from `RuntimeException`, so if you want to catch both, catch `NSEE` first...)
 
 
@@ -149,6 +153,7 @@ public class OptionParsingException extends RuntimeException {
 	}
 }
 ```
+> [!info]
 > We need to implement the three constructors!
 
 The constructor taking the cause as a parameter allows for an easier debugging as it indicates the Exception which caused the problem:
@@ -170,7 +175,7 @@ private static int parseLevel(Iterator<String> it) {
 }
 ```
 
-> This allows to **chain the Exceptions**, so both will result in the stacktrace:
+This allows to **chain the Exceptions**, so both will result in the stacktrace:
 ```
 Exception in thread "main" exception.OptionParsingException: level
 argument is not an integer
@@ -198,6 +203,7 @@ private static int parseLevel(Iterator<String> it) {
 	}
 }
 ```
+> [!info]
 > We can only call `initCause()` once per instance.
 
 
@@ -268,7 +274,8 @@ private static Option parseArguments(String[] args) {
 	return options;
 }
 ```
-> This code does not compile. The `it -> options.time = parseTime(it)` lambda is converted into a `Consumer<...>`, however, the `accept()` method of the `Consumer` does not indicate that it propagates `IOException` (nor any other checked exception)
+> [!bug] This code does not compile. 
+> The `it -> options.time = parseTime(it)` lambda is converted into a `Consumer<...>`, however, the `accept()` method of the `Consumer` does not indicate that it propagates `IOException` (nor any other checked exception)
 
 We can solve this issue by putting the Checked Exception inside an Unchecked Exception, and retrieves the real cause of the Exception in the catch clause:
 ```java
@@ -334,6 +341,7 @@ try(BufferedReader reader = Files.newBufferedReader(path)) {
 	// ...
 } // When reaching the end of the block, close() is implicitly called for us
 ```
+> [!info]
 > If `close()` raises an Exception, it is stored as a **suppressed exception** which can be retrieved via `getSuppressed()`.
 
 We can initialise several variables in the `try-with-resources`, by separating them with a semicolon. In this case, files will be closed **in reverse order** (the variable declared in last will be closed first, etc)

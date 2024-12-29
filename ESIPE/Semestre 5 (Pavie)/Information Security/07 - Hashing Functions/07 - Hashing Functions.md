@@ -24,15 +24,17 @@ A cryptographic hash function should fulfil a few guarantees :
 		*This behaviour is also called “random oracle” assumption*
 
 Since changing 1 bit in the input causes the output to be completely different, a very common use case of hashing is to ensure **data integrity**.
-	*This integrity control is useful for :
-	 - p2p exchanges (making sure we assembled the segments correctly)
-	 - **Storing passwords** (details later on)
-	 - Antivirus (malicious files database collection)
-	 - **Message Authentication** - File/message transfer over an insecure network (making sure it was not altered in transit, pretty much what Gallois/Counter mode is doing with AES). In the case of an "authentication-oriented" hash, we call it a **message digest**. Even if the document can be transmitted on an insecure channel, this **digest ALWAYS must be transmitted on a secure channel** (for obvious reasons)
-	 - Identifying copyright-protected content
-	 - Quickly detect if system files were encrypted by a ransomware*
 
-Here are the most common and secure cryptographic hash algorithms :
+> [!info]- Domains where integrity control is useful
+> This integrity control is useful for :
+> 	- p2p exchanges (making sure we assembled the segments correctly)
+> 	- **Storing passwords** (details later on)
+> 	- Antivirus (malicious files database collection)
+> 	- **Message Authentication** - File/message transfer over an insecure network (making sure it was not altered in transit, pretty much what Gallois/Counter mode is doing with AES). In the case of an "authentication-oriented" hash, we call it a **message digest**. Even if the document can be transmitted on an insecure channel, this **digest ALWAYS must be transmitted on a secure channel** (for obvious reasons)
+> 	- Identifying copyright-protected content
+> 	- Quickly detect if system files were encrypted by a ransomware*
+
+Here are the most common and secure cryptographic hash algorithms:
 
 | Algorithm   | Message Size | Block Size | Word Size | Digest Size |
 | ----------- | ------------ | ---------- | --------- | ----------- |
@@ -69,12 +71,11 @@ As explained [[05 - Asymmetric Ciphers#Fields of application|here]], we use publ
 The **signed files** are guaranteed to be from the authority, as it is the only one that has the private key.
 	*Of course, if the issuer's private key gets leaked, the signatures are not safe anymore...*
 
-One could wonder: Why don't we simply encrypt the entire file as the signature ?
-Well, the method mentioned above guarantees **authentication**. If we want to guarantee **confidentiality**, we will have to encrypt the message (file) as well as the hash, yes. However, the file can be of any length, possibly several gigabytes or only one byte, which is a problem...
-	*If the file is large, we will obtain a large signature which is far from being convenient (bottlenecks on the network, long time for encryption and decryption via RSA). 
-	If the file is extremely short (1 byte), encryption with RSA will be extremely weak and vulnerable to brute-force (as the output is the same size as the input)*
-
-More details in [[09 - Digital Signatures|in the dedicated class]]
+> [!info]- Why don't we encrypt the entire file?
+> One could wonder: Why don't we simply encrypt the entire file as the signature?
+> Well, the method mentioned above guarantees **authentication**. If we want to guarantee **confidentiality**, we will have to encrypt the message (file) as well as the hash, yes. However, the file can be of any length, possibly several gigabytes or only one byte, which is a problem...
+>   If the file is large, we will obtain a large signature which is far from being convenient (bottlenecks on the network, long time for encryption and decryption via RSA). 
+>   If the file is extremely short (1 byte), encryption with RSA will be extremely weak and vulnerable to brute-force (as the output is the same size as the input)
 
 
 ****

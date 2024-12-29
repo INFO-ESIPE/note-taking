@@ -87,6 +87,7 @@ Until `i` and `j` cross each other:
 - Decrement `j` until an element smaller than the pivot is found.
 - Swap elements at `i` and `j`.
 ![[quicksort.gif]]
+> [!info] 
 > After they have crossed each other, we can now place the pivot in its final position. Now, all elements on the left subarray are smaller than the pivot, and elements on the right one are greater.
 
 Here is a code to do so:
@@ -113,7 +114,7 @@ int partition(int arr[], int lo, int hi) {
 ```
 > Here lo and hi can be custom values, not necessarily 0 and size-1
 
-==Do not partition arrays of length 1...==
+> [!caution] Do not partition arrays of length 1...
 
 ### Sorting and complexity
 

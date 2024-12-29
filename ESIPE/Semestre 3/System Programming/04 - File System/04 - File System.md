@@ -14,7 +14,9 @@ The file system is here to create structure around raw data:
 
 We can represent I/O operations like this:
 ![[iceberg io.png]]
-> In this lesson, we will focus on both High-level and Low-level I/O, along with getting familiar with the concept of File System (we will take a deeper dive in how file system works in the future).
+> [!Note]
+> In this lesson, we will focus on both High-level and Low-level I/O, along with getting familiar with the concept of
+> File System (we will take a deeper dive in how file system works in the future).
 > 	*Other concepts, such as Drivers or Sockets, will be studied in another lesson*
 
 ### File System Layout
@@ -66,12 +68,11 @@ There are two types of links:
 	- Cycles are allowed (unlike hard links).
 ![[links.png]]
 
-### Everything is a file (stream of bytes)
-
-Everything we manipulate on the OS is represented as a file. This explains why there are so many "types" of files on Linux:
-	Regular files, Directories, Symlinks, IPCs (pipes, network sockets), Hardware devices (keyboards, printers, disks...), and Pseudo-devices (`/dev/null`, `/dev/random`, `/dev/zero`...)
-
-This approach allows all of those elements to share the same API. All those objects will be represented by **file descriptors**.
+> [!info] Everything is a file (stream of bytes)
+> Everything we manipulate on the OS is represented as a file. This explains why there are so many "types" of files on Linux:
+> 	Regular files, Directories, Symlinks, IPCs (pipes, network sockets), Hardware devices (keyboards, printers, disks...), and Pseudo-devices (`/dev/null`, `/dev/random`, `/dev/zero`...)
+>
+> This approach allows all of those elements to share the same API. All those objects will be represented by **file descriptors**.
 
 
 ****
@@ -118,8 +119,9 @@ size_t fwrite(const void *ptr, size_t size_of_elements,
 int fprintf(FILE *restrict stream, const char *restrict format, ...);
 int fscanf(FILE *restrict stream, const char *restrict format, ...);
 ```
+> [!caution]
+> An opened file should ALWAYS be closed afterwards.
 
-==An opened file should ALWAYS be closed afterwards.== 
 Here is an example of a char-by-char I/O that opens and closes files correctly:
 ```c
 FILE* safe_fopen(const char* filename, const char* mode) {
@@ -172,6 +174,7 @@ int main(void) {
 
 Most low-level functions represent files using a **file descriptor**, which is an integer value associated with a file in the current process's **file descriptor table**. This file descriptor points to an entry in the system-wide **open-file table**, which in turn references the file's **inode**.
 ![[filedescriptor.png]]
+> [!info] 
 > Each file is uniquely identified by its inode within the filesystem, and file descriptors provide a convenient way for processes to interact with these inodes indirectly.
 
 Let's see an example of this phenomenon by looking at how the major low-level file API function behaves: `int open(const char *pathname, int flags)`:
@@ -250,8 +253,8 @@ ssize_t read(int fd, void *buf, size_t count);
 */
 ssize_t write(int fd, const void *buf, size_t count);
 ```
+> [!caution] 
 > There is no re-check of permissions after an `open()`! Which means, if permission on the file changes after a process acquired the file descriptor, the process can still act on the file like nothing happened.  
-
 
 ### Differences between Low-level and High-Level API
 
@@ -263,6 +266,7 @@ printf("Beginning of line ");
 sleep(10);
 printf("and end of line\n");
 ```
+> [!info]
 > Everything is printed at once. In other words, we have to wait 10 seconds for something to print (because the first `printf` doesn't end with `\n`).
 
 On the other hand, Low-level API operations are visible immediately:
@@ -271,6 +275,7 @@ write(STDOUT_FILENO, "Beginning of line ", 18);
 sleep(10);
 write("and end of line \n", 16);
 ```
+> [!info]
 > "Beginning of line " printed 10 seconds earlier than “and end of line”.
 
 
@@ -300,6 +305,7 @@ Three predefined streams are opened implicitly when the program is executed:
 	- `SEEK_END` - end of the file
 
 ![[lseek.png]]
+> [!caution]
 > `lseek()` can go beyond the end of a file. If data is later written at the new position, reading in the resulting gap returns null bytes until real data is written into the gap.
 
 Some devices (pipes, terminals) does not support `lseek()`:
@@ -371,4 +377,5 @@ $ ./modern
 $ cat myfile
 Hello
 ```
+> [!caution] 
 > As you may have guessed, the existence of `dup2` implies the existence of `dup`, but the later is deprecated and shouldn't be used (that's why there is another one lol).

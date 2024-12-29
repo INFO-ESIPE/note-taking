@@ -25,6 +25,7 @@ The channel is a **stream of bytes** that maintains the order of bytes (FIFO).
 |     (2)     |    |--------------|    |     (2)     |
 |-------------|                        |-------------|
 ```
+> [!info] 
 > 0 = `STDIN`, 1 = `STDOUT`, 2 = `STDERR`
 
 We create a pipe like so: `int pipe(int pipefd[2]);`
@@ -33,7 +34,6 @@ As we know well for C, pointers passed as parameters are often used as return sl
 - `pipefd[1]`: the write end of the pipe (writes to process 2)
 
 The two `fd` refers to a inode in a special pipe file system. This inode leverages **its own buffer to temporarily store the data** written to the pipe.
-	*Default pipe capacity on Linux is 16 pages (=64 KiB on x86):*
 ```c
 int main(void) {
 	int p[2];
@@ -53,6 +53,8 @@ int main(void) {
 $ ./pipe-capacity
 The pipe capacity is 65536 bytes.
 ```
+> [!info]
+> As we can see here, the default pipe capacity on Linux is 16 pages (=64 KiB on x86)
 
 
 ***
@@ -122,7 +124,8 @@ $ ./good-pipe
 1 2 3 4 5 6 7 8 9 Writer done.
 Reader done.
 ```
-> Refresher: `fork()` duplicates file descriptors. So, each process should begin by closing the pipe end he doesn't use.
+> [!info] Refresher
+> `fork()` duplicates file descriptors. So, each process should begin by closing the pipe end he doesn't use.
 
 ### Deadlocks
 
@@ -231,6 +234,7 @@ Child 2 done
 Child 3 done
 Parent continues
 ```
+> [!info]
 > Here, the parent blocks until all its children have closed the pipe’s writing end.
 
 ### Named Pipes
@@ -252,12 +256,12 @@ $ mkfifo fifo               $ cat < fifo
 $ echo "Hi!" > fifo         Hi!
                             $
 ```
+> [!info]
 > `echo "Hi!" > fifo` blocks until Shell 2 opens `fifo`
 
 ### Branching
 
 Shell pipelines are linear, but we can introduce branches by combining FIFOs with the `tee` command.
-	*The `tee` command copies its standard input to both its standard output and any files it gets as arguments.*
 
 ```bash
 $ mkfifo fifo
@@ -277,6 +281,8 @@ CC
 	                              \-------> | FIFO | --> |   wc   |
 	                                        |------|     |--------|
 ```
+> [!info] `tee`
+> The `tee` command copies its standard input to both its standard output and any files it gets as arguments.
 
 
 ***
@@ -292,8 +298,9 @@ Once declared, only two operations are permitted:
 	*Equivalent to a `signal()`. Sometimes also called `V()`, which stands for **V**erhogen (increase)*
 > This means that we can not directly read/write the integer value after initialisation, it is **opaque**. Furthermore, those two methods must necessarily be atomic (so if several `P()` occurs at the same time, the integer value cannot drop bellow 0).
 
-Try to represent it like a traffic light turning red when the integer reaches 0, thus blocking all access via `P()` until someone uses `V()` to come back:
-![[semaphore.png]]
+> [!tip]
+> Try to represent it like a traffic light turning red when the integer reaches 0, thus blocking all access via `P()` until someone uses `V()` to come back:
+> ![[semaphore.png]]
 
 
 ```c
@@ -428,8 +435,9 @@ Monitors represent the synchronisation logic of the program
 - We wait if necessary
 - We signal when change something so any waiting threads can proceed
 
-This is something we know well, it is what we have been doing in Java for the [[04 - Signals|concurrent programming class]].
-	*Java provides this feature natively with the `synchronized` keyword...*
+> [!note]
+> This is something we know well, it is what we have been doing in Java for the [[04 - Signals|concurrent programming class]].
+> Java provides this feature natively with the `synchronized` keyword...
 
 We use those methods to simulate it in C:
 ```c
@@ -473,12 +481,13 @@ register = load(x)
 register ++
 x = store (register)
 ```
+> [!question]
 > As we know, this is a problem. What if the scheduler interrupts the thread right in the middle of it?
 
-On most machines, memory references and assignments (i.e. loads and stores) of
-words are atomic
-
 ### Volatile
+
+> [!important]
+> On most machines, memory references and assignments (i.e. loads and stores) of words are atomic
 
 The keyword `volatile` tells the compiler not to optimise the variable's access because its value might change unexpectedly (e.g., due to hardware or another thread), but it does not:
 - **guarantee atomicity**: Multiple threads could still encounter race conditions when accessing a `volatile` variable without proper synchronisation.
@@ -509,6 +518,7 @@ int test_and_set(volatile int* flag) {
 	return old;      // Return the previous value
 }
 ```
+> [!example]
 > Commonly used for simple spinlocks.
 
 ### Compare And Swap (CAS)
@@ -524,6 +534,7 @@ bool compare_and_set(volatile int* obj, int expected, int desired) {
 	return false;           // Failed CAS
 }
 ```
+> [!info]
 > Usually, you would place this inside a while loop, so it retries until it passes (note that it isn't the same as busy waiting)
 
 ### Fetch and Add

@@ -6,13 +6,11 @@
 ```
 
 ****
-## Foreword
-
-It is important to understand that what we refer to as "animations" is different from videos.
-Usually, animations are artificially-made.
-
-****
 ## Bitmap Animation
+
+> [!important] Forewords
+> It is important to understand that what we refer to as "animations" is different from videos.
+> Usually, animations are artificially-made.
 
 **Animated GIFs** are composed by a sequence of ordinary still GIF images. Each image has a timer which indicates for how long it should be displayed (this allows slow animations, but also fast animations).
 It is the most common format for bitmap animations.
@@ -36,6 +34,6 @@ Flash has vanished, but Adobe Animate is now here to help web designers building
 
 
 Unlike bitmap animations which are a simple sequence of bitmap images, a vector animation is more of a **description**.
-This description codes the shapes (properties of a circle, a square...), the **keyframes** and **Frames Per Second (FPS)**.
+This description codes the shapes (properties of a circle, a square...), the **keyframes** and **Frames Per Second (FPS)**
 
 ![[keyframes.png]]

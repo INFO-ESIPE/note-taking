@@ -60,11 +60,13 @@ package fr.umlv.foo.api;
 ```
 > For the `fr.umlv.foo.api`. Should be placed inside the package (same path as the package name). Our `api` folder now contains three files: `Fizz.java`, `Buzz.java` and `package-info.java` which describe the overall package.
 
-**Should we always bother declaring all of this ?**
-	*Well, if you don't plan on working on a real application or library, it does not matter much. 
-	If modules aren't declared, all packages will be placed in an **unnamed module**, but **all packages will be exported**.
-	If packages aren't declared, all classes will be placed in the **default package**.
-	However, ==if a module is declared, it is mandatory to put classes in a package as well.==*
+> [!info]- Should we always bother declaring all of this ?
+> Well, if you don't plan on working on a real application or library, it does not matter much.
+> If modules aren't declared, all packages will be placed in an **unnamed module**, but **all packages will be exported**.
+> 
+> If packages aren't declared, all classes will be placed in the **default package**.
+> 
+> However, ==if a module is declared, it is mandatory to put classes in a package as well.==
 
 
 ### Jar
@@ -92,6 +94,7 @@ module fr.umlv.foo {
 }
 ```
 ![[dependence.png]]
+> [!info]
 > At runtime, the JVM ensures that all modules are present before going forward
 
 The `ModulePath` contains directories where the jar are.
@@ -139,6 +142,7 @@ module fr.umlv.foo {
 	export fr.umlv.foo.util to fr.umlv.bar;
 }
 ```
+> [!info]
 > The `fr.umlv.bar` module will now have visibility over classes present in the `fr.umlv.foo.util` package. The main purpose of this mechanism is to ==share implementation packages between modules created by the same person.==  
 
 A real world example of this is the `jdk.internal.misc` package, which contains the `Unsafe` class:
@@ -154,6 +158,7 @@ module java.base {
 	// ...
 }
 ```
+> [!info]
 > Only selected modules of the jdk has visibility over this package. 
 
 

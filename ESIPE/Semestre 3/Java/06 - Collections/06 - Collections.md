@@ -481,6 +481,7 @@ interface Map {
 	// ...
 }
 ```
+> [!info]
 > Under the hood, a Map stores information as entries
 
 Since we cannot use an iterator, we acquire the entries via the `entrySet()` method, which returns a **modifiable view** of the key-value pairs:
@@ -505,6 +506,7 @@ for (var value : map.values()) {
 	// ...
 }
 ```
+> [!info]
 > If we only need one of the two, it is better to use those methods instead of `entrySet()` which returns both
 
 

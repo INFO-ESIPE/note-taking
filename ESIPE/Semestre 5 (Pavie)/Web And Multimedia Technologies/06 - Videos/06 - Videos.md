@@ -41,13 +41,13 @@ We acquire it from analog devices (VHS, Hi-8, BetaSP) and process it in a captur
 ****
 ## Compression
 
-Nearly every digitisation implies compression :
+Nearly every digitisation implies compression:
 	*E.g., 640x480 video, 25 fps, RGB colour (i.e., 24 bits)
 	1 second = 640 • 480 • 3 • 25 = 23,040,000 bytes = 22 MB
 	1 minute = 22 • 60 = 1,320 MB = 1.3 GB
 	1 hour = 1.3 • 60 = 78 GB*
 
-There are two kinds of video compression :
+There are two kinds of video compression:
 - **Intra-frame :** An algorithm is applied on each frame independently of the others (like you would compress a static image)
 - **Inter-frame :** Acknowledging the content of the surrounding frames (in general, the one immediately before and after), and compress them by analysing the differences between the frames
 	*Only the pixels that changes are coded*
@@ -146,7 +146,7 @@ Generic concept of streaming (for music, videos ...) means that **our player wil
 ****
 ## Montage (Editing)
 
-Professional video creation usually follows this scheme :
+Professional video creation usually follows this scheme:
 1. Pre-production
 	*Script, storyboard, budgeting, casting, locations selection*
 

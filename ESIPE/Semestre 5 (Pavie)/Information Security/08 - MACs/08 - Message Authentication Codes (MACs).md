@@ -8,30 +8,33 @@ Cordoba
 ****
 ## Computer Network Attacks
 
-Message authentication aims to prevent unauthorised message modifications and ensure data integrity across network communications. Major threats include:
-- **Disclosure (leak)** - Release of message contents to any person or entity not possessing the appropriate cryptographic key
-	*Mitigation: Cryptography*
+Message authentication aims to prevent unauthorised message modifications and ensure data integrity across network communications. 
 
-- **Traffic Analysis** - Discovery of the pattern of traffic between parties (Frequency and duration of connections, lengths of exchanged messages ...)
-	*Mitigation: Anonymity (combination of techniques)*
-
-- **Masquerade (spoofing)** - Injection of messages into the network from a fraudulent source, Fraudulent acknowledgements of message receipt
-	*Mitigation: Message Authentication*
-
-- **Content modification (forgery)** - Changing the content of a message (insert, delete, edit or transpose data in it)
-	*Mitigation: Message Authentication*
-
-- **Sequence modification** - Modification to a sequence of message between two machines
-	*Mitigation: Message Authentication*
-
-- **Timing modification** - Delay/Replay of messages, re-use a previous session or an entire sequence of messages 
-	*Mitigation: Message Authentication*
-
-- **Source repudiation** - Denial of transmission of message by source
-	*Mitigation: Digital Signatures*
-
-- **Destination repudiation** - Denial of receipt of message by destination
-	*Mitigation: Digital Signature + Well-conceived protocol*
+> [!caution]- Major threats
+> Major threats include:
+>    - **Disclosure (leak)** - Release of message contents to any person or entity not possessing the appropriate cryptographic key
+>	*Mitigation: Cryptography*
+>
+>    - **Traffic Analysis** - Discovery of the pattern of traffic between parties (Frequency and duration of connections, lengths of exchanged messages ...)
+>	*Mitigation: Anonymity (combination of techniques)*
+>
+>    - **Masquerade (spoofing)** - Injection of messages into the network from a fraudulent source, Fraudulent acknowledgements of message receipt
+>	*Mitigation: Message Authentication*
+>
+>    - **Content modification (forgery)** - Changing the content of a message (insert, delete, edit or transpose data in it)
+>	*Mitigation: Message Authentication*
+>
+>    - **Sequence modification** - Modification to a sequence of message between two machines
+>	*Mitigation: Message Authentication*
+>
+>    - **Timing modification** - Delay/Replay of messages, re-use a previous session or an entire sequence of messages 
+>	*Mitigation: Message Authentication*
+>
+>    - **Source repudiation** - Denial of transmission of message by source
+>	*Mitigation: Digital Signatures*
+>
+>    - **Destination repudiation** - Denial of receipt of message by destination
+>	*Mitigation: Digital Signature + Well-conceived protocol*
 
 
 ****

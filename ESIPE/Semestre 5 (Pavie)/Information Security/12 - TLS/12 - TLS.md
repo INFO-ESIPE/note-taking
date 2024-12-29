@@ -10,8 +10,10 @@
 
 TLS (current version 1.3, defined by [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446) ), is an evolution of the deprecated Secure Sockets Layer (SSL) protocol.
 Even though we heavily associate it to the web (since decent web browsers embeds the protocol in their features), its available for most application-layer exchanges **over TCP**.
-	*TLS is related to the presentation OSI layer. So, it is placed in between the application layer (e.g., HTTP, FTP...) and the session+transport layer (TCP).
-	For UDP, the Datagram Transport Layer Security (DTLS) protocol is used.*
+
+> [!info]- TLS and DTLS
+> TLS is related to the presentation OSI layer. So, it is placed in between the application layer (e.g., HTTP, FTP...) and the session+transport layer (TCP).
+> For UDP, the Datagram Transport Layer Security (DTLS) protocol is used.*
 
 It aims to guarantee:
 - **Confidentiality**: Ensure that an adversary cannot read the traffic
@@ -104,7 +106,9 @@ Used to notify the peer about **errors** or **session state changes**.
 
 A heartbeat protocol is usually here to monitor the availability of an entity by sending periodic signals (hence the name of the protocol).
 In the case of TLS (and DTLS), this protocol is purely an extension that provides a "keep-alive" functionality.
-	*Even if TLS (unlike DTLS) is built over TCP which is a reliable transport protocol, the later does not provide a native keep-alive feature that maintains the connection without continuous data transfer (which is why HTTP provides this keep-alive feature as well).*
+
+> [!info]- Keep-Alive 
+> Even if TLS (unlike DTLS) is built over TCP which is a reliable transport protocol, the later does not provide a native keep-alive feature that maintains the connection without continuous data transfer (which is why HTTP provides this keep-alive feature as well).*
 
 The user can use the new `HeartbeatRequest` message, which has to be answered by the peer with a `HeartbeartResponse` immediately. This avoids to drop the connection each time a client is served, and instead keep it working for a long period of time.
 	*If the party doesn't answer quickly, we consider that it is disconnected and we proceed into dropping the session. This is mostly a security against session hijacking.*

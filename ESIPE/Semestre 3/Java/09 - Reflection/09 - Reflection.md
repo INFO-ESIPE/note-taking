@@ -46,6 +46,7 @@ Class c = object.getClass(); // Car.class
 Object object = "hello";
 Class c = object.getClass(); // String.class;
 ```
+> [!info]
 > The class at runtime is the one indicated next to `new`, as we know
 
 Unlike `getClass()` (and `.class`, but the confusion is mostly with the method), `instanceof` asks if an object is an subtype of blabla:
@@ -136,6 +137,7 @@ Object result = method.invoke("hello", "o"); // calling the concat method on
 											 // a String object containing "o"
 System.out.println(result);
 ```
+> [!info]
 > If we want to call a static method, we pass `null`
 
 ### Constructor
@@ -163,7 +165,6 @@ We can retrieve public fields of an object with:
 ```java
 Field field = java.awt.Point.class.getField("x");
 ```
-> If your code is decent, calling `getFields()` on your class should not return anything :)
 
 Those methods return a (or several) `Field` object(s).
 It has several methods attached to it (`accessFlags()`, `getName()`, `getType()`...)
@@ -233,11 +234,12 @@ To use an annotation, we indicate the name of the class after a `@`, followed by
 		company = "DoesSoftware")
 public class Foo { /* ... */ }
 ```
+> [!info]
 > The values specified in the annotation **must be constants**.
-> 	*Accepted values: primitives, `String`, `Class`, `Enum` (of any kind), `Annotation`\*, and a parameterised array (`ElementType[]`)*
-
-\*because Annotations does not support Inheritance, we use delegation instead (so, using another Annotation).
-
+> 
+> *Accepted values: primitives, `String`, `Class`, `Enum` (of any kind), `Annotation`\*, and a parameterised array (`ElementType[]`)*
+> 
+> \*because Annotations does not support Inheritance, we use delegation instead (so, using another Annotation).
 
 In fact, an annotation is *some kind of special interface* which contains:
 - **parameter-less methods**, which returns an immutable type (since we feed them with constant values). Those methods can also return a default value.
@@ -251,6 +253,7 @@ public @interface Author {          // declare the "Author" annotation
 	int year() default 0; // Optional attribute with default value
 						  // If not filled, "0" will be used.
 ```
+> [!info] 
 > We use `@interface` to declare an annotation
 
 ### Meta-annotations

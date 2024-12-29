@@ -15,6 +15,7 @@ list.add(new URI(...)); // ooooooops, it compiles but shouldn't!
 
 String s = (String) list.get(0); // Unsafe ! Might crash at runtime if we get(1)
 ```
+> [!bug] Oops... 
 > The problem is that we only detect the problem at runtime when we cast. We should detect the problem when we add the `URI`...
 
 
@@ -74,12 +75,13 @@ class Foo<E> {
 
 **Primitives cannot be used in a diamond syntax**. We must use the Wrappers:
 ```java
-ArrayList<int> list = // ... does not compile
+ArrayList<int> list = // ...                 does not compile
 
-ArrayList<Integer> list = // …
-list.add(1); // convert int → Integer (boxing)
-int value = list.get(0); // convert Integer → int (unboxing)
+ArrayList<Integer> list = // ...
+list.add(1);              // convert int → Integer (boxing)
+int value = list.get(0);  // convert Integer → int (unboxing)
 ```
+> [!info] 
 > Generics only accepts reference types...
 
 
@@ -124,9 +126,12 @@ class Utils {
 ****
 ## Erasure
 
-Unlike Java's generics, C++ has a "Template" system.
-	*The compiler generates as much classes on disk as there are instances using genericity. So it creates a `HashMap<String, String>`, `HashMap<String, URI>` etc...
-	This generates too much code though*
+> [!info]- C++ and Templates
+> Unlike Java's generics, C++ has a "Template" system.
+> 
+> The compiler generates as much classes on disk as there are instances using genericity. So it creates a `HashMap<String, String>`, `HashMap<String, URI>` etc...
+> 
+> Big downside is that it generates too much code though
 
 In Java, **generics are** only presents during compilation, but **absent during runtime**.
 
@@ -196,6 +201,7 @@ public class ArrayList<E> {
 	// ...
 }
 ```
+> [!caution]
 > Works during execution since the cast does not appear in the bytecode (`E[]`'s erasure is `Object[]`).
 
 Since we know our cast is safe in this context, we can tell the compiler to not emit a warning, via one `SuppressWarning`:
@@ -212,8 +218,8 @@ public class ArrayList<E> {
 	// ...
 }
 ```
+> [!success] Good
 > Do not abuse this feature. This `SuppressWarning` should only be used in this context, and not to hide problems in your code...
-
 
 This fixes our issue, but what about Varargs ? Those asks the compiler to create an array.
 We can avoid a warning if we use `@SafeVarargs`:
@@ -221,6 +227,7 @@ We can avoid a warning if we use `@SafeVarargs`:
 @SafeVarargs
 static <T> List<T> asList(T… elements) { /* ... */ }
 ```
+> [!info]
 > As it relies on implementation, we can only specify this on methods that cannot be re-defined (static, private, final, or the constructor)
 
 
@@ -237,6 +244,7 @@ void printAll(List<Object> list) {
 List<String> list = List.of("foo");
 printAll(list); // does not compile
 ```
+> [!info]
 > Unlike arrays which are covariant, generics are **invariant**...
 
 Here, we would like a way to specify that we want to accept any object that is a subtype of the bound we specify.

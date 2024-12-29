@@ -124,12 +124,16 @@ public static <T> Spliterator<T> fromArray(int start, int end, T... array) {
 ****
 ## Optional
 
-Coming from the functional programming world, we use `Optional` when the result of a calculation **might not exist**.
-	*A problem we often see in poorly designed code: functions tends to return random null values in some scenarios, which causes a lot of issues later on in the code (late `NullPointerException` is the main one, a typical issue among beginners). 
-	Try to imagine yourself using this code as a library, and noticing that the code returns null values when its not able to compute things.
-	Instead of forcing the user to read each function's javadoc to ensure it will not return null values, we simply indicate that the method returns an `Optional<T>`, so he clearly knows that the expected value might not be present.*
+Coming from the functional programming world, we use `Optional` when the result of a calculation **might not exist**
 
-**Example:** A `findFirst(List<E>)` method which returns the first element of a list should, in fact, return an `Optional<E>`, as the list might be empty.
+> [!info]- Why using `Optional`?
+> A problem we often see in poorly designed code: functions tends to return random null values in some scenarios, which causes a lot of issues later on in the code (late `NullPointerException` is the main one, a typical issue among beginners).
+> 
+> Try to imagine yourself using this code as a library, and noticing that the code returns null values when its not able to compute things.
+> 
+> Instead of forcing the user to read each function's javadoc to ensure it will not return null values, we simply indicate that the method returns an `Optional<T>`, so he clearly knows that the expected value might not be present.*
+>> [!example]
+> A `findFirst(List<E>)` method which returns the first element of a list should, in fact, return an `Optional<E>`, as the list might be empty.
 
 We can create an `Optional<E>` like so:
 - `Optional.empty()`: An optional without any value
@@ -142,6 +146,7 @@ We can create an `Optional<E>` like so:
 
 So, `Optional` is like a box that might or might not contain something inside. We need a way to open this box without crashing the application.
 
+> [!caution]
 **We should always check the value's existence before retrieving it:**
 We use `isEmpty` or `isPresent`.
 

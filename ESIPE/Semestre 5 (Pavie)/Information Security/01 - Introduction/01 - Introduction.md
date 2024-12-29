@@ -21,10 +21,8 @@ A **threat** is a potential for violation of a system's security. An **attack** 
 	- ...
 
 It is important to define what to protect, which assets are of value and deserve to be protected by various protocols or cryptography.
-	The protection of a system — and it's data — should focus on the **CIA Triad** (Confidentiality, Integrity, Availability).
+	The protection of a system—and it's data—should focus on the **CIA Triad** (**C**onfidentiality, **I**ntegrity, **A**vailability).
 
-Since a system can never be **truly secure** (fulfils the CIA triad), it is important to monitor any activity on the system via a logwatch or similar as it offers **non-repudiation** (an user can not deny his actions if they are logged by the system).
-
-
-
+Since a system can never be **truly secure** (fulfils the CIA triad), it is important to monitor any activity on the system via a logwatch (or similar procedure) as it offers **non-repudiation**.
+> [!Info] User can not deny his actions if they are logged by the system.
 

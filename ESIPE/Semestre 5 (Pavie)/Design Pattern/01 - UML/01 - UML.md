@@ -71,4 +71,5 @@ This is very useful to **represent mappings of classes in the database**:
 Deleting a student in the database does not destroy the lectures he attended nor the university he registered in.
 However, it should destroy the remarks we gave him.
 
-*Note that, for french people (and perhaps some other nationalities as well), we have our unique model to represent elements in the database (Modèle Conceptuel de Données) that shares a few similarities, especially the cardinalities*
+> [!info] MCD
+> Note that, for french people (and perhaps some other nationalities as well), we have our unique model to represent elements in the database (Modèle Conceptuel de Données) that shares a few similarities, especially the cardinalities

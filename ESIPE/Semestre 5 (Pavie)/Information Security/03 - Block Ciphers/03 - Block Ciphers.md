@@ -18,13 +18,13 @@ This said, we can understand that accessing the physical layer (OSI Layer 1) is 
 ****
 ## Block Ciphers
 
-A **message** is simply a string using a specific — and finite — encoding. This allows the message to simply be a succession of bits, while remaining understandable to a human as it can be read like a normal text.
+A **message** is simply a string using a specific—and finite—encoding. This allows the message to simply be a succession of bits, while remaining understandable to a human as it can be read like a normal text.
 
-
-A block cipher splits the binary string into blocks of a given size, and then encrypt it block by block. The ciphertext obtained is the same length as the original plaintext.
+A block cipher splits the binary string into blocks of a given size, and then encrypt it block by block. **The ciphertext obtained is the same length as the original plaintext**.
 Since cryptography is based on the ability to retrieve information — unlike hashing — each plaintext block must produce an unique ciphertext block. 
 
-**If the message is too short for the fixed size block, we pad it with 0's. If its larger, we add another block, and so on.**
+> [!Tip] What if the message isn't long enough to fit a block? 
+> If the message is too short for the fixed size block, we pad it with 0's. If its larger, we add another block, and so on.
 
 
 **Reminder :**
@@ -38,15 +38,14 @@ Since cryptography is based on the ability to retrieve information — unlike ha
 *Useful resource:* https://www.youtube.com/watch?v=FGhj3CGxl8I
 
 Feistel cipher/network appears more as a framework for building an encryption algorithm. It is a structure you feed with a secret key and encryption rounds, and returns you a cipher.
-Our algorithm — based on this framework — will only need to have a dedicated **Round Function**, the rest of the process is proper to the Feistel network itself.
+Our algorithm—based on this framework—will only need to have a dedicated **Round Function**, the rest of the process is proper to the Feistel network itself.
 
 
 **Behaviour** *(where "n" being the number of bits per block.):*
 1. You start with a block, and you split it in two (left-hand **L** and right-hand **R** parts). 
 	*Each part should have an equal size (that is why the block size is always even).*
 
-2. We take the **R** side and give it to a "pseudo-random function" of some kind called **the round function F**. This function takes our secret key as unique parameter, and produces a **subkey** out of it. Once **R** is combined with our subkey, we get our return value. 
-	*If we were to implement our own algorithm via functional programming using Feistel, this pseudo-random function would be coded by ourselves and given via a lambda expression*
+2. We take the **R** side and give it to a "pseudo-random function" of some kind called **the round function F**. This function takes our secret key as unique parameter, and produces a **subkey** out of it. Once **R** is combined with our subkey, we get our return value.
 
 3. We **XOR** the output of the step above with the **L** part of the block
 	*A    B    Q
@@ -55,15 +54,15 @@ Our algorithm — based on this framework — will only need to have a dedicated
 	1 & 0 = 1
 	1 & 1 = 0*
 
-4. We swap the halves. The original **R** (pre-processed) becomes the new **L**, and the XORed **R** becomes the new **R**.
+4. We swap the halves. The original **R** (pre-processed) becomes the new **L**, and the XORed **R** becomes the new **R**
 
 5. Repeat the operation (round). Usually, an algorithm based on Feistel is doing *16 rounds* per block.
 
 6. When the final round is finished, we concatenate **L** and **R** to obtain our ciphertext.
 
-As this process is linear, it can be reversed in order to obtain our decryption algorithm. The most fascinating part of this framework is the decryption process : 
-	You take your ciphertext block — and the secret key, obviously — and run the exact same steps as the encryption. The encryption and decryption processes are exactly the same, and even if our round function is not reversible ! This is because a XORed value is reversible: if you XOR it again, you retrieve the original value.
-
+> [!Tip]
+> As this process is linear, it can be reversed in order to obtain our decryption algorithm. The most fascinating part of this framework is the decryption process:
+> You take your ciphertext block—and the secret key, obviously—and run the exact same steps as the encryption. **The encryption and decryption processes are exactly the same**, and even if our round function is not reversible! This is because a XORed value is reversible: if you XOR it again, you retrieve the original value.
 
 If n is small, the block size is practicable but vulnerable to statistical analysis (weak).
 
@@ -84,8 +83,8 @@ This was the most widely used encryption scheme in commercial and financial appl
 
 Data is encrypted on 64-bit blocks, using a **56-bit key** (BIG MISTAKE, the key is too small).
 64-bit input is transformed — through 16 rounds — into a 64-bit output.
-Since the same steps — with the same key — are followed for the decryption, it is reversible.
-	*DES follows the Feistel network !*
+Since the same steps—with the same key—are followed for the decryption, it is reversible.
+	*DES follows the Feistel network!*
 
 Biggest security flaw of DES is the key, of which the size is too small. It can, with a modern parallel cluster, be cracked in around an hour.
 
@@ -117,20 +116,22 @@ In a triple-key 3DES, the last step is performed with key 3 instead of key 1.
 
 
 So far we have seen ways of making ciphers more secure by making the key larger.
-Each block is — so far — encrypted with the same key (unless the plaintext is smaller than the b-block size).
+Each block is—for now—encrypted with the same key (unless the plaintext is smaller than the b-block size).
 
 
 ****
 ## Advanced Encryption Standard (AES)
 
 Replacement of DES since 2001. The point was to be as secure as 3DES, but quicker and overall more performant.
-	*NIST organised a cryptography tournament where each applicant had to design the most secure, performant, quick, reliable, widely-usable symmetric algorithm possible. 
-	5 of them remained in competition :
-	- **Rijndael (won and became AES)**
-	- Serpent (most secure but a little too slow)
-	- Twofish
-	- RC6 (RSA Organisation)
-	- Mars (IBM)*
+
+> [!Info]- Origin of AES 
+> NIST organised a cryptography tournament where each applicant had to design the most secure, performant, quick, reliable, widely-usable symmetric algorithm possible. 
+> 5 of them remained in competition:
+>    - **Rijndael (won and became AES)**
+>    - Serpent (most secure but a little too slow)
+>    - Twofish
+>    - RC6 (RSA Organisation)
+>    - Mars (IBM)
 
 Block size is of 128 bits long.
 The key can be 128, 192 or 256 bits long. The amount of rounds depends on the length of the key (the larger it is, the more rounds).
@@ -146,7 +147,7 @@ We know that block ciphers take a n-bits fixed length plaintext block—and a ke
 
 If the message is larger than n bits (most of the time it is, blocks are small), we have to split the message in multiple blocks, and **re-use the key** for each block.
 	*Dangerous... This makes our algorithm extremely predictive and vulnerable to cryptanalysis*
-The process is straightforward and convenient so far :
+The process is straightforward and convenient so far:
 	Split plaintext into blocks
 	P1 -> E(K) -> C1
 	P2 -> E(K) -> C2
@@ -166,12 +167,12 @@ Thus, there are various ways of applying the block cipher. NIST designed the **(
 
 This is the operation mentioned above. We encode blocks separately with the same key, and concatenate each one to obtain the resulting ciphertext
 
-This is not secure at all as :
-- It gives away too much information to the cryptanalyst
-- If two blocks are identical, their ciphertext version will also be identical.
-![[ecb  penpen.png]]
-> This problem is well-illustrated by the **ECB Penguin**. Pixel data (colour) was encrypted and should appear completely obfuscated to us, but this is not the case at all as we can still perceive the shape of it due to pixels sharing the same colour and resulting in the same cipher block.
-
+> [!failure]- Problem: ECB Penguin
+> This is not secure at all as:
+> - It gives away too much information to the cryptanalyst
+> - If two blocks are identical, their ciphertext version will also be identical.
+> This problem is well-illustrated by the **ECB Penguin**: Pixel data (colour) of our original image is encrypted and should appear completely obfuscated to us, but this is not the case at all as we can still perceive the shape of it due to pixels sharing the same colour and resulting in the same cipher block.
+> ![[ecb  penpen.png]]
 
 ### Cipher Block Chaining (CBC)
 *Sequential encoding of blocks (C1, then C2, etc.)*
@@ -184,13 +185,13 @@ Base is similar as **ECB**, but the following step is added to solve the aforeme
 - This XOR becomes the new **P2**
 > We link the output of a block with the input of the next one, and so forth...
 
-![[correct penpen.png]]
+> [!success]- Solution: ECB Penguin
 > If we now try to encode our penguin, we obtain a result that does not disclose any pattern or similarity in between plaintext blocks.
+> ![[correct penpen.png]]
 
 Biggest issue with this method is that it is way slower. 
 	*We lost our parallelism feature as each block requires the output of the previous one in order to be encoded correctly.*
-Also, if a problem happens on a block (network issue, an adversary modify it), it impacts the following block, which will now contain gibberish value.
-
+Furthermore, if a problem happens on a block (network issue, an adversary modify it), it impacts the following block, which will now contain gibberish value.
 
 ### Counter Mode (CTR)
 *Parallel encoding (we can encode all blocks at the same time)*
@@ -215,7 +216,8 @@ This is the best operation out of everything.
 The most important part is to **NEVER reuse the nonce** on another block
 	*that's why we are doing this trivial incrementation on each block, we ensure each block nonce is unique*
 
-There is, however, a more modern version of this operation called Galois/Count Mode (GCM)—used by AES—which relies on the same principle, but applies a Galois Message Authentication Code (GMAC) that ensures nothing has been altered (similar to a hash).
+> [!info]- Optional - GCM
+> There is, however, a more modern version of this operation called Galois/Count Mode (GCM)—used by AES—which relies on the same principle, but applies a Galois Message Authentication Code (GMAC) that ensures nothing has been altered (similar to a hash).
 
 
 ****
