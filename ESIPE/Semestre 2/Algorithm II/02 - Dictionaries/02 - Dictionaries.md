@@ -58,7 +58,8 @@ remove(int num) {
 	map[num] = NULL;
 }
 ```
-> [!Caution] The approach is good, but it requires a massive array... Let's fix this space problem bellow
+> [!Caution] 
+> The approach is good, but it requires a massive array... Let's fix this space problem bellow
 
 
 ***
@@ -66,7 +67,8 @@ remove(int num) {
 
 Hash tables store key-value pairs in a **fixed-size (M) array**. A **hash function maps keys to array indices**, ensuring constant-time operations in most cases.
 ![[hashmap.png]]
-> [!Info] Using `mod` ensures we never go beyond the array's size boundary.
+> [!Info] 
+> Using `mod` ensures we never go beyond the array's size boundary.
 
 ### Collision
 

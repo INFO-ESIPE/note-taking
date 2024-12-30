@@ -74,10 +74,12 @@ $ ./a.out
 1 2 3
 1 2 3       # And where is 9 ?
 ```
-> [!failure] As we can see, the insertion did not work as expected...
+> [!bug] 
+> As we can see, the insertion did not work as expected...
 
 Here is what happens with our current code:
 ![[linkedlist_problem.png]]
+> [!info]
 > Local variables (and arguments) of a function are stored in the context, which is on the thread's **stack**.
 
 We can solve this issue by returning the list after the branching is fixed:
@@ -135,6 +137,7 @@ A very common variation is the **Doubly linked list**, where each link contains 
 Another variation is the **Circular linked list**, where the tail link points to the first link, allowing to go back to the beginning of the list (hence the "circular" naming).
 	*In the case of a circular doubly linked list, the first node also points to the last node of the list. It looks like this:*
 ![[doubly.png]]
+> [!info]
 > `LinkedList` (deprecated) in Java, List in C++
 
 

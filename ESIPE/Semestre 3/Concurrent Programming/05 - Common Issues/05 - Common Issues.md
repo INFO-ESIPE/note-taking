@@ -34,10 +34,11 @@ public class PingPong {
 	}
 }
 ```
-
-Sometimes ping and pong, sometimes ping only, sometimes pongs only, sometimes nothing
+> [!bug]
+> Sometimes ping and pong, sometimes ping only, sometimes pongs only, sometimes nothing
 **But most of the time, it will be blocked !**
 
+What happens:
 - ping thread takes the token for `lock1`
 - ping thread is de-scheduled right after, before taking the `lock2` token
 
@@ -50,14 +51,12 @@ Sometimes ping and pong, sometimes ping only, sometimes pongs only, sometimes no
 We are in a deadlock situation.
 	*This is very common when threads takes several locks in an interlaced order*
 
-
-**How to avoid this situation ?**
-
-1. Only use one lock
-2. If not, always take the locks in the same order
-3. Use a **lock-free** programming philosophy, which uses `volatile` and `Atomic` operations. This is way too complex for now, and will be seen in S4.
-
-If the threads always take the locks in the same order, a **deadlock situation can never happen**.
+> [!important] How to avoid this situation ?
+>1. Only use one lock
+>2. If not, always take the locks in the same order
+>3. Use a **lock-free** programming philosophy, which uses `volatile` and `Atomic` operations. This is way too complex for now, and will be seen in S4.
+>
+> If the threads always take the locks in the same order, a **deadlock situation can never happen**.
 
 
 ****
@@ -88,27 +87,29 @@ public class A {
 
 If we forgot the `final` keyword, it is possible for the second thread to print 7, nothing, **or 0 (default value of an integer)**
 
-For this reason, it is important to set a property to `final` when possible. If non-final properties must be declared in the constructor, **ALWAYS USE A `synchronize` BLOCK IN IT**.
+> [!important]
+> For this reason, it is important to set a property to `final` when possible. 
+> If non-final properties must be declared in the constructor, **always use a `synchronize` block in it**.
 
-
-Note: Setting value of a final property directly in it's declaration works the same as defining it in the constructor.
-```java
-// Those two are doing the same
-public class A {
-	private final int value;
-
-	public A() {
-		this.value = 5;
-	}
-}
-
-public class A {
-	private final int value = 5;
-
-	public A() { }
-}
-```
-
+> [!info]
+> Setting value of a final property directly in it's declaration works the same as defining it in the constructor.
+> ```java
+> // Those two are doing the same
+> public class A {
+> 	private final int value;
+> 
+> 	public A() {
+> 		this.value = 5;
+> 	}
+> }
+> 
+> public class A {
+> 	private final int value = 5;
+> 
+> 	public A() { }
+> }
+> ```
+> 
 
 There is no publication issues with `static` properties initialisations.
 
@@ -117,7 +118,7 @@ There is no publication issues with `static` properties initialisations.
 
 Never launch a thread in a constructor
 
-No need for `synchronize` in the constructor if :
+No need for `synchronize` in the constructor if:
 - Fields are final
 - Field is initialised with its default value (e.g. an int with a value of 0)
 

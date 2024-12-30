@@ -82,8 +82,10 @@ thread.interrupt();
 ```
 
 
-**Note:** Some blocking IO functions raises `IOInterruptedException` instead of `InterruptedException`, mind the signature of methods to avoid bad surprises
-	*When one of those are raised, it is mandatory to stop the thread (or for a server, to close the connection with the client)*
+> [!info]
+> Some blocking IO functions raises `IOInterruptedException` instead of `InterruptedException`, mind the signature of methods to avoid bad surprises
+> 
+>*When one of those are raised, it is mandatory to stop the thread (or for a server, to close the connection with the client)*
 
 
 ****

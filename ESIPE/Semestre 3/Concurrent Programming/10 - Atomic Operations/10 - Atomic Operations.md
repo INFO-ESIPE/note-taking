@@ -19,7 +19,8 @@ We can access this kind of instructions via the `java.util.concurrent.atomic` pa
 We call a variable volatile if it can be read or modified asynchronously by something other than the current thread of execution.
 	*It provides a lightweight synchronisation mechanism, ensuring that updates to the variable are always visible to all threads*
 
-*Note: Implementation of this concept varies depending on the language (volatile in C/C++ is [[05 - IPC#Volatile|different]] from volatile in Java)*
+> [!info]
+> Implementation of this concept varies depending on the language (volatile in C/C++ is [[05 - IPC#Volatile|different]] from volatile in Java)
 
 
 In our situation, `volatile` comes with several guarantees:
@@ -88,6 +89,7 @@ public class ThreadSafeCounter {
 	}
 }
 ```
+> [!info]
 > Here, the `getAndIncrement()` method is treated as a single atomic operation by the JIT compiler.
 
 
@@ -97,10 +99,11 @@ public class ThreadSafeCounter {
 
 Unfortunately, all atomic operations aren't available on all processors. However, the foundational atomic operation across platforms "**compare-and-set**" exists. 
 
-Here is what the signature would look like in C:
-```c
-bool CAS(int *ptr, int expectedValue, int newValue)
-```
+> [!info]
+> Here is what the signature would look like in C:
+> ```c
+> bool CAS(int *ptr, int expectedValue, int newValue)
+> ```
 
 If the field's value equals `expectedValue`, it is replaced by `newValue` and returns true. It returns false otherwise.
 
@@ -119,7 +122,8 @@ public class BadCounter {
 	}
 }
 ```
-> This code is **wrong**. Here, we call `counter.get()` two times. It is possible for the value to change in between of those two calls !
+> [!bug]
+> Here, we call `counter.get()` two times. It is possible for the value to change in between of those two calls !
 
 It is mandatory to base the next value on the `current` variable's value, like so:
 ```java
@@ -145,6 +149,7 @@ public class ThreadSafeCounter {
 	}
 }
 ```
+> [!success] Good
 > If you look at how `getAndIncrement` is implemented, you'll see that it does a `weakCompareAndSetInt` inside a do-while loop. This is kind of what we are manually doing here.
 
 With the introduction of lambdas, we can use the `getAndUpdate(UnaryOperator)` method to make a CAS with a loop:
@@ -350,4 +355,5 @@ public class LockFreeLinkedList<E> {
 	}
 }
 ```
-> *We could've chosen other names for intermediate variables to avoid usage of `this`. Its up to you.*
+> [!note] 
+> We could've chosen other names for intermediate variables to avoid usage of `this`. Its up to you.

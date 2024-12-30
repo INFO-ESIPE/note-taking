@@ -9,7 +9,7 @@
 
 We have a big issue: Threads can be **de-scheduled right in the middle of a set of instructions, but even worse, right in the middle of a single instruction/operation**. 
 
-This is due to the fact that most operations are **non-atomic** (or "non-synchronised"). 
+This is due to the fact that most operations are non-atomic or "non-synchronised". 
 
 We observed in the previous lab that this issue never happened with `System.out.println` as this method uses a **lock** (which is released once the print operation is finished).
 	*Details in the [[03 - Synchronize and Thread-Safe (EN)|next lesson]]*
@@ -49,8 +49,9 @@ public class Counter {
 	}
 }
 ```
+> [!bug]
+> This code is obviously wrong and will rarely print the expected result. Here, the data race occurs on the `value` field of the `counter` object.
+> 
+> In a perfect world, `value` should be 20000. But it will—almost—never occur.
+> *(In theory, we could even end up with `value` of 2. Details in next lab.)*
 
-This code is obviously wrong and will never print the expected result. Here, the data race occurs on the `value` field of the `counter` object.
-
-In a perfect world, `value` should be 20000. But it will — almost — never occur.
-	*In theory, we could even end up with `value` of 2. Details in next lab.*

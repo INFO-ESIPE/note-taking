@@ -27,6 +27,7 @@ Each thread **possesses its own stack** (managing function calls, parameters, lo
 - In Java, the heap contains objects's properties.
 
 ![[threads.png]]
+> [!info]
 > In fact, a process is only an entity that provides an isolated virtual address space. The entities responsible for executing instructions are the threads inside it.
 
 The **scheduler** is an OS-managed entity **deciding on threads' execution order and alive time**. We will use the `java.lang.Thread` class to manage threads.
@@ -92,7 +93,7 @@ public class Application {
 ```
 
 
-There is **no father-son relationship** between threads (unlike `fork()` in C or system programming overall). 
+There is **no father-son relationship** between threads (unlike processes with `fork()/exec()` in system programming). 
 	*If we launch a new thread from the main one, the main thread can die before the concurrent one without stopping the entire program. The main thread is just a thread like the others, it's only the backbone of the process at the beginning as we do need a thread to start a process and do basic actions on it*
 
 **Threads do not communicate with each other**, they can not re-launch each other directly (nor re-launch themselves, in fact).
@@ -111,8 +112,10 @@ A thread occupies it's designated core: 
 - Until the next blocking call (I/O) 
 - Until a specific amount of time where he is "**de-scheduled**"
 
-The scheduler is supposed to give the same amount of CPU lifetime to all threads, it is **"fair"**.
-	*This is only in theory. In reality, it is indicated that the scheduler is fair as it gives `time to all threads with no preferences`, but it does not indicate that `each thread receives the same amount of lifetime`. This up time is too variable to mention real "fairness".*
+> [!info] Scheduler and fairness
+> The scheduler is supposed to give the same amount of CPU lifetime to all threads, it is **"fair"**.
+> 
+> This is only in theory. In reality, it is indicated that the scheduler is fair as it gives `time to all threads with no preferences`, but it does not indicate that `each thread receives the same amount of lifetime`. This up time is too variable to mention real "fairness".
 
 As all of this is managed by the OS' scheduler, **we do not control anything**, neither when the threads are scheduled or de-scheduled, nor their lifespan when they are up.
 
@@ -140,17 +143,19 @@ A virtual thread occupies a platform thread: 
 - Until the next blocking action (I/O)
 - If a virtual thread is not doing a blocking action, then a new platform thread is created so the scheduler remains fair
 
-
-As the virtual thread feature remains experimental and has still a lot of unpatched issues, we will only use `ofPlatform` for this class.
+> [!note]
+> As the virtual thread feature remains experimental and still has a lot of unpatched issues, we will stick to Platform threads for this semester.
 
 
 ****
 ## Properties of a thread
 
-We can name it. We only do this for **debug purposes**, and never to pass values in between threads like a mongoloid:
+We can name it:
 ```java
 var thread = Thread.ofPlatform().name("Listener thread").start(runnable);
 ```
+> [!caution]
+> We only do this for **debug purposes**, and never to pass values in between threads like a mongoloid
 
 We can **retrieve the Thread executing the current code**:
 ```java
@@ -175,7 +180,6 @@ public static void main(String[] args) {
 	System.out.println(Thread.currentThread().getName());
 }
 ```
-
 *We can't know which of the three threads will be executed first, and print...*
 
 
@@ -191,7 +195,9 @@ A thread **dies when the run() is over**: 
 - An `Exception` was raised
 
 The JVM only stops if all threads are dead, besides **daemon threads**. The main thread can perish before other threads, it does not matter nor close the JVM.
-	*A daemon thread acts like a background service. It runs like other threads but, if no non-daemon threads are alive, it will end its existence so it does not prevent the JVM from closing.*
+
+> [!info] Daemon Threads
+> A daemon thread acts like a background service. It runs like other threads but, if no non-daemon threads are alive, it will end its existence so it does not prevent the JVM from closing.
 
 It is possible for a thread to **wait for another thread's death**, thus giving room for an execution order on the code:
 ```java
@@ -211,9 +217,10 @@ public static void main(String[] args) throws InterruptedException {
 	System.out.println("Thread main"); // Now that both threads died, we can print
 }
 ```
-
-Calling `thread.join()` can raise an `InterruptedException`, which is triggered when we ask for a thread to stop while he is in a blocking action. This topic is covered in more details [[04 - Signals|here]] and [[07 - Interruptions and Exceptions|here]].
-	*As `.join()` is a blocking action, it can throws the aforementioned exception*
+> [!caution]
+> Calling `thread.join()` can raise an `InterruptedException`, which is triggered when we ask for a thread to stop while he is in a blocking action. This topic is covered in more details [[04 - Signals|here]] and [[07 - Interruptions and Exceptions|here]].
+> 
+> *Since `.join()` is a blocking action, it can throws the aforementioned exception*
 
 The `Thread.sleep()` method allows to **pause the current thread for `n` milliseconds**. Just like `join()`, it is a blocking method and can throw an `InterruptedException`.
 In this case, we need to **manage the Exception with a try-catch and an `AssertionError`** :

@@ -63,7 +63,7 @@ The thread entering the block **acquires a token (the lock)** associated to the 
 	*Try to visualise it as a lock in real life. The first person to enter the lock-protected room takes the key, and keeps it. As long as he doesn't leaves the room, he keeps the key. Other people willing to enter the room can't, until he leaves and give back the key.*
 
 
-**The synchronise mechanism also prevents the JIT to swap lines of code** (when he optimises the code) **outside of the critical section**, for obvious reason. 
+**The synchronise mechanism also prevents the JIT to swap lines of code** (when it optimises the code) **outside of the critical section**.
 Instructions can be swapped in the section itself, but it will never escape it.
 ```java
 // Normal code
@@ -77,16 +77,15 @@ var i = 20;
 var k = j + i;
 ```
 
+> [!caution]
+> The synchronisation mechanism does not guarantee the correct behaviour of the concurrent code outside of the critical section itself. If we execute non-atomic and non-synchronised operations from outside:
+> ```java
+> System.out.println(user.nom() + " " + user.prenom())
+> ```
+> The mechanism loses all it's purpose and the code will potentially opens on concurrency issues. 
+> So it is always important—even if the class is thread-safe and well-conceived—to **respect concurrency principles outside of the class**.
 
-The synchronisation mechanism does not guarantee the correct behaviour of the concurrent code outside of the critical section itself. If we execute non-atomic and non-synchronised operations from outside (e.g,
-```java
-System.out.println(user.nom() + " " + user.prenom())
-```
-), then the mechanism loses all it's purpose and the code will potentially opens on concurrency issues. 
-So it is always important — even if the class is thread-safe and well-conceived — to **respect concurrency principles outside of the class**.
-
-
-So, we see that this synchronise mechanism does not prevent de-scheduling in any way — and by doing so, an incoherent state of data — but it will definitely prevent other threads from accessing this incoherent state. 
+So, we see that this synchronise mechanism does not prevent de-scheduling in any way—and by doing so, an incoherent state of data—but it will definitely prevent other threads from accessing this incoherent state. 
 	*Which means, it does not really matter that our data is incoherent during a critical section, as only the current thread can read/write it. For other threads, the data will only be accessible when everything is done.
 	We have the illusion that the state is never incoherent (which is false, a thread can still be interrupted in the middle of a non-atomic operation), but since no one else can see it, it's fine.*
 
@@ -113,14 +112,14 @@ public class Counter {
 }
 ```
 
-The chosen lock **must respect three conditions**: 
-- **The lock must not be accessible to other threads** and must then respect several encapsulation principles: 
-    - Monitor field must be **private** as it mustn't be retrieved from outside (obviously, don't even start doing retarded things like a `getter` or `setter` for the lock, it **SHOULD ONLY BE ACCESSIBLE WHEN A THREAD ENTERS A CRITICAL SECTION, NOTHING MORE**)
-    - Lock must be **final**, as it **must be initialised in the constructor and never change afterwards** 
-    - As mentioned above, **never provide an accessor to the lock**
-- It must be an **object**, so no primitives (int, long...) nor null 
-- The chosen object **mustn't implement interning** (String literals). More details [[03 - Synchronize and Thread-Safe (EN)#Interning|here]] 
-
+> [!important]
+> The chosen lock **must respect three conditions**: 
+> - **The lock must not be accessible to other threads** and must then respect several encapsulation principles: 
+>    - Monitor field must be **private** as it mustn't be retrieved from outside (obviously, don't even start doing retarded things like a `getter` or `setter` for the lock, it ==**should only be accessible when a thread enters the critical section**==)
+>    - Lock must be **final**, as it **must be initialised in the constructor and never change afterwards** 
+>    - As mentioned above, **never provide an accessor to the lock**
+> - It must be an **object**, so no primitives (int, long...) nor null 
+> - The chosen object **mustn't implement interning** (String literals). More details [[03 - Synchronize and Thread-Safe (EN)#Interning|bellow]] 
 
 Locks in java are called **"re-entrant"**, a **same thread can acquire several time the same lock**:
 ```java

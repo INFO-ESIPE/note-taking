@@ -26,8 +26,7 @@ public class Holder {
 
 We would like, in this example, to only print when the data is set. This program will sometimes print `OK`, and sometimes `KO` (not the expected behaviour).
 
-
-A bad idea would be to proceed like this:
+A first idea would be to proceed like this:
 ```java
 public class Holder {
 	private int value;
@@ -46,17 +45,18 @@ public class Holder {
 	}
 }
 ```
-
-This way, the main thread only moves forward if the holder is done applying the value. There is an obvious issue there: **Busy Waiting**
-	*The thread continuously checks if the boolean is true, which consumes heavy resources on the CPU*
-There is actually another issue there: **Instruction Reordering**
-	*The Just-In-Time compiler (JIT), and even the CPU, can reorder instructions on their own to optimise the program. This means we could obtain a code like this:*
-```java
-Thread.ofPlatform().start(() -> {
-	holder.done = true;
-	holder.value = 42;
-});
-```
+> [!fail] Wrong
+> This way, the main thread only moves forward if the holder is done applying the value. There is an obvious issue there: **Busy Waiting**
+> 	*The thread continuously checks if the boolean is true, which consumes heavy resources on the CPU*
+> 
+> There is actually another issue there: **Instruction Reordering**
+> 	*The Just-In-Time compiler (JIT), and even the CPU, can reorder instructions on their own to optimise the program. This means we could obtain a code like this:*
+> ```java
+> Thread.ofPlatform().start(() -> {
+> 	holder.done = true;
+> 	holder.value = 42;
+> });
+> ```
 > It is now possible for the main thread to consider the overall operation done (boolean set to true), even though the value hasn't been specified yet...
 
 
@@ -91,9 +91,9 @@ public class Holder {
 	}
 }
 ```
+> [!fail] Mate that's some pretty nasty code right there
 
-
- Actually, the best way of doing it is through a get/display method inside the class, which implements the `synchronize` itself (and avoid using the lock from outside) :
+ Actually, the best way of doing it is through a get/display method inside the class, which implements the `synchronize` itself (and avoid using the lock from outside):
 ```java
 public class Holder {
 	private int value;
@@ -127,20 +127,20 @@ public class Holder {
 	}
 }
 ```
-
-This is better, but this does not resolve our busy waiting issue at all...
-We need the following mechanism to solve our issue:
-- Can pause a thread (de-scheduled)
-- Wake up a thread (re-schedule)
-- Works well in critical sections (`synchronize`-compatible)
-
-In java, this behaviour is offered to us by the `wait()` and `notify()` pair !
+> [!fail] Better, but still incorrect
+> This does not resolve our busy waiting issue at all...
+> We need the following mechanism to solve our issue:
+> - Can pause a thread (de-scheduled)
+> - Wake up a thread (re-schedule)
+> - Works well in critical sections (`synchronize`-compatible)
+> 
+> In java, this behaviour is offered to us by the `wait()` and `notify()` pair !
 
 
 ****
 ## `notify()` and `wait()`
 
-Those instance functions are **called on the lock**. 
+Those functions are called on the lock. 
 ```java
 lock.notify();
 
@@ -159,7 +159,8 @@ while (!done) {
 	
 `notifyAll()`: Wakes up **all the threads AWAITING ON THE LOCK**. This should be used as few as possible, especially when a simple `notify()` can be used.
 
-**Those methods must ALWAYS be called inside a `synchronized` block !!!!!**
+> [!important]
+> **Those methods must ALWAYS be called inside a `synchronized` block !!**
 
 
 A thread can only be woken up in three scenarios :
@@ -205,14 +206,14 @@ public class Holder {
 ```
 
 
-**Why do we keep the boolean ?**
+> [!important] Why do we keep the boolean ?
+> If the thread that sets the data notifies before the main thread reaches the `wait()`, the signal is lost, and the main thread is blocked here forever.
+> 
+> It is good practice to use a **condition** (more on that with ReentrantLocks) to know how to deal with the wait. This condition can be a boolean, or something of that kind... **but always in the `synchronized` block**
 
-If the thread that sets the data notifies before the main thread reaches the `wait()`, the signal is lost, and the main thread is blocked here forever.
-	*It is good practice to use a **condition** (more on that with ReentrantLocks) to know how to deal with the wait. This condition can be a boolean, or something of that kind... **ALWAYS IN THE `synchronized` BLOCK THOUGH***
-
-
-**Why `wait()` in a `while` and not an `if` ?**
-
-When we are waken up, we always need to make sure the condition is satisfied. 
-	*In the scenario of an `if`, the threads reach the condition, see that it is not satisfied, and sleeps. When it is awaken, it leaves the `if` and executes the instructions ahead. However, we are not sure that a **spurious wakeup** happened, the condition is potentially still not met, which means the thread should go back to sleep and wait for another wakeup signal.*
+> [!important] Why `wait()` in a `while` and not an `if`?
+> When a thread is awaken, it always must ensure that the condition that puts it to sleep is now satisfied.
+> 
+> In the scenario of an `if`, the threads reach the condition, see that it is not satisfied, and sleeps. 
+> When it is awaken, it leaves the `if` and executes the instructions ahead. However, we are not sure that a **spurious wakeup** happened, the condition is potentially still not met (which means the thread should go back to sleep and wait for another wakeup signal).
 

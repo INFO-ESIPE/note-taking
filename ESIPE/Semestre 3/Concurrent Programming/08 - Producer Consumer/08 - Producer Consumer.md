@@ -37,7 +37,8 @@ As `BlockingQueue` is an interface, those three implementations shares the same 
 | **Insert**  | `add(e)`           | `offer(e)`      | **`put(e)`** | `offer(e, time, unit)` |
 | **Remove**  | `remove()`         | `poll()`        | **`take()`** | `poll(time, unit)`     |
 | **Examine** | `element()`        | `peek()`        | _-_          | _-_                    |
-*In a Producer/Consumer pattern, we **NEVER use the methods raising exceptions**, and **ALMOST NEVER uses the ones returning special values***
+> [!important]
+> In a Producer/Consumer pattern, we **NEVER use the methods raising exceptions**, and **ALMOST NEVER uses the ones returning special values***
 
 ```java
 var queue = new ArrayBlockingQueue<String>(10);

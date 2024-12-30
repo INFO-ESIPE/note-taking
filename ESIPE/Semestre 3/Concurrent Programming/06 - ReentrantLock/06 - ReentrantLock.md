@@ -39,8 +39,8 @@ public class StupidLockDemo {
 	}
 }
 ```
-
-But this is wrong and dangerous. Java code is susceptible to raise a lot of Exceptions. If an exception occurs before the `unlock()` method is reached, we never give our token back... 
+> [!bug]
+> This is wrong and dangerous. Java code is susceptible to raise a lot of Exceptions. If an exception occurs before the `unlock()` method is reached, we never give our token back... 
 
 For this reason, we always need surround our code (and `unlock()`) in a `try/finally`:
 ```java
@@ -61,7 +61,7 @@ public class SwagLockDemo {
 
 **Fairness**
 
-There are two versions of `ReentrantLock` :
+There are two versions of `ReentrantLock`:
 - **Fair** - If several threads are waiting on a lock, priority goes to the one that has awaited for the longest time (this has nothing to do with thread priority, the longest waiter always wins here)
 ```java
 private final ReentrantLock lock = new ReentrantLock(true); // with param
@@ -73,12 +73,13 @@ private final ReentrantLock lock = new ReentrantLock();
 private final ReentrantLock lock = new ReentrantLock(false); // works aswell
 ```
 
-*The fair version is slower...*
+> [!info]
+> The fair version is slower...
 
 
 **Methods**
 
-ReentrantLock comes with a few useful methods that a simple `synchronize` does not offer :
+`ReentrantLock` comes with a few useful methods that a simple `synchronize` does not offer:
 - `tryLock()`: Acquire the lock (just like `lock()` method) but returns a `false` boolean value if it could not acquire it (instead of blocking). **This operation is atomic**
 - `lockInterruptibly() throws InterruptedException`: Acquire the lock (just like `lock()` method), but the operation be interrupted if the thread is locked while waiting for the token (if another thread holds it in the meantime)
 
@@ -86,7 +87,9 @@ ReentrantLock comes with a few useful methods that a simple `synchronize` does n
 ****
 ## Condition
 
-**Caution:** We can not use `lock.wait()` nor `lock.notify()`/`lock.notifyAll()` as those suppose we are in a `synchronized` block, which is not the case
+> [!caution]
+> We can not use `lock.wait()` nor `lock.notify()`/`lock.notifyAll()` as those suppose we are in a `synchronized` block, which is not the case.
+> However, your IDE will still display those functions as callable on the object, be careful...
 
 We pair our `ReentrantLock` with a `Condition` object that it can provides us:
 ```java
@@ -102,7 +105,7 @@ We use the following methods on the condition:
 
 *Those methods works exactly the same as their `synchronize` equivalent*
 
-Example :
+Example:
 ```java
 public class Holder {
 	private int value;
