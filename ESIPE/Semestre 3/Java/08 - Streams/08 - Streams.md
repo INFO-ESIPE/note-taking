@@ -250,3 +250,212 @@ List<Bar> bars = foos.stream()
 	.flatMap(foo - > foo.getBar().stream()) // here
 	.collect(Collectors.toList())
 ```
+
+
+***
+## Gatherer
+*Since Java 22*
+
+The Gatherer API allows the developer to **define custom intermediate operations on streams**.
+The dedicated method `stream.gather(Gatherer g)` provides the ability to integrate these operations seamlessly into Java Streams.
+
+> [!tip]
+> Gatherers are conceptually similar to Collectors, but while Collectors handle **terminal operations**, Gatherers focus on **intermediate operations**.
+
+The `j.u.s.Gatherers` class contains predefined Gatherers. Feel free to check the documentation to check what each of them is doing, as we will focus more on how to create our own Gatherers here.
+
+> [!info]- Reminder: Intermediate operations
+> An intermediate operation:
+> 1. **Pushes or discards elements** to the next stage of the stream.
+> 2. May transform elements (e.g., `map`), and may **maintain a state** (e.g., `limit`, `distinct`).
+> 3. Produces a **new stream** rather than a final result (like terminal operations).
+> 4. Includes **back-propagation**: When pushing values, a boolean is returned indicating if the next stage can accept more elements.
+> 
+> Examples:
+> - `map`: Stateless intermediate operation that transforms elements.
+> - `distinct`: Stateful intermediate operation that tracks seen elements to remove duplicates.
+
+
+### Components of a Gatherer
+
+To define a Gatherer, we use the `Gatherer` interface, which relies on the `Integrator` functional interface:
+```java
+@FunctionalInterface
+interface Integrator {
+	boolean integrate(A state, E element, Downstream<T> downstream);
+}
+```
+> [!important]
+> The **Integrator** interface models the logic of an intermediate operation. It handles how elements and state interact with the stream. Its signature is:
+
+#### Downstream
+
+`Downstream<T>` acts as an **abstraction for the next stage in the stream**. It is conceptually similar to a `Consumer<T>`. 
+It has two methods:
+- **`boolean push(T element)`**: Sends an element to the next stage. 
+	Returns `false` if the next stage no longer accepts elements (short-circuiting).
+- **`boolean isRejecting()`**: Checks if the next stage is rejecting new elements. 
+	Useful for avoiding unnecessary computation if the downstream will discard values. In some specific situations, our stage might create new elements. If calling this method return false, we know that we don't need to bother creating new elements, as the next stage will not accept them anyway (because creating new elements is costly).
+
+![[gatherer.png]]
+
+#### State
+
+Now the complex part: Some intermediate operations are stateful. 
+	*(e.g., `limit()` and `distinct()` needs to count elements with have encountered).*
+
+Gatherers manage state using the following methods for our `Gatherer` class:
+- `Supplier<A> initializer()`: Creates and initialises the state for the operation.
+- `boolean integrator (A, E, Downstream<T> downstream)`: Modify state and push downstream. Back-propagate value is returned.
+- `BinaryOperator<A> combiner()`: If our op is called in a parallelised stream, there will be one state per CPU core. This method allows to combine two states into a new one. 
+	*A gatherer's default combiner turns parallelisation off even if you call `parallel()`.*
+- `BiConsumer<A state, Downstream<T> downstream> finisher()`: Optionally performs an action after the gatherer has processed all input elements.
+	*It could inspect the state or emit additional output elements*
+
+
+**Example:** Gatherer that returns the largest integer from a stream of integers.
+
+```java
+record BiggestInt(int limit) implements Gatherer<Integer, List<Integer>, Integer> {
+    @Override
+    public Supplier<List<Integer>> initializer() {
+        return () -> new ArrayList<>(1);  // Create state to track the largest integer
+    }
+
+    @Override
+    public Integrator<List<Integer>, Integer, Integer> integrator() {
+        return Integrator.of((state, element, downstream) -> {
+            if (state.isEmpty() || element > state.get(0)) state.set(0, element);
+
+            if (element >= limit) {  // Stop processing if we reach the limit
+                downstream.push(element);
+                return false;
+            }
+
+            return true;  // Continue processing elements
+        });
+    }
+
+    @Override
+    public BinaryOperator<List<Integer>> combiner() {
+        return (left, right) -> {
+            if (left.isEmpty()) return right;
+            if (right.isEmpty()) return left;
+            return left.get(0) > right.get(0) ? left : right;
+        };
+    }
+
+    @Override
+    public BiConsumer<List<Integer>, Downstream<? super Integer>> finisher() {
+        return (state, downstream) -> {
+            if (!state.isEmpty()) downstream.push(state.get(0));
+        };
+    }
+}
+
+void main() {
+	// Sequential
+    System.out.println(Stream.of(5,4,2,1,6,12,8,9)
+                             .gather(new BiggestInt(11))
+                             .findFirst()
+                             .get()); // 12
+	
+	// Parallel version
+    System.out.println(Stream.of(5,4,2,1,6,12,8,9)
+                             .gather(new BiggestInt(11))
+                             .parallel()
+                             .findFirst()
+                             .get()); // 12
+}
+```
+
+
+### Behaviour: Greedy vs Short-Circuit
+
+**Short-Circuit Gatherer**: Stops processing as soon as a condition is met (e.g., limit).
+**Greedy Gatherer**: Processes all elements without short-circuiting. These gatherers can be merged with other gatherers, and even with collectors!
+
+
+### Creating a Gatherer
+
+Three axis to consider when creating a gatherer:
+1. Sequential vs Parallelisable:
+	- Parallélisable: `Gather.of()` + defining our `combiner()` method
+	- Inherently sequential: `Gatherer.ofSequential()`
+		*This way, even if the stream is parallel, we can indicate that we want this specific intermediate operation to be executed sequentially.*
+
+2. Stateless vs Stateful
+	- Stateless: Only an `integrator` to define (convenient)
+	- Stateful: Three methods: `initializer()`, `integrator`, `finisher`
+
+4. Short-circuit vs Greedy
+	- Short-circuit: Standard integrator
+	- Greedy: Use `Integrator.ofGreedy()` or Wraps the integrator with `Greedy.of(integrator)`
+
+
+### Performance
+
+> [!tip]
+> There is an useful microbenchmarking framework called [JMH](https://github.com/openjdk/jmh) (Java Microbenchmark Harness), allowing to independently test the performance of fragments of code.
+> *(It isolates each method, and makes a warmup of the JVM to ensure our code is JITed before doing any test. This is very convenient for basic performance tests, but it does not really correspond to a real world scenario.)*
+
+Overall, gatherers are slower than native intermediate operations for several reasons:
+- No primitive specialisation available (e.g., `map` -> `mapToInt`)
+```java
+public long stream_map_sum() {
+	return values.stream().map(String::length).reduce(0, Integer::sum);
+		// 481.222 us/op
+}
+
+public long stream_mapToInt_sum() {
+	return values.stream().mapToInt(String::length).sum();
+		// 102.089 us/op
+}
+
+public long gatherer_map_sum() {
+	return values.stream().gatherer(map(String::length)).reduce(0, Integer::sum);
+		// 552.384 us/op
+}
+```
+> [!info] Solution planned (in a while)
+> We saw that gatherers uses generics.
+> Since Valhalla generics are in progress to provide a support for primitives, it will also apply to Gatherers.
+
+- Spliterator characteristics are not propagated to our gatherer
+```java
+public long stream_map_count() {
+	return values.stream().map(String::length).count();
+		// 0.009 us/op
+}
+
+public long stream_mapToInt_count() {
+	return values.stream().mapToInt(String::length).count();
+		// 0.001 us/op
+}
+
+public long gatherer_map_count() {
+	return values.stream().gatherer(map(String::length)).count();
+		// 101.993 us/op
+}
+```
+
+- No pre-sizing for operations such as `toList`
+```java
+public long stream_map_toList() {
+	return values.stream().map(String::length).toList();
+		// 332.322 us/op
+}
+
+public long gatherer_map_toList() {
+	return values.stream().gatherer(map(String::length)).count();
+		// 558.873 us/op
+}
+```
+> [!info] Why?
+> Related to what we saw above about spliterator characteristics: The `toList` method optimizes by leveraging spliterator characteristics, such as `SIZED`, to pre-size the resulting list. 
+> Gatherers do not propagate these characteristics, leading to additional allocations and reduced performance.
+>
+> This usually allows the stream to pre-size `toList` with the exact size. 
+> This avoids intermediate allocations to enlarge the list as we add new values to it.
+> *Gatherers does not allow that, which is why the performance is so different with a standard stream.*
+
