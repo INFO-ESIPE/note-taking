@@ -165,7 +165,7 @@ Tags can have one or several attributes :
 
 
 ****
-## Multimedia
+## Multimedia & Iframe
 
 ```html
 <!-- Simple inclusion -->
@@ -173,6 +173,9 @@ Tags can have one or several attributes :
 
 <!-- Detailed -->
 <img src="./penpen.jpg" width="500" height="1000" alt="Image of that lovely penguin from NGE (Good Anime)">
+
+<!-- Inline frame: embed another document within the current HTML page -->
+<iframe src="https://web.unipv.it/" width="600" height="500"></iframe>
 ```
 
 

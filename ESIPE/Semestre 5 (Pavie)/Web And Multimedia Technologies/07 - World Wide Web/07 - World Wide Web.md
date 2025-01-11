@@ -84,3 +84,24 @@ An HTTP response has a **code** (302 in the example above) indicating how the op
 | 4XX  | Client-side error                            | **400: Bad Request**<br>   *Server can not process the request as it is malformed, has invalid syntax...*<br>**403: Forbidden**<br>   *The user is not authorised to access the resource*<br>**404: Not Found**<br>   *The requested resource could not be found by the server, the resource does not exist*<br>**405: Method Not Allowed**<br>   *The endpoint does not accept the HTTP method (e.g. We execute a POST method, but the endpoint is for a DELETE method*<br>**429: Too Many Requests**<br>   *Self explanatory* |
 | 5XX  | Server-side error                            | **500: Internal Server error**<br>   *Generic error indicating the server has encountered an error while processing the request*<br>**502: Bad Gateway**<br>   *The server, while working as a gateway to get a response needed to handle the request, got an invalid response*<br>**503: Service Unavailable**<br>   *Server can not currently handle the request (usually because the server is down)*                                                                                                                        |
 
+
+***
+## 3D for Web
+
+Several solutions exists:
+- **Quick Time Virtual Reality (QVRT)**: Created by apple, allows to build "3D panoramas" from photos.
+- **WebGL**: Common solution. JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the need for a plugin (it uses the `canvas` tag).
+
+
+***
+## Hidden Services
+
+We usually divide the web into three big chunks:
+- **Surface web**: Pages that are indexed by search engines.
+	*Wikipedia pages, BBC articles, Amazon articles...*
+- **Deep web**: Any page that is not directly indexed by a search engine (dynamic pages, password protected content...)
+	*Your email inbox, Banking portal, Your private discord channels...*
+- **Dark web**: A subset of the deep web that is intentionally hidden and designed to be accessed only through specialised tools (e.g., TOR browser).
+	*Whistleblower platforms, Illicit marketplaces or forums, privacy-focused services*
+
+
