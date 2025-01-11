@@ -19,8 +19,9 @@ Graphical information can either be :
 	For Logos, drawings, diagrams, or favicons*
 
 OS treats the monitor as a 2-dimensional array of pixels, where each pixel has an associated amount of **video memory (bit depth)** :
-![[bit depth.png]]
-*This is a basic example with only on/off pixels. That's why the bit depth is a single bit value.*
+![[bit depth.png|400]]
+> [!info]
+> This is a basic example with only on/off pixels. That's why the bit depth is a single bit value.*
 
 **More bit depth = more colours** *(1 byte = 256 colours; 2 bytes = 65,536 colours ...)*
 	We consider it to be **True colour** when each pixel has **3 bytes of bit depth** (one byte for R, G and B respectively).
@@ -57,18 +58,18 @@ The files are lossless compressed via **Lempel-Ziv-Welch (LZW)**, where sequence
 	*This works well for large single-colour areas.*
 
 **GIF89a** allows a colour of the CLUT to be transparent (funny discord GIFs with invisible background) :
-![[invisible.png]]
+![[invisible.png|500]]
 
 
-A web conversion software usually selects the 256 most relevant colours of the image, and place them into the palette. However, the colours will now always be selected from the **System Palette**, defined by the OS :
-![[palettes.png]]
-
-216 of the 256 colours are the same (between Windows and Mac), they are called the **Safe palette*.
-
+A web conversion software usually selects the 256 most relevant colours of the image, and place them into the palette. However, the colours will now always be selected from the **System Palette**, defined by the OS:
+![[palettes.png|500]]
+> [!info]
+> 216 of the 256 colours are the same (between Windows and Mac), they are called the **Safe palette*.
 
 We then obtain something similar to this (Macintosh) :
 ![[conversion.png]]
-	*Process is clearly noticeable when you zoom on the converted image, especially in the top left-hand corner.*
+> [!tip]
+> Process is clearly noticeable when you zoom on the converted image, especially in the top left-hand corner.*
 
 
 ****

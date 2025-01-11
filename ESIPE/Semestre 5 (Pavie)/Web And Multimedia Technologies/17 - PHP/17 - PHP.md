@@ -37,6 +37,7 @@ The client will receive:
 	</body>
 </html>
 ```
+> [!important]
 > This is because PHP acts as a server-side **preprocessor**, meaning the PHP code (`<?php ?>`) will be executed by the server, and only pure HTML will be returned to the client.
 
 ### Variables and types
@@ -124,6 +125,7 @@ $name = "Macron";
 $money = 2_333_590;
 echo "My name is {$name}, I have " . $money . "€ at Rothschild";
 ```
+> [!info]
 > The usage of curly braces is only a good practice (clarity), it works without them.
 
 More sophisticated features for multi-lines are Heredoc and Nowdoc:
@@ -142,7 +144,8 @@ welcome to the party!
 EOT;
 echo $text; // My name is $name, welcome to the party!
 ```
-> This is optional, strings can be concatenated on multiple lines with `.`.
+> [!info]
+> This is optional, strings can be concatenated on multiple lines with `.`
 
 ### Instruction Flow control and Operators
 
@@ -204,6 +207,7 @@ $second_item = $odd_numbers[1];        // 3
 $last_item = end($odd_numbers);        // 9
 $last_index = count($odd_numbers) - 1; // 4
 ```
+> [!info] 
 > As you can see, native PHP functions like `end()` and `count()` are **globally available**, without namespaces or packages (unlike Java). *This is very annoying !!!!*
 
 PHP arrays behaves like `ArrayDeque` in Java, allowing both stack and queue operations:
@@ -215,6 +219,7 @@ array_pop($numbers);        // [1, 2, 3] (removes and returns last element)
 array_unshift($numbers, 0); // [0, 1, 2, 3] (head insertion, queue-like)
 array_shift($numbers);      // [1, 2, 3] (removes and returns first element)
 ```
+> [!caution]
 > These methods modify the array in place, directly **changing its state**.
 
 You can concatenate, merge, and slice arrays with built-in functions:
@@ -230,6 +235,7 @@ $numbers = [1, 2, 3, 4, 5, 6];
 $sliced = array_slice($numbers, 3);       // [4, 5, 6] (ignores first 3 elements)
 $sliced_pad = array_slice($numbers, 3, 2); // [4, 5] (takes 2 elements starting at index 3)
 ```
+> [!caution]
 > These functions **return a new array** rather than modifying the original's state.
 
 ### Associative Arrays
@@ -816,6 +822,7 @@ if($user == "admin") {
 	                               // if the user isn't admin.
 }
 ```
+> [!tip]
 > So, use `import` for optional/conditional dependencies.
 
 There are variants ensuring we don't load a same file several times:

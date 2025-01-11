@@ -13,7 +13,8 @@
 JavaScript is a high-level, dynamic, untyped, and interpreted programming language. 
 	*JavaScript is prototype-based with first-class functions, making it a multi-paradigm language, supporting object-oriented, imperative, and functional programming styles.*
 
-**Note:** The standardised name of JavaScript is ECMAScript (as it is developed by Ecma International).
+> [!note]
+> The standardised name of JavaScript is ECMAScript (as it is developed by Ecma International).
 
 
 it's main purpose is to integrates with HTML to provide interactive and dynamic functionalities:
@@ -57,6 +58,7 @@ let b = 42;  // 42
 let sum;
 sum = a + b; // 42
 ```
+> [!info] 
 > The default value of an non-initialised variable is `undefined`. More details on that in the part dedicated to [[15 - JavaScript#Types|types]].
 
 It's scope will be the enclosing block of code. A variable cannot be declared two times, nor cannot be queried if not defined:
@@ -77,6 +79,7 @@ try {
   console.log(err); // TypeError: invalid assignment to const 'number'
 }
 ```
+> [!info]
 > As a constant is final, it needs to be initialised when declared (unlike a `let` which can be initialised later).
 
 Unlike the two previous examples, we can also declare a global variable which will be accessible in the entire file (and not the enclosing block only):
@@ -98,6 +101,7 @@ typeof -34.6 // number
 typeof 'foo' // string
 typeof "bar" // string
 ```
+> [!note]
 > Other types for arrays, objects and functions, but they will be detailed in a dedicated part
 
 ### Operators
@@ -134,6 +138,7 @@ let b = 0.2;
 a + b == 0.3 // false (!)
 a + b        // 0.30000000000000004 (!)
 ```
+> [!caution]
 > We never use `==` nor `!=` on floating values
 
 `==` and `!=` are defined for all types, they work more or less as expected depending on types:
@@ -147,6 +152,7 @@ true != false      // true
 4 === "4"          // false
 4 !== "4"          // true
 ```
+> [!tip]
 > Triple `=` also checks if the type is the same. For instance, `4` is a number while `"4"` is a string. `===` will not consider them equal as there is a type mismatch.
 
 The `+` operator can also be used for string concatenation **if one of the operand is a string** (left or right value):
@@ -191,6 +197,7 @@ for(let i = 0; i < 4; i = i + 1) { // "i" can be initialised in the loop itself
   console.log(i);
 }
 ```
+> [!info] 
 > We can exit a loop with `break` and `return`, and skip a loop with `continue`
 
 ### Increment
@@ -216,6 +223,7 @@ function hello(name) {
 console.log(hello("Bob"));   // hello Bob !
 console.log(hello("Kathy")); // hello Kathy !
 ```
+> [!info]
 > If we don't return, `undefined` will be returned.
 
 If too many arguments are fed to a function, they will be ignored. If too few are given, missing ones will be `undefined`:
@@ -277,6 +285,7 @@ function printHello(s) {
 
 printHello("Bob"); // Hello Bob !
 ```
+> [!important]
 > A nested function using variables from the enclosing function is called a **Closure**.
 
 A function can take another function as argument, and return a function:
@@ -412,6 +421,7 @@ let array = [1, 2, 4];
 array.length;    // property
 array.slice(1);  // function (method)
 ```
+> [!note]
 > Mind the usage of `()`. More details on the next chapter
 
 `indexOf()` uses `==` to find the first occurrence of an element, and returns its index. `lastIndexOf()` does the same but on the last occurrence.
@@ -480,6 +490,7 @@ In JavaScript, we declare it with `{ }`, where the key and the value are separat
 { color: 'red', align: true }
 {} // empty
 ```
+> [!info]
 > Keys must be strings
 
 We retrieve the value associated to a key via the `.` (dot):
@@ -644,6 +655,7 @@ const car = {
 console.log(car);              // {"driver":"Bob"}
 console.log(car.driverName()); // Bob
 ```
+> [!info] 
 > We call those "object literals". Here, our "car" object has one data property (`driver`), and a method (`driverName`).
 
 `Object.create(prototype)` allows to create an object via a prototype, which is another object in which to look for if data is missing in the first object:
@@ -667,6 +679,7 @@ newPets.goose = "flerken";
 console.log(newPets);           // {"goose":"flerken"}
 console.log(newPets.__proto__); // {"snoopy":"dog","garfield":"cat"}
 ```
+> [!tip]
 > It is recommended to try all of this (and experiment) in a devtool console. Try this on a website's console. If you add the dot (`.`) right after the object name, all possible options will be listed. You will see that `__proto__` is one of them, but a lot more exists !
 
 If we want to share methods, we put them in the prototype we use, so we can access them:

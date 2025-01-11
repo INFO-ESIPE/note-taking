@@ -447,7 +447,7 @@ List<String> findEmployeeNameOlderThan(List<Employee> employees, int age) {
 List<String> findEmployeeNameOlderThan(List<Employee> employees, int age) {
 	return employees.stream()
 		.filter(e -> e.age() >= age) // Predicate :)
-		.map(Employee::name) // Function :)
+		.map(Employee::name)         // Function :)
 		.toList();
 }
 ```
@@ -547,7 +547,7 @@ stream.mapToInt(Person::salary)
 
 Min/Max on a stream:
 - `.min(comparator)`
-	`stream.min((p1, p2) - > Integer.compare(p1.age(), p2.age()));`
+	`stream.min((p1, p2) -> Integer.compare(p1.age(), p2.age()));`
 - `.max(comparator)`
 	`stream.max(Comparator.comparingInt(Person::age));`
 

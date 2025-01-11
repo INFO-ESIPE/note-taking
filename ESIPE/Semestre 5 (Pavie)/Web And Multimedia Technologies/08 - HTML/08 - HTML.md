@@ -79,7 +79,7 @@ HTML5.3 is the latest version that was standardised by W3C
 
 
 Elements are organised under a tree shape. This is the **Document Object Model (DOM)**
-![[dom.png]]
+![[dom.png|300]]
 
 
 ****
@@ -428,7 +428,7 @@ There are new semantic description of content (to split the HTML document in a m
 Those new multimedia tags allows for multimedia inclusion in web pages to be more consistent and standardised. With previous versions, it was required for browsers to have specific plugins, which was very messy and hard to make a standard out of.
 
 Here is the structural document an HTML5 should follow:
-![[structure.png]]
+![[structure.png|450]]
 - `header`: “introductory” information
 - `main`: content of the page
 - `nav`: navigation elements

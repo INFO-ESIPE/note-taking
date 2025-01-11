@@ -16,11 +16,11 @@ We needed a way to create relationship between those pieces of data.
 **Semantic Web is here to describe the relation between portions of information coming from diverse sources**.
 
 A basic architecture:
-![[archi.png]]
-> Rdf is the document that describes the relation between links and pages
+![[archi.png|400]]]
 
 A more complete architecture:
-![[archi-complete.png]]
+![[archi-complete.png|600]]]
+> [!info]
 > Semantic web was built to be a **"Web of trust"**, which is not the case for the web we currently use.
 
 

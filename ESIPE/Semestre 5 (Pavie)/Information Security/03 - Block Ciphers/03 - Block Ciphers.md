@@ -187,7 +187,7 @@ Base is similar as **ECB**, but the following step is added to solve the aforeme
 
 > [!success]- Solution: ECB Penguin
 > If we now try to encode our penguin, we obtain a result that does not disclose any pattern or similarity in between plaintext blocks.
-> ![[correct penpen.png]]
+> ![[correct penpen.png|275]]
 
 Biggest issue with this method is that it is way slower. 
 	*We lost our parallelism feature as each block requires the output of the previous one in order to be encoded correctly.*

@@ -253,7 +253,7 @@ table, th, td {
 	border: 1px solid black; 
 }
 ```
-![[border.png]]
+![[border.png|400]]
 
 
 The size of a table is calculated by it's elements, unless we use the `width` and  `height` properties
@@ -271,7 +271,7 @@ td {
 	padding: 3px; 
 }
 ```
-![[size.png]]
+![[size.png|400]]
 
 
 By default, text is horizontally aligned on the left. We can change this behaviour via the `text-align` property we mentioned earlier
@@ -293,7 +293,7 @@ th {
 	text-align: right; 
 }
 ```
-![[align.png]]
+![[align.png|400]]
 
 
 We can also vertically align the text in cells, and add a different colouring on half of the bands in order to facilitate reading (via the `:nth-child` class)
@@ -321,7 +321,7 @@ tr:nth-child(odd) { /* "even" is also available */
 	text-align: right; 
 }
 ```
-![[final.png]]
+![[final.png|400]]
 
 
 ****
@@ -365,7 +365,7 @@ h1 {
 	text-shadow: 5px 5px 5px #FF0000;
 }
 ```
-![[text.png]]
+![[text.png|400]]
 
 **Font via files:**
 Custom fonts can be added to the web server. Those will be automatically downloaded via an HTTP request when the user loads a page.
@@ -389,7 +389,7 @@ div {
 	column-gap: 40px;
 }
 ```
-![[columns.png]]
+![[columns.png|500]]
 
 **Media Queries for Responsive Design (can be found [[10 - CSS Display#Responsive Design|here]])**
 

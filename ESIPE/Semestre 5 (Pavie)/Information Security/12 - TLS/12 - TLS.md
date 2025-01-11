@@ -29,7 +29,7 @@ The RFC specifies that TLS is integrated with several supporting inner protocols
 - **Change Cipher Spec Protocol**: Signals a switch to a new set of cryptographic parameters during the handshake.
 Additionally, there is a fifth protocol, the **Heartbeat Protocol**, which is defined in its own [RFC](https://datatracker.ietf.org/doc/html/rfc6520)It provides a mechanism to keep the connection alive and check for connectivity.
 
-![[tls.png]]
+![[tls.png|500]]
 > The **record protocol** underpins the other protocols and provides essential transport services. This is why it is depicted below the inner protocols in diagrams—it serves as the foundation for all TLS communications.
 
 
@@ -61,7 +61,7 @@ Handshake steps:
 	- The server signs this computation with his private key and forwards it to the client along with its signature
 	- The client verifies the signature (proves that the server owns the private key), and then generates a secret `b` and send `g^b mod p`
 	- The client and server now shares a **premaster secret**: `g^ab mod p` (Like regular Diffie-Hellman, an eavesdropper cannot retrieve `g^ab`).
-![[dhe.png]]
+![[dhe.png|300]]
 > Our handshake looks like this so far
 
 4. **Derive Symmetric Keys** - The server and client each derive symmetric keys from `RB` and `RS` (usually by seeding a [[04 - Stream Ciphers#Randomness|PRNG]] with both values). Four keys are derived:
@@ -74,7 +74,7 @@ Handshake steps:
 5. **Exchange MACs** - The server and client exchange MACs over all prior handshake messages using the agreed cryptographic algorithm (from step 1 to 4).
 
 Once this is done, messages can securely be exchanged between the two parties. They will be MACed and then encrypted (for legacy reasons, the other way around is usually better).
-![[mac.png]]
+![[mac.png|300]]
 > Each message `M` will be encrypted with `Cb`/`Cs`, and MACed with `Ib`/`Is`.
 
 

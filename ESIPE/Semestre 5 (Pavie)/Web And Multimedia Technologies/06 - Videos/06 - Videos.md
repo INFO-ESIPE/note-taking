@@ -110,8 +110,8 @@ It is suitable to Full HD and 4K definitions, thus explaining their use for Blu-
 The motion prediction feature is way more precise than it is with MPEG-2, allowing motion prediction block unit to go from a 16x16 pixel size to a 4x4 one
 	*It operates on smaller elements of the image, more precise*
 
-The inter-frame of MPEG-4 is more sophisticated than MPEG-2 one, the latest uses the frame before and the frame after, while MPEG-4 uses two for each direction (4 frames instead of 2) :
-![[interframe.png]]
+The inter-frame of MPEG-4 is more sophisticated than MPEG-2 one, the latest uses the frame before and the frame after, while MPEG-4 uses two for each direction (4 frames instead of 2):
+![[interframe.png|550]]
 
 
 ****

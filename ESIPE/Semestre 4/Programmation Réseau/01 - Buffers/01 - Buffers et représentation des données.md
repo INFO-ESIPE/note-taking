@@ -12,7 +12,7 @@ Tout ce qui s'échange sur le réseau prend systématiquement la forme d'une sui
 La moindre action nécessite un certain nombre d'informations afin que chaque acteur puisse correctement interpréter les valeurs échangées. Tout ceci est défini par le protocole utilisé. 
 
 Par exemple, pour échanger un entier, il faut savoir sur combien d'octets cela sera représenté, si l'entier est signé, et l'endianness (droite -> gauche ou inverse).
-![[endian.png]]
+![[endian.png|300x100]]
 
 - BigEndian: Octet de poids fort en premier :
 	- 61 E2 82 AC -> 1642234540
@@ -44,7 +44,7 @@ Il existe, cependant, une classe **ByteBuffer** qui remplacent ces tableaux de b
 Le concept est similaire à un tableau d'octets (avec une capacité limite), mais on y ajoute deux indications qui définissent la zone de travail: 
 - Position: Début de la zone de travail (case inclue) 
 - Limite: Fin de la zone de travail (case exclue)
-![[buffer_basic_representation.png]]
+![[buffer_basic_representation.png|600]]
 
 La method factory `ByteBuffer.allocate(int capacity)` créé un bytebuffer. 
 **Par défaut, position = 0 et limit = capacity.** 
@@ -60,13 +60,13 @@ Cela vient du fait que l'allocateDirect n'est pas garbage collecté, car, à l'i
 - `get()` : Lit et retourne l'octet sur la position
 
 Ces méthodes font avancer la position de 1 octet. Si la position dépasse la limite, `BufferOverflowException` :
-![[buffer_evolution.png]]
+![[buffer_evolution.png|550]]
 
 La méthode `flip()` (bien retenir ça, c'est le truc le plus important du cours) permet de lire ce qu'on vient d'écrire en plaçant la limite à la position actuelle et en replaçant la position à 0 :
-![[buffer_flip.png]]
+![[buffer_flip.png|550]]
 
 On peut recaler au début du buffer tout ce qui n'a pas été consommé et qui est dans la zone de travail via `compact()` :
-![[buffer_compact.png]]
+![[buffer_compact.png|550]]
 
 
 **Autres méthodes utiles :

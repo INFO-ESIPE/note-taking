@@ -72,13 +72,13 @@ div {
   border-style: dotted dashed solid double;
 }
 ```
-![[box.png]]
+![[box.png|450]]
 
 - **Margin** (Space outside of the box)
 	*Logic is the same as `padding` (same dedicated properties too, just change "display" by "margin")*
 
 Visualise:
-![[boxmodel.webp]]
+![[boxmodel.webp|450]]]
 
 
 ****
@@ -102,7 +102,7 @@ Visualise:
 	float: left; /* "right" also available */
 }
 ```
-![[float.png]]
+![[float.png|450]]]
 
 
 The `clear` property allows to stop the floating display
@@ -132,7 +132,7 @@ The `clear` property allows to stop the floating display
 	clear: both; 
 }
 ```
-![[clear.png]]
+![[clear.png|450]]]
 
 
 **The `vertical-align` property can not be used on a floating object**. However, the `display: inline-block;` declaration allows to see an element as an inline, which allows us to now use vertical-align
@@ -157,7 +157,7 @@ The `clear` property allows to stop the floating display
 	clear: both; 
 }
 ```
-![[inline.png]]
+![[inline.png|450]]]
 
 
 ****
@@ -198,8 +198,9 @@ We can manage the **overlap order** of elements with the `z-index` property:
 	z-index: 1;
 }
 ```
-![[zindex.png]]
-	*The element with the highest `z-index` value overlaps the others*
+![[zindex.png|350]]]
+> [!info]
+> The element with the highest `z-index` value overlaps the others*
 
 
 ****
@@ -354,7 +355,7 @@ The flex layout allows responsive elements within a container to be automaticall
   height: 40px;
 }
 ``` 
-![[flexbox-first.png]]
+![[flexbox-first.png|450]]]
 
 
 **Container Properties**
@@ -366,7 +367,7 @@ The flex layout allows responsive elements within a container to be automaticall
   flex-direction: row-reverse;
 }
 ```
-![[flexbox-reverse.png]]
+![[flexbox-reverse.png|450]]]
 
 **Horizontal Alignment - `justify-content`** (start | end | center | space-between | space-evenly | space-around) 
 ```css
@@ -376,7 +377,7 @@ The flex layout allows responsive elements within a container to be automaticall
   justify-content: center;
 }
 ```
-![[flexbox-justify.png]]
+![[flexbox-justify.png|450]]]
 
 **Vertical Alignment - `align-items`** (start | end | center | baseline | stretch)
 ```css
@@ -387,7 +388,7 @@ The flex layout allows responsive elements within a container to be automaticall
   align-items: center;
 }
 ```
-![[flexbox-align.png]]
+![[flexbox-align.png|450]]]
 
 **Multi-lines if not enough space**
 	`flex-wrap` (nowrap | wrap | wrap-reverse)
@@ -404,9 +405,9 @@ The flex layout allows responsive elements within a container to be automaticall
   height: 200px;
 }
 ```
-![[flexbox-wrap1.png]]
+![[flexbox-wrap1.png|450]]]
 
-![[flexbox-wrap2.png]]
+![[flexbox-wrap2.png|320]]]
 
 **Spacing**
 	`row-gap` for gap between rows
@@ -424,7 +425,7 @@ The flex layout allows responsive elements within a container to be automaticall
   height: 150px;
 }
 ```
-![[flexbox-gap.png]]
+![[flexbox-gap.png|450]]]
 
 
 **Individual Elements Properties**
@@ -449,7 +450,7 @@ Instead of following the `align-items` container directive, the element will be 
   align-self: flex-end;
 }
 ```
-![[flexbox-self.png]]
+![[flexbox-self.png|450]]]
 
 
 **Element Size - `flex-basis`**
@@ -474,7 +475,7 @@ Size an elements takes in the total flex zone
   flex-basis: 60%; /* Larger than the two others */
 }
 ```
-![[flexbox-basis.png]]
+![[flexbox-basis.png|450]]]
 
 
 **Growing - `flex-grow`**
@@ -499,8 +500,8 @@ Indicates if the element is growing when there is room available for it
   flex-grow: 1;
 }
 ```
-![[flexbox-grow1.png]]
-![[flexbox-grow2.png]]
+![[flexbox-grow1.png|250]]]
+![[flexbox-grow2.png|450]]]
 
 
 **Shrinking - `flex-shrink`**
@@ -537,7 +538,7 @@ CSS Grids allows creation of complex responsive web design layouts more easily a
   margin: 5px;
 }
 ```
-![[grid.png]]
+![[grid.png|450]]]
 
 
 **Container Properties**
@@ -558,7 +559,7 @@ Indicates size of each column/row
   margin: 5px;
 }
 ```
-![[grid-template.png]]
+![[grid-template.png|450]]]
 
 Ways of specifying :
 - in pixels: `100px`
@@ -579,7 +580,7 @@ Ways of specifying :
   margin: 5px;
 }
 ```
-![[grid-units.png]]
+![[grid-units.png|450]]]
 
 It is also possible to use the `repeat(times, value)` macro to apply a same value to each row/column of the grid
 ```css
@@ -595,7 +596,7 @@ It is also possible to use the `repeat(times, value)` macro to apply a same valu
   margin: 5px;
 }
 ```
-![[grid-repeat.png]]
+![[grid-repeat.png|450]]]
 
 
 **Horizontal Alignment - `justify-content`** (start | end | center)
@@ -615,7 +616,7 @@ Similar to how it works with flexboxes
   margin: 5px;
 }
 ```
-![[grid-justify.png]]
+![[grid-justify.png|450]]]
 
 
 **Vertical Alignment - `align-items`** (start | end | center | baseline | stretch)
@@ -648,7 +649,7 @@ Again, exactly like flexboxes
   height: 60px;
 }
 ```
-![[grid-align.png]]
+![[grid-align.png|450]]]
 
 
 **Spacing**
@@ -668,4 +669,4 @@ Again, exactly like flexboxes
   margin: 5px;
 }
 ```
-![[grid-gap.png]]
+![[grid-gap.png|450]]]

@@ -19,7 +19,7 @@ The **cipher** is a pair of **encryption** and **decryption** transformations
 **Bruteforce (exhaustive key search)** is an attack where an adversary attempts to discover the plaintext by trying all possible keys, until the correct one is eventually found. It is very slow, but always works at the end of the day.
 
 On the other hand, **Cryptanalysis** is an analytical attack solely on the ciphertext. Can be performed via several approaches:
-![[analysis.png]]
+![[analysis.png|500]]
 
 
 Cryptographic systems can be characterised along three independent dimensions:
@@ -30,7 +30,7 @@ Cryptographic systems can be characterised along three independent dimensions:
 - **The Number of Keys Used in the System**
     - Single-Key: [[02 - Cryptography Basics#Symmetric Ciphers|Symmetric Ciphers]]
     - Two-Key: [[05 - Asymmetric Ciphers|Asymmetric Ciphers]]
-- **The Method of Processing the Plaintext**
+- **The Method of Processing the plaintext**
     - [[03 - Block Ciphers|Block Ciphers]] 
     - [[04 - Stream Ciphers|Stream Ciphers]]
 
@@ -44,7 +44,7 @@ The **secret key** allows us to **both encrypt** our plaintext **and decrypt** t
 > This means that you can not be sure that what you retrieve is the real plaintext, as the result you get might be a garbage value.
 
 The secret key must be passed between sender and receiver on a secure side channel, else all the purpose is lost:
-![[sidechannel.png]]
+![[sidechannel.png|700]]
 > [!Info] Keeping the algorithms private is useless. Most of the time, encryption and decryption are performed by a "Rich Client" software. It is possible to reverse engineer this software to find the algorithm (it might take time, but it will always be found). What matter is to keep the key private (as it is easier to change if it is **compromised**).
 
 

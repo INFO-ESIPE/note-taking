@@ -473,7 +473,7 @@ As we can see [[06 - Collections#Interfaces and implementation|on the image here
 Inside the Map interface lies another interface, called `Map.Entry` (refer to [[03 - Inner Classes & Enumerations#Inner Class|this lesson]]):
 ```java
 interface Map {
-	interface Entry<K,V> { // nested
+	interface Entry<K, V> { // nested
 		K getKey();
 		V getValue();
 		default void setValue(V value) { throw new UOE(); }

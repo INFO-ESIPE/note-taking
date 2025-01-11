@@ -34,7 +34,7 @@ An Audio CD has a sampling frequency of 44100 Hz (volume is measured 44100 times
 
 
 As digital signal is only composed of binary values, it is very rarely altered by noise (as this noise will not reach the other value). Unlike analog signal where noise affects the audio quality a lot. 
-![[digital.png]]
+![[digital.png|500]]
 
 *Noise is visible in red. As we can see, the value will still be considered like the original intended values as the noise is not strong enough to reach the opposite binary value.*
 
