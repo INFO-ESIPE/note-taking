@@ -44,7 +44,7 @@ The client will receive:
 
 PHP is a **weakly typed** language, which means it's up to PHP to decide a variable type upon assignment. 
 	*This means that a variable type can change through time.*
-However, modern versions of PHP allow **type enforcement** (explained [[17 - PHP#Forcing typing (out of class scope)|bellow]]). Main scalar types:
+However, modern versions of PHP allow **type enforcement** (explained [[14 - PHP#Forcing typing (out of class scope)|bellow]]). Main scalar types:
 - `int`
 - `float`
 - `string`
@@ -149,7 +149,7 @@ echo $text; // My name is $name, welcome to the party!
 
 ### Instruction Flow control and Operators
 
-Same as JavaScript and most languages, except for switch cases and [[17 - PHP#Multidimensional Arrays|native foreach loop]].
+Same as JavaScript and most languages, except for switch cases and [[14 - PHP#Multidimensional Arrays|native foreach loop]].
 PHP Switches doesn't allow for pattern matching. If need this feature, we have to use `match()`:
 ```php
 $i = 3;
@@ -358,7 +358,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 Two more superglobals exists: 
 - `$_SESSION`: Stores user-specific data during a session.
 - `$_COOKIE`: Stores small pieces of data in the client’s browser.
-Those are covered [[17 - PHP#Sessions and cookies|bellow]].
+Those are covered [[14 - PHP#Sessions and cookies|bellow]].
 
 ### Sessions and cookies
 
@@ -383,7 +383,7 @@ echo $_COOKIE['user']; // John
 
 ### Interaction with MySQLi (for class)
 
-MySQL Improved is a PHP extension specifically designed to interact with MySQL (unlike [[17 - PHP#Interaction with PHP Data Objects (out of class scope)|PDOs]] which are more flexible).
+MySQL Improved is a PHP extension specifically designed to interact with MySQL (unlike [[14 - PHP#Interaction with PHP Data Objects (out of class scope)|PDOs]] which are more flexible).
 	*`mysqli` is a step-up from the deprecated `mysql` extension from PHP 5.5*
 
 ```php

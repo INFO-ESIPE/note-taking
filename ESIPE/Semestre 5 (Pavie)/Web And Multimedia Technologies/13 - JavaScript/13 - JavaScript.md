@@ -59,7 +59,7 @@ let sum;
 sum = a + b; // 42
 ```
 > [!info] 
-> The default value of an non-initialised variable is `undefined`. More details on that in the part dedicated to [[15 - JavaScript#Types|types]].
+> The default value of an non-initialised variable is `undefined`. More details on that in the part dedicated to [[13 - JavaScript#Types|types]].
 
 It's scope will be the enclosing block of code. A variable cannot be declared two times, nor cannot be queried if not defined:
 ```js
@@ -87,7 +87,7 @@ Unlike the two previous examples, we can also declare a global variable which wi
 myvariable = 'Hello' // No keyword at the beginning
 ```
 
-*A fourth way of declaring variables is with the `var` keyword, but var isn't [[15 - JavaScript#Scope|scopped correctly]], so we avoid using it.*
+*A fourth way of declaring variables is with the `var` keyword, but var isn't [[13 - JavaScript#Scope|scopped correctly]], so we avoid using it.*
 
 ### Types
 
@@ -328,7 +328,7 @@ Math.floor(Math.random() * 10) // e.g. 9
 ****
 ## Scope
 
-As briefly mentioned [[15 - JavaScript#Variables|at the beginning]], usage of `var` is independent from the block it is declared in (the `{ }`).
+As briefly mentioned [[13 - JavaScript#Variables|at the beginning]], usage of `var` is independent from the block it is declared in (the `{ }`).
 In fact, vars are declared at the beginning of the function.
 
 This means that we can also access the loop variable outside of the loop:
@@ -413,7 +413,7 @@ let array2 = [0, ...array]; // Also works for creating new arrays
 
 ### Methods on arrays
 
-An array is considered an "object", as we explain [[15 - JavaScript#Dictionary (Object)|later on]]. So, they come with their own functions and properties that helps us manipulating the data inside it.
+An array is considered an "object", as we explain [[13 - JavaScript#Dictionary (Object)|later on]]. So, they come with their own functions and properties that helps us manipulating the data inside it.
 
 The `length` property allow us to know the size of the array:
 ```js
@@ -522,7 +522,7 @@ JSON.stringify(obj)    // {"peer":3}
 ```
 > JSON is the JavaScript Object Notation. Its mostly used to represent objects in a transportable and standardised format, like XML but less verbose and with lack of verification mechanisms.
 
-As mentioned in [[15 - JavaScript#Types|the type chapter]], "objects" are types, but they aren't primitive types.
+As mentioned in [[13 - JavaScript#Types|the type chapter]], "objects" are types, but they aren't primitive types.
 So, `==` compares in memory address, not values (like in Java).
 If we want to compare two objects, we must compare all fields:
 ```js

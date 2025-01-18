@@ -391,7 +391,7 @@ div {
 ```
 ![[columns.png|500]]
 
-**Media Queries for Responsive Design (can be found [[10 - CSS Display#Responsive Design|here]])**
+**Media Queries for Responsive Design (can be found [[9.1 - CSS Display#Responsive Design|here]])**
 
-**Animations and transitions (can be found [[11 - CSS Animations|here]])**
+**Animations and transitions (can be found [[9.2 - CSS Animations|here]])**
 

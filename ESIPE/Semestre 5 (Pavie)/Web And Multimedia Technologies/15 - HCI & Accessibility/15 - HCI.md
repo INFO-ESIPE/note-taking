@@ -1,7 +1,5 @@
 [[Web And Multimedia Technologies]]
 ***
-**Note**: Boring class
-***
 **Table of Contents**
 ```table-of-contents
 ```
