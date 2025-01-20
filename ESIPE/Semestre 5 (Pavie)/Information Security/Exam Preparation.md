@@ -1,6 +1,7 @@
 [[Information Security]]
 ***
 ## Personal straightforward answers
+*Feel free to correct them if they lack information, or are simply wrong*
 
 1. What is "CIA" (in the context of the class obviously) ? Describe it.
 The CIA triad is a model providing three key guidelines on how to protect a system (and its resources):
@@ -67,19 +68,53 @@ We expect a hashing function to follow a certain set of properties (especially c
 
 
 6. What is a symmetric cipher? Specify an overall definition, fields of application.
+A symmetric cipher is an encryption method where the **same key is used for both encryption and decryption**. This means the sender and the recipient must share a secret key beforehand, which must remain confidential (via a secure side-channel).
+This type of cipher is way faster than its asymmetric counterpart, as the same key can both encrypt the plaintext and decrypt the ciphertext.
 
+Symmetric ciphers are ubiquitous: secure communications (TLS, Diffie-Hellman...), file encryption to guarantee confidentiality on cold storage...
 
 
 7. What is a digital signature?
+Digital signatures is a major cryptographic mechanism introduced by asymmetric ciphers. The purpose is twofold:
+- Allow a **signatory to claim ownership of the document**
+- Recipients can **check the file integrity and authenticity**
 
+The signatory computes the hash of the document he wishes to sign (SHA-512 is a reliable algorithm for this purpose), he then encrypts this hash with his private key. 
+He now publishes both the document and its signature on the internet for other people to download, along with his public key (so people can decrypt the hash).
+If someone downloads the file, he can decrypt the hash and ensure it matches the hash he computed himself. If it does, the file is legitimate and was not altered.
+
+This methodology is extremely widespread nowadays, and remain reliable as long as the signatory's private key never get compromised/leaked.
 
 
 8. Give some classic patterns for attacks against communication
+Various kind of attacks exists, most of the time to compromise a point of the CIA triad. Here are some of them:
+- **Denial of Service (DoS)**: Flooding a system with excessive traffic to disrupt legitimate communication and make a service unavailable. If this attack is performed in an uniform manner on several machines (usually via a botnet or Control & Command server), it is called a Distributed DoS (DDoS).
+- **Replay Attacks**: An attacker captures valid data (e.g., login credentials or transaction information) and reuses it later to impersonate a user or execute unauthorised actions.
+- **MITM**: An attacker intercepts communication between two parties, potentially altering or eavesdropping on data without either party knowing.
+- **Spoofing**: Impersonating a trusted entity to deceive users or systems. Common types include IP spoofing, DNS spoofing, and email spoofing.
+- **Eavesdropping**: Passive interception of communication to gather sensitive information.
 
+Here are some attacks related to wireless networks (as I'm not sure what the original question asks lol):
+- **Accidental Association**: Unintentional connection to neighbouring networks, exposing resources.
+- **Malicious Association**: Rogue devices posing as legitimate access points to steal data.
+- **Network Injection**: Exploiting vulnerabilities in routing or management messages.
 
 
 9. Explain what multi-factor authentication is
+MFA is a security mechanism that requires a user to provide **two or more authentication factors** to verify their identity before gaining access to a system.
+Those factors should be independent and of a different factor.
+	*For instance, first factor being something you know (password), second being you are (fingerprint).*
 
+MFA becomes more and more widespread as time goes by, as it reduce risks of account compromise if the first authentication method (usually a password) gets leaked. It adds an extra layer of protection.
 
 
 10. Explain what a MITM attack is
+A Man-in-the-Middle attack is a form of cyberattack where an adversary **intercepts and potentially alters communication between two parties without their knowledge**.
+
+By placing himself in between the two ends, he can:
+- **Eavesdrop**: Read the exchanged data in real time, compromising confidentiality
+- **Modify**: Alter the content of the communication, compromising integrity
+- **Impersonate**: Relay messages while posing as one or both parties, compromising authenticity
+
+It can happen at several layers (intercept HTTP traffic or hijack sessions, DNS spoofing, ARP poisoning...). 
+Usage of encryption protocols such as TLS helps mitigating the risk by securing the communication. 
