@@ -8,7 +8,7 @@
 ## Histogram
 
 An histogram **counts how much of each colour occurs in the image**
-![[histogram.png]]
+![[histogram.png|500]]
 
 Since each colour is represented on a byte, it has a value that can go from 0 (`0b00000000`) to 255 (`0b11111111`).
 
@@ -38,11 +38,11 @@ Usually, we accomplish this via a **Look-Up table (LUT)**, which map each pixel'
 
 Equalisation redistributes pixel intensities to achieve a uniform histogram, improving contrast.
 	*Often applied to greyscale images but can be extended to colour channels independently.*
-![[equalisation.png]]
+![[equalisation.png|300]]
 
 The result looks like this:
-![[equalisation curve.png]]
-![[equalisation result.png]]
+![[equalisation curve.png|400]]
+![[equalisation result.png|350]]
 
 
 ****

@@ -11,7 +11,7 @@ Convolution is a **linear operation** applied to an image to extract features or
 
 **Edge detection** allows to **Identify sudden changes** (discontinuities) in an image.
 	*rapid change in the image intensity*
-![[intensity.png]]
+![[intensity.png|300]]
 
 **Segmentation** decomposes the image in segments (components) **based on a given homogeneity criteria**. 
 	*(chromatic, morphologic, motion, depth ...)*
@@ -19,7 +19,7 @@ Convolution is a **linear operation** applied to an image to extract features or
 Segmentation often relies on edge detection to work (as it's a good way to segment things and detect area changes...).
 
 
-Segmentation is a **binarisation process** as it allows to detect an individual object (foreground) by separating it from the rest (background). We then obtain **Binary images**. 
+Segmentation is a **binarisation process** as it allows to detect an individual object (foreground) by separating it from the rest (background). We then obtain **Binary images**.
 	*Some applications are by nature binary: black and white printing, blueprints for mechanical parts and architecture, bio-imagery...
 	But sometimes it's more complex as it contains grey levels (fades) instead of sudden changes: area illumination, shadowing, noise on a camera...*
 
@@ -55,7 +55,7 @@ We call the **Kernel** a **small matrix used in image processing filters**. It d
 Simple blur-like filter that **averages the pixel values in a neighbourhood**.
 > The goal is to remove sharp features, which results in a smoothing effect.
 
-![[boxfilter.png]]
+![[boxfilter.png|600]]
 
 Kernel:
 ```
@@ -70,7 +70,7 @@ Kernel:
 blur-like filter that **weighs pixel contributions by their distance**, giving more weight to closer pixels.
 > The goal is to smooth the image while preserving **transitions better than a box filter**.
 
-![[gaussianfilter.png]]
+![[gaussianfilter.png|600]]
 
 Kernel example:
 ```
@@ -86,7 +86,7 @@ Kernel example:
 
 Filter that **highlights edges and differences with local averages**.
 
-![[sharpeningfilter.png]]
+![[sharpeningfilter.png|600]]
 
 
 ### Edge Detection Filter
@@ -94,8 +94,8 @@ Filter that **highlights edges and differences with local averages**.
 Detect abrupt changes in intensity. More information [[02 - Shape Extraction#Border search|on the next chapter]], as it relies in Sobel operator.
 
 We get two kernels, one for the vertical edges (1), and one for horizontal edges (2):
-![[vertical.png]]
-![[horizontal.png]]
+![[vertical.png|600]]
+![[horizontal.png|600]]
 
 
 ****
@@ -103,14 +103,19 @@ We get two kernels, one for the vertical edges (1), and one for horizontal edges
 
 As mentioned above, basic way to retrieve border (edge detection) is via discontinuity of an image
 	*Gap between grey level of two pixels/areas, depth...*
+Two ways of doing it.
 
-**Methods:**
-1. **Sobel and Prewitt operators** (gradient-based), approximate gradients to find edge direction and magnitude.
-![[sobel-example.png]]
+### Sobel and Prewitt operators 
+
+Gradient-based, approximate gradients to find edge direction and magnitude.
+
+![[sobel-example.png|600]]
 	- The gradient is calculated as:
-![[sobel.png]]
+![[sobel.png|300]]
 
-2. **John Canny operator**, in a few steps:
+### Canny Edge Detector (CED)
+
+Second method, the "John Canny operator", in a few steps:
 	1. Smooth image with a Gaussian filter.
 	2. Compute gradient magnitude and direction.
 	3. Apply non-maximum suppression to thin edges (reduces them to single-pixel width).
@@ -143,27 +148,26 @@ This works fine, but the presence of **noise** can significantly alter the rende
 ****
 ## Noise
 
-There are various types of noises. We will visualise each on the following image:
-![[noise-original.png]]
+Let's visualise how all kinds of noises alter the following image:
+![[noise-original.png|250]]
 
 - **Salt and pepper noise**: Random occurrences of black and white pixels
-![[noise-saltpepper.png]]
+![[noise-saltpepper.png|250]]]
 
 - **Impulse noise**: Random occurrences of white pixels (so it's like the one above but without the black pixels)
-![[noise-impulse.png]]
+![[noise-impulse.png|250]]]
 
 - **Gaussian noise**: Variations in intensity drawn from a Gaussian normal distribution
-![[noise-gaussian.png]]
+![[noise-gaussian.png|250]]]
 
-- **Uniform noise**: Constant probability density in a given range
-![[noise-uniform.png]]
-	*Slides are shit, I had to take another picture lol, but you get the idea*
+- **Uniform noise**: Constant probability density in a given range (like a grain on 70-90's movies)
+![[noise-uniform.png|250]]]
+> [!caution] Slides are shit, I had to take another picture lol, but you get the idea
 
-### How to handle noise
+### Handle noise - Average Filter
 
-- **Average Filter**:
-    - Reduces noise by replacing each pixel with the **mean** of its neighbours.
-    - Doesn't work well on some noises (e.g., Salt and Pepper)
+Reduces noise by replacing each pixel with the **mean** of its neighbours.
+Doesn't work well on some noises (e.g., Salt and Pepper)
 
 Given the following 3x3 neighbourhood:
 ```
@@ -176,10 +180,12 @@ The pixel at the centre will take the following value:
 `(3+6+8+3+4+2+5+8+3)/9 = 4.67`
 
 
-- **Median Filter**:
-    - Replaces a pixel with the **median** of its neighbours.
-    - **Advantage**: Removes salt-and-pepper noise while preserving edges.
-![[median.png]]
+### Handle noise - Median Filter
+
+Replaces a pixel with the **median** of its neighbours.
+**Advantage**: Removes salt-and-pepper noise while preserving edges.
+
+![[median.png|450]]
 
 Given the following 3x3 neighbourhood:
 ```
@@ -189,17 +195,20 @@ Given the following 3x3 neighbourhood:
 ```
 
 The correspondent values are:
-![[median-res.png]]
+![[median-res.png|400]]
 
 
-- **Nagao-Matsuyama Filter**:
-    - Chooses the region with the least variance to calculate the new pixel value.
-    - **Use case**: Smooths noise while preserving edges, effective for complex scenes.
-    - Costly in terms of computation workload, but offers a clean render
+### Handle noise - Nagao-Matsuyama Filter
+
+We choose the region with the least variance to calculate the new pixel value.
+Costly in terms of computation workload, but offers a clean render.
+
+> [!info]
+> A typical use case is to smooth noise while preserving edges, effective for complex scenes.
 
 Computation works as it follows (for a pixel):
 1. We make **nine sub-groups** (in red) for the pixel, each one handles the neighbourhood differently
-![[nagao.png]]
+![[nagao.png|400]]
 
 2. Select the sub-group with the least variance
 3. Calculate the mean of this group, and assign it's result to the centre pixel (the one we wanted to compute)

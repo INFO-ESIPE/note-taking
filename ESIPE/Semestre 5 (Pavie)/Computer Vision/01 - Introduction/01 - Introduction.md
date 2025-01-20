@@ -39,15 +39,15 @@ Image representation depends on the following concepts:
 - **Spatial Resolution**: Refers to the smallest detail distinguishable in an image (pixels)
 	*So, the number of pixels per length unit (inches, centimetres). Usually measured in **pixels per inch (ppi)**
 	Higher resolution means finer detail. More details [[02 - (Digital) Images#Image Resolution|here]]*
-![[resolution.png]]
+![[resolution.png|600]]
 
 - **Colour Depth**: Number of bits used per pixel to define colours. Common formats:
     - Binary (1 bit per pixel, black/white).
     - Greyscale (e.g., 8 bits for 256 shades).
     - RGB (24 bits per pixel, ~16 million colours).
 	    *One byte for R, G and B makes 3 bytes. This allows to represent **true colour**, even though it is theoretically possible to have RGB on one byte only. See [[01 - Colours|this class]] and [[02 - (Digital) Images|this one]] for more details*
-![[colour.png]]
-	*Here, the first image is an RGB, the last image is a binary, and the others are greyscale*
+![[colour.png|600]]
+> [!info] Here, the first image is an RGB, the last image is a binary, and the others are greyscale*
 
 - **Compression**: Images can be lossless (e.g., GIF) or lossy (e.g., JPEG), with trade-offs in file size and quality.
 	*We compress a file by either reducing the number of pixels (spatial resolution) or the number of colours represented (colour depth)*
