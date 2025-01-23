@@ -1,7 +1,7 @@
 [[Information Security]]
 
 Antonio Barili
-prof.antonio.barili@universitadipavia.it
+antonio.barili@unipv.it
 
 Lectures and material will be available online on Elearning
 The final exam is a written test with a variable number of open questions (between 4 and 12)

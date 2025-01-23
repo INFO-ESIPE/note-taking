@@ -11,7 +11,7 @@ In short, an email follows this workflow:
 - **Author sends email:** MUA → MSA → MTA → (Multiple MTAs) → MDA → MS.
 - **Recipient retrieves email:** MS → MUA.
 
-![[mail_architecture.png]]
+![[mail_architecture.png|525]]
 
 Now, let's take a look at the actors displayed above.
 - **Message User Agent (MUA)**: Software used by the author or recipient **to compose, send and read emails**.
@@ -39,7 +39,8 @@ For all of this to work, two more actors are involved.
 - Finally, the **Domain Name System (DNS)** which—in short—maps IP addresses to domain names.
   *IP-domain mapping is the main feature (A/AAAA records), but DNS servers also contains MX (Mail eXchange) records which maps a domain name to a mail server*
 
-> [!info]- What an MX record looks like
+> [!example]- What an MX record looks like
+> 
 > ```bash
 > Domain			TTL   Class    Type  Priority      Host
 > example.com.	1936	IN		MX		10         onemail.example.com.
@@ -52,8 +53,14 @@ For all of this to work, two more actors are involved.
 
 **SMTP (Simple Mail Transfer Protocol)** is used to **move the mail from sender to recipient**, hopping from an MTA to another.
 By using MX records provided by DNS servers, an SMTP client can contact the SMTP server to forward the email to.
-The client sends an **enveloppe**, which contains a body (the mail itself) along with the sender+recipient(s) emails.
-	*ESMTP (Extended SMTP) is an upgraded version of SMTP, which provides additional features (Cryptography, Host authentication)*
+The client sends two things:
+- An **enveloppe**, which contains information needed by an MTA to treat the request (mostly, the sender+recipient(s) emails.)
+- The **content**, with both a header (From, To, Subject, Message-id...) and a body (the mail itself)
+
+![[mail-structure.png|425]]
+
+> [!info]- Extended SMTP
+> ESMTP (Extended SMTP) is an upgraded version of SMTP, which provides additional features (Cryptography, Host authentication). For more details, see [[03 - Email#ESMTP|this lecture]].
 
 Two protocols can be used by the recipient to **retrieve the mail** from its MS:
 1. **POP (Post Office Protocol)** is more suited for people accessing their mails from a single device, as the POP server typically deletes the mail once the recipient downloads it.
@@ -61,7 +68,6 @@ Two protocols can be used by the recipient to **retrieve the mail** from its MS:
 
 2. **IMAP (Internet Message Access Protocol)** is a modern and more permissive alternative to POP3.
    Instead of downloading mails, the client directly connects to the server and manipulates mails from here. IMAP **maintains the email state on the server**, such as whether a message is read, flagged, or deleted. This synchronisation ensures that actions performed on one device reflect on all others.
-
 
 |                          | **POP3**                                                       | **IMAP**                                                |
 | ------------------------ | -------------------------------------------------------------- | ------------------------------------------------------- |
@@ -174,7 +180,8 @@ Like most other fields, emails are no exception to those common threats:
 
 First comes the **Sender Policy Framework (SPF)**: an email validation system that detects and prevents unauthorised sources from sending emails on behalf of a domain.
 It works by allowing domain owners to specify which mail servers are permitted to send emails using DNS TXT records.
-> [!info]- SPF Record example
+
+> [!example]- SPF Record example
 > It looks like this:
 > ```bash
 example.com. IN TXT "v=spf1 ip4:192.0.2.0/24 include:_spf.google.com ~all"
@@ -187,7 +194,8 @@ example.com. IN TXT "v=spf1 ip4:192.0.2.0/24 include:_spf.google.com ~all"
 
 Second procedure is the **DomainKeys Identified Mail (DKIM)**, allowing an MTA to add a digital signature to the header of outgoing emails, ensuring their authenticity and integrity.
 The signature is verified using the public key published in the sender’s DNS records.
-> [!info]- DKIM Record example
+
+> [!example]- DKIM Record example
 > A DKIM record looks like this:
 > ```bash
 > default._domainkey.example.com IN TXT "v=DKIM1; k=rsa; p=BASE64_ENCODED_PUBLIC_KEY"
@@ -195,7 +203,8 @@ The signature is verified using the public key published in the sender’s DNS r
 
 
 Last mechanism for the authentication part is **Domain-based Message Authentication, Reporting, and Conformance (DMARC)**, which allows domain owners to specify how email receivers should handle unauthenticated messages.
-> [!info]- DMARC Record example
+
+> [!example]- DMARC Record example
 > DMARC is built on top of DKIM and SPF to protect domains from unauthorised use.
 > ```bash
 > _dmarc.example.com IN TXT "v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@example.com"
