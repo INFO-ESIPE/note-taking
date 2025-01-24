@@ -115,7 +115,7 @@ MIME fixes all of those issues. Furthermore, it ensure the message's correct str
 Here is an example:
 ```bash
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="boundary-string"
+Content-Type: multipart/mixed; boundary="--boundary-string"
 
 --boundary-string
 Content-Type: text/plain; charset=UTF-8
