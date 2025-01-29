@@ -34,7 +34,7 @@ In a nutshell, Internet is an open architecture allowing interconnection of hete
 It was built on the following principles:
 - **Hop-by-hop decision-making for routing**: Networks are interconnected by "black boxes" called **routers**, which:
 	- Will forward what they receive in a simplistic and correct manner
-	- Will not retain any information about individual streams
+	- Will not retain any information about individual flows
 	- Will not resolve errors
 - **Open Architecture**: No changes required in a network architecture for it to connect to the Internet.
 - **Best Effort Delivery**: No guarantees for delivery; if packets are lost, retransmission (if any) is handled by higher-layer protocols such as [[01 - The Internet#Transport Layer|TCP]].

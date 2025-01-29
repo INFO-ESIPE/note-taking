@@ -21,7 +21,7 @@ We obviously do not directly share the key in clear text over the network. Inste
 
 
 An **active adversary**—conventionally called Darth—can read and manipulate anything that is exchanged between **User A (Alice)** and **User B (Bob)**.
-A **passive adversary**—conventionally called **Oscar**—can only read (sniff) it.
+A **passive adversary**—conventionally called **Oscar**—can only read (sniff) the traffic.
 
 
 ****
@@ -36,7 +36,7 @@ We will illustrate a Diffie-Hellman key exchange between Alice and Bob. **Anythi
 2. Each side now generates a **"private key"**, which is a secret and large number they will keep for themselves (these values must never be shared on the network, only kept locally)
 	*This value is between 1 and `n`. Since `n` is large, the private key will often end up being a very large value as well.*
 
-4. Each side combines the public values (`n` and `g`) with the private key they generated. This way, they obtain their respective **public key**.
+3. Each side combines the public values (`n` and `g`) with the private key they generated. This way, they obtain their respective **public key**.
 	Mathematically speaking, this process is non-reversible. If this public key is shared, a man-in-the-middle can not retrieve private keys out of it, even though he is aware of the public values agreed on at the beginning of the exchange
 		*Think of it as a mixture of colours. You cannot know if a shade of orange is 50% yellow and 50% red, it has subtle variations of quantity that can not be retrieved like that.*
 
@@ -73,7 +73,7 @@ Oscar can not retrieve `a` nor `b` even though he does possess a lot of clear te
 ## MITM
 
 Diffie-Hellman is **secured against passive MITM attacks**. The adversary observing the communications is never able to recover the key, as has missing information.
-However, **it is vulnerable to active MITM attacks** — which can occur if the adversary establishes the DE procedure with Alice and pretends to be Bob.
+However, **it is vulnerable to active MITM attacks**, which can occur if the adversary establishes the DE procedure with Alice and pretends to be Bob.
 	There is no **mutual authentication** (Alice is sure that she is talking to Bob, and likewise) that mitigates this issue*
 
 

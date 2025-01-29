@@ -5,11 +5,11 @@ Safety is about protecting yourself and various **assets** from any unwanted act
 	- A slippery floor
 	- Losing your wallet
 
-Security, on the other hands, is about protecting people and assets against wanted actions (potentially malicious from an **adversary**).
+Security, on the other hand, is about protecting people and assets against deliberate actions (potentially malicious from an **adversary**).
 	- Computer getting stolen
-	- Cryptanalyst attempting to break a cipher 
+	- Cryptanalyst attempting to break a cipher
 
-A **threat** is a potential for violation of a system's security. An **attack** is a deliberate assault on a system's security. Attacks can be :
+A **threat** is a potential for violation of a system's security. An **attack** is a deliberate assault on a system's security. Attacks can be:
 - Passive attacks
 	- Eavesdropping
 	- Traffic Analysis (TCPdump, Wireshark ....)
@@ -24,5 +24,5 @@ It is important to define what to protect, which assets are of value and deserve
 	The protection of a system—and it's data—should focus on the **CIA Triad** (**C**onfidentiality, **I**ntegrity, **A**vailability).
 
 Since a system can never be **truly secure** (fulfils the CIA triad), it is important to monitor any activity on the system via a logwatch (or similar procedure) as it offers **non-repudiation**.
-> [!Info] User can not deny his actions if they are logged by the system.
+	*User can not deny his actions if they are logged by the system.
 

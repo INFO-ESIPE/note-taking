@@ -165,9 +165,9 @@ It works like this:
 3. **Secure Response to User A:** The authority sends the signed message back to User A. User A uses **the authority’s known public key** to **decrypt** the response and verify its authenticity.
 	*If the message was indeed signed by the Public-Key Authority, it means that the public key of User B is legitimate.*
 
-As mentioned, **it is mandatory for the requester to possess the authority's public key** to decrypt user B's public key. The question is, how can we get it on our machine ?
+As mentioned, **it is mandatory for the requester to possess the authority's public key** to decrypt user B's public key. 
 
-> [!info]- But how do we get all the public keys? 
+> [!question]- But how do we get all the public keys? 
 > Trusted authorities' public keys are **pre-installed in most operating systems and web browsers**. Trusted **Certificate Authorities (CAs)** like "Let's Encrypt", "DigiCert", and others have their public keys embedded in a **"root certificate store,"** which is maintained and updated by the OS or browser developers.
 
 > [!success] Is it reliable? Yes

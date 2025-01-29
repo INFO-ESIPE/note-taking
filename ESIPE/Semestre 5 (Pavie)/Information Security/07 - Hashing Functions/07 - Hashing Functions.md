@@ -52,7 +52,7 @@ A MAC is a function that takes the message and a secret key as parameters, and r
 	*As this works on symmetric ciphers, the two parties must share the secret key.*
 
 1. Once generated, the sender append the MAC tag to the original message and forwards it
-2. The recipient separates the MAC tag and the message, and produces his own MAC tag —via the shared secret key and the message he receives.
+2. The recipient separates the MAC tag and the message, and produces his own MAC tag; via the shared secret key and the message he receives.
 3. If the tags matches, the message has not been forged
 	*This security is ensured as long as the attacker remains unaware of the secret key*
 

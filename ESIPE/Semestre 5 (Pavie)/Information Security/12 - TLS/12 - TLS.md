@@ -8,12 +8,12 @@
 ****
 ## Concept
 
-TLS (current version 1.3, defined by [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446) ), is an evolution of the deprecated Secure Sockets Layer (SSL) protocol.
+TLS (current version 1.3, defined by [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446)) is an evolution of the deprecated Secure Sockets Layer (SSL) protocol.
 Even though we heavily associate it to the web (since decent web browsers embeds the protocol in their features), its available for most application-layer exchanges **over TCP**.
 
 > [!info]- TLS and DTLS
 > TLS is related to the presentation OSI layer. So, it is placed in between the application layer (e.g., HTTP, FTP...) and the session+transport layer (TCP).
-> For UDP, the Datagram Transport Layer Security (DTLS) protocol is used.*
+> For UDP, the Datagram Transport Layer Security (DTLS) protocol is used.
 
 It aims to guarantee:
 - **Confidentiality**: Ensure that an adversary cannot read the traffic
@@ -27,7 +27,7 @@ The RFC specifies that TLS is integrated with several supporting inner protocols
 - **Handshake Protocol**: Used to initiate the exchange, establish cryptographic parameters, and collect necessary information (e.g., certificate, premaster secret).
 - **Alert Protocol**: Handles error reporting and session termination notifications.
 - **Change Cipher Spec Protocol**: Signals a switch to a new set of cryptographic parameters during the handshake.
-Additionally, there is a fifth protocol, the **Heartbeat Protocol**, which is defined in its own [RFC](https://datatracker.ietf.org/doc/html/rfc6520)It provides a mechanism to keep the connection alive and check for connectivity.
+- Additionally, there is a fifth protocol, the **Heartbeat Protocol**, which is defined in its own [RFC](https://datatracker.ietf.org/doc/html/rfc6520). It provides a mechanism to keep the connection alive and check for connectivity.
 
 ![[tls.png|500]]
 > The **record protocol** underpins the other protocols and provides essential transport services. This is why it is depicted below the inner protocols in diagrams—it serves as the foundation for all TLS communications.
@@ -61,7 +61,7 @@ Handshake steps:
 	- The server signs this computation with his private key and forwards it to the client along with its signature
 	- The client verifies the signature (proves that the server owns the private key), and then generates a secret `b` and send `g^b mod p`
 	- The client and server now shares a **premaster secret**: `g^ab mod p` (Like regular Diffie-Hellman, an eavesdropper cannot retrieve `g^ab`).
-![[dhe.png|300]]
+![[dhe.png|250]]
 > Our handshake looks like this so far
 
 4. **Derive Symmetric Keys** - The server and client each derive symmetric keys from `RB` and `RS` (usually by seeding a [[04 - Stream Ciphers#Randomness|PRNG]] with both values). Four keys are derived:
@@ -74,7 +74,7 @@ Handshake steps:
 5. **Exchange MACs** - The server and client exchange MACs over all prior handshake messages using the agreed cryptographic algorithm (from step 1 to 4).
 
 Once this is done, messages can securely be exchanged between the two parties. They will be MACed and then encrypted (for legacy reasons, the other way around is usually better).
-![[mac.png|300]]
+![[mac.png|250]]
 > Each message `M` will be encrypted with `Cb`/`Cs`, and MACed with `Ib`/`Is`.
 
 
@@ -108,7 +108,7 @@ A heartbeat protocol is usually here to monitor the availability of an entity by
 In the case of TLS (and DTLS), this protocol is purely an extension that provides a "keep-alive" functionality.
 
 > [!info]- Keep-Alive 
-> Even if TLS (unlike DTLS) is built over TCP which is a reliable transport protocol, the later does not provide a native keep-alive feature that maintains the connection without continuous data transfer (which is why HTTP provides this keep-alive feature as well).*
+> Even if TLS (unlike DTLS) is built over TCP which is a reliable transport protocol, the later does not provide a native keep-alive feature that maintains the connection without continuous data transfer (which is why HTTP provides this keep-alive feature as well).
 
 The user can use the new `HeartbeatRequest` message, which has to be answered by the peer with a `HeartbeartResponse` immediately. This avoids to drop the connection each time a client is served, and instead keep it working for a long period of time.
 	*If the party doesn't answer quickly, we consider that it is disconnected and we proceed into dropping the session. This is mostly a security against session hijacking.*

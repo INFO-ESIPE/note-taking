@@ -31,10 +31,10 @@ The **electronic user authentication** is a widely-used model that establishing 
 Registration steps:
 1. An applicant applies to a trustworthy **registration authority (RA)** to become a subscriber of a **credential service provider (CSP)**
 	*The RA will be in charge of the database containing credentials (typically, email-password couples)*
-2. The CSP forwards an **electronic credential** to the subscriber. 
+2. The CSP forwards an **electronic credential** to the subscriber.
 	*The credential is a data structure that authoritatively binds an identity and additional attributes to a token possessed by a subscriber and can be verified when presented to the verifier in an authentication transaction
 	This token is either an encrypted password or an encryption key*
-3. Token and credential are used for next communications. 
+3. Token and credential are used for next communications.
 
 When authenticating, the user that wants to be authenticated (**claimant**) sends his token to the verifying party (**verifier**). If the token is valid, the verifier is now aware than the claimant is the subscriber.
 
@@ -76,10 +76,10 @@ To prevent relay attacks, two approaches:
 
 Kerberos is an authentication protocol based on **symmetric encryption**. It allows a **user** to access resources given by **service providers** securely over a network.
 
-It operates in **distributed client/server infrastructures**, where one or more **Kerberos servers**handle authentication procedures.
+It operates in **distributed client/server infrastructures**, where one or more **Kerberos servers** handle authentication procedures.
 
 To ensure reliability, Kerberos is designed to resist the following types of attacks:
-- **impersonation**: Adversary gains access to a victim's machine (or credentials) and pretends to be him
+- **Impersonation**: Adversary gains access to a victim's machine (or credentials) and pretends to be him
 - **Spoofing**: Adversary modifies the IP/MAC address of their machine to masquerade as a legitimate one
 - **Hijacking**: Adversary intercepts valid tokens or credentials during communication to replay them and hijack sessions.
 
@@ -110,10 +110,10 @@ Kerberos relies on three core services provided by the KDC:
 2. **Authentication:** Kerberos AS looks up the database and ensures one of the user corresponds to the provided username+password. If the identity is valid, it forwards a **TGT** (encrypted with `Kkdc`) along with a **Logon Session Key** (encrypted with `Kc`).
 > Now, the user is authenticated (identity was verified), but still can't access any service (as this relies on **authorisation**).
 
-4. **Request Service Access:** The user sends the **TGT** he just obtained to the **TGS**. The TGS decrypts the TGT using `Kkdc` to validate the user’s identity.
-5. **TGS Delivery:** If TGT is valid, a **Service Ticket** (encrypted with the desired service's key `Ks`) is issued, along with a **Service Session Key** which is shared between the user and the service.
+3. **Request Service Access:** The user sends the **TGT** he just obtained to the **TGS**. The TGS decrypts the TGT using `Kkdc` to validate the user’s identity.
+4. **TGS Delivery:** If TGT is valid, a **Service Ticket** (encrypted with the desired service's key `Ks`) is issued, along with a **Service Session Key** which is shared between the user and the service.
 
-6. **Service Access:** The user sends the **Service Ticket** to the target service, and the latter will decrypt it with `Ks` to check user's authorisations. The user and the service now communicate securely using the **Service Session Key**.
+5. **Service Access:** The user sends the **Service Ticket** to the target service, and the latter will decrypt it with `Ks` to check user's authorisations. The user and the service now communicate securely using the **Service Session Key**.
 
 
 ****

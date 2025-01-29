@@ -21,11 +21,10 @@ This said, we can understand that accessing the physical layer (OSI Layer 1) is 
 A **message** is simply a string using a specific—and finite—encoding. This allows the message to simply be a succession of bits, while remaining understandable to a human as it can be read like a normal text.
 
 A block cipher splits the binary string into blocks of a given size, and then encrypt it block by block. **The ciphertext obtained is the same length as the original plaintext**.
-Since cryptography is based on the ability to retrieve information — unlike hashing — each plaintext block must produce an unique ciphertext block. 
+Since cryptography is based on the ability to retrieve information, each plaintext block must produce an unique ciphertext block.
 
-> [!Tip] What if the message isn't long enough to fit a block? 
+> [!question] What if the message isn't long enough to fit a block? 
 > If the message is too short for the fixed size block, we pad it with 0's. If its larger, we add another block, and so on.
-
 
 **Reminder :**
 - 2¹⁰ = 1 Kbit
@@ -40,37 +39,34 @@ Since cryptography is based on the ability to retrieve information — unlike ha
 Feistel cipher/network appears more as a framework for building an encryption algorithm. It is a structure you feed with a secret key and encryption rounds, and returns you a cipher.
 Our algorithm—based on this framework—will only need to have a dedicated **Round Function**, the rest of the process is proper to the Feistel network itself.
 
-
-**Behaviour** *(where "n" being the number of bits per block.):*
-1. You start with a block, and you split it in two (left-hand **L** and right-hand **R** parts). 
+**Behaviour** *(where `n` being the number of bits per block.):*
+1. You start with a block, and you split it in two (left-hand `L` and right-hand `R` parts). 
 	*Each part should have an equal size (that is why the block size is always even).*
 
-2. We take the **R** side and give it to a "pseudo-random function" of some kind called **the round function F**. This function takes our secret key as unique parameter, and produces a **subkey** out of it. Once **R** is combined with our subkey, we get our return value.
+2. We take the `R` side and give it to a "pseudo-random function" of some kind called **the round function** `F`. This function takes our secret key as unique parameter, and produces a **subkey** out of it. Once `R` is combined with our subkey, we get our return value.
 
-3. We **XOR** the output of the step above with the **L** part of the block
+3. We **XOR** the output of the step above with the `L` part of the block
 	*A    B    Q
 	0 & 0 = 0
 	0 & 1 = 1
 	1 & 0 = 1
 	1 & 1 = 0*
 
-4. We swap the halves. The original **R** (pre-processed) becomes the new **L**, and the XORed **R** becomes the new **R**
+4. We swap the halves. The original `R` (pre-processed) becomes the new `L`, and the XORed `R` becomes the new `R`
 
 5. Repeat the operation (round). Usually, an algorithm based on Feistel is doing *16 rounds* per block.
 
-6. When the final round is finished, we concatenate **L** and **R** to obtain our ciphertext.
+6. When the final round is finished, we concatenate `L` and `R` to obtain our ciphertext.
 
-> [!Tip]
+> [!info]- Reversible!
 > As this process is linear, it can be reversed in order to obtain our decryption algorithm. The most fascinating part of this framework is the decryption process:
 > You take your ciphertext block—and the secret key, obviously—and run the exact same steps as the encryption. **The encryption and decryption processes are exactly the same**, and even if our round function is not reversible! This is because a XORed value is reversible: if you XOR it again, you retrieve the original value.
 
-If n is small, the block size is practicable but vulnerable to statistical analysis (weak).
+If `n` is small, the block size is practicable but vulnerable to statistical analysis (weak).
 
-His cipher uses a logic that alternates substitution and permutation.
-	- **Substitution**: each plaintext element or group of elements is uniquely
-	replaced by a corresponding ciphertext element or group of elements
-	- **Permutation**: a sequence of plaintext elements is replaced by a permutation
-	of that sequence
+This cipher uses a logic that alternates substitution and permutation.
+- **Substitution**: each plaintext element or group of elements is uniquely replaced by a corresponding ciphertext element or group of elements
+- **Permutation**: a sequence of plaintext elements is replaced by a permutation of that sequence
 
 
 Feistel is a relatively easy algorithm to **"analyse"**. Analysing means that it is easy to understand what the algorithm is doing (the steps it follows) in order to encrypt/decrypt a message. This is different from **"cryptanalyse"** as this focuses on breaking the algorithm's produced ciphers.
@@ -82,7 +78,7 @@ Feistel is a relatively easy algorithm to **"analyse"**. Analysing means that it
 This was the most widely used encryption scheme in commercial and financial applications until **AES** appeared in 2001.
 
 Data is encrypted on 64-bit blocks, using a **56-bit key** (BIG MISTAKE, the key is too small).
-64-bit input is transformed — through 16 rounds — into a 64-bit output.
+64-bit input is transformed—through 16 rounds—into a 64-bit output.
 Since the same steps—with the same key—are followed for the decryption, it is reversible.
 	*DES follows the Feistel network!*
 
@@ -99,7 +95,7 @@ As DES itself was too weak, we decided to go with Triple DES (3DES) as no other 
 
 Encrypt data through several **various** algorithms. This **diversity** reduces the risk of a backdoor in an encryption software to gain access to the plaintext, as we go through a succession of encryption software with various implementations of various ciphers.
 
-As mentioned previously, Tripe DES is available as an alternative to the current AES standard, where 3 DES encryption procedures are made using between 1 and 3 keys.
+As mentioned previously, Tripe DES is available as an alternative to the current AES standard, where 3DES procedures are made using between 1 and 3 keys.
 	*Double DES exists but is vulnerable to "meet-in-the-middle" attacks through predictive computation.*
 
 Two-key triple encryption works as follows :
@@ -113,10 +109,6 @@ Two-key triple decryption works as follows :
 - Decrypt previous output with key 1
 
 In a triple-key 3DES, the last step is performed with key 3 instead of key 1.
-
-
-So far we have seen ways of making ciphers more secure by making the key larger.
-Each block is—for now—encrypted with the same key (unless the plaintext is smaller than the b-block size).
 
 
 ****
@@ -133,7 +125,7 @@ Replacement of DES since 2001. The point was to be as secure as 3DES, but quicke
 >    - RC6 (RSA Organisation)
 >    - Mars (IBM)
 
-Block size is of 128 bits long.
+Block size is of 128 bits.
 The key can be 128, 192 or 256 bits long. The amount of rounds depends on the length of the key (the larger it is, the more rounds).
 
 Unlike previously-mentioned ciphers, AES decryption and encryption process is not identical. Two different software are needed if encryption and decryption are used.
@@ -148,17 +140,16 @@ We know that block ciphers take a n-bits fixed length plaintext block—and a ke
 If the message is larger than n bits (most of the time it is, blocks are small), we have to split the message in multiple blocks, and **re-use the key** for each block.
 	*Dangerous... This makes our algorithm extremely predictive and vulnerable to cryptanalysis*
 The process is straightforward and convenient so far:
-	Split plaintext into blocks
-	P1 -> E(K) -> C1
+1. Split plaintext into blocks
+2. P1 -> E(K) -> C1
 	P2 -> E(K) -> C2
 	...
 	Pn -> E(K) -> Cn
-> C1 + ... + Cn = ciphertext
+3. C1 + ... + Cn = Ciphertext
 
 But we would like to make it harder for a cryptanalyst to break the cipher by looking at ciphertext samples.
 
-
-Thus, there are various ways of applying the block cipher. NIST designed the **(five) modes of operation** that can be used for that purpose.
+There are various ways of applying the block cipher. NIST designed the **(five) modes of operation** that can be used for that purpose.
 	*This can be applied on any symmetric block cipher, it does not matter*
 
 
@@ -189,18 +180,18 @@ Base is similar as **ECB**, but the following step is added to solve the aforeme
 > If we now try to encode our penguin, we obtain a result that does not disclose any pattern or similarity in between plaintext blocks.
 > ![[correct penpen.png|275]]
 
-Biggest issue with this method is that it is way slower. 
+Biggest issue with this method is that it is way slower.
 	*We lost our parallelism feature as each block requires the output of the previous one in order to be encoded correctly.*
 Furthermore, if a problem happens on a block (network issue, an adversary modify it), it impacts the following block, which will now contain gibberish value.
 
 ### Counter Mode (CTR)
-*Parallel encoding (we can encode all blocks at the same time)*
+*Parallel encoding
 
 We take a base **nonce** (an integer value that is unique to this communication).
 We will have `n` nonces, one for each block. Each block nonce will be incremented by one as we go forward in the blocks.
 	*In other words, the algorithm will do `nonce++` for each block*
 
-We encode each nonce with our algorithm and our secret key, which will produce `n` ciphertexts-version of nonces (one per block):
+We encrypt each nonce with our algorithm and our secret key, which will produce `n` ciphertexts-version of nonces (one per block):
 	base nonce = 10; 3 blocks
 	nonce + 1 -> E(k) -> CN1: 1001...
 	nonce + 2 -> E(k) -> CN2: 0101...

@@ -87,8 +87,7 @@ We call a **one-way function** one that guarantee that the **calculation of the 
 
 ### Trap-door
 
-Now, a **trap-door one-way function** is easy to calculate in one direction and infeasible
-to calculate in the other direction—exactly like a one-way function—**unless certain additional information is known** 
+Now, a **trap-door one-way function** is easy to calculate in one direction and infeasible to calculate in the other direction **unless certain additional information are known** 
 	*like if there was a backdoor implemented in the algorithm that allowed to retrieve information if the correct hidden parameter is provided.* 
 
 **It is invertible under certain conditions**.

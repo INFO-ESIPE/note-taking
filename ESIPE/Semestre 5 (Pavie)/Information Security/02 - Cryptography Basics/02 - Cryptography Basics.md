@@ -39,19 +39,22 @@ Cryptographic systems can be characterised along three independent dimensions:
 ## Symmetric Ciphers
 
 The **secret key** allows us to **both encrypt** our plaintext **and decrypt** the ciphertext in order to retrieve our original message.
+
 > [!Important] 
 > Keep in mind that this key acts as a parameter for an encryption/decryption function. You will always get a result output, no matter the key you provide. 
 > This means that you can not be sure that what you retrieve is the real plaintext, as the result you get might be a garbage value.
 
 The secret key must be passed between sender and receiver on a secure side channel, else all the purpose is lost:
 ![[sidechannel.png|700]]
-> [!Info] Keeping the algorithms private is useless. Most of the time, encryption and decryption are performed by a "Rich Client" software. It is possible to reverse engineer this software to find the algorithm (it might take time, but it will always be found). What matter is to keep the key private (as it is easier to change if it is **compromised**).
+
+> [!Info] 
+> Keeping the algorithms private is useless. Most of the time, encryption and decryption are performed by a "Rich Client" software. It is possible to reverse engineer this software to find the algorithm (it might take time, but it will always be found). What matter is to keep the key private (as it is easier to change if it is **compromised**).
 
 
 *****
 ## Block & Stream Ciphers
 
-Block ciphers splits a plaintext in **fixed-size blocks** (in general, 64 or 128 bits per block), and then encrypts each block one by one.
+Block ciphers splits a plaintext in **fixed-size blocks** (in general, 64 or 128 bits per block), and then encrypts each block one by one (or in parallel).
 Each block is processed separately by the key.
 
 Stream ciphers encrypts data in a continuous stream, **one bit at a time**. It uses a statistically random keystream— generated at the very beginning of the encryption procedure based on the provided cryptographic key—to encrypt data, accounting for the security of the whole encryption.
@@ -81,7 +84,7 @@ Some ciphers uses **Substitution techniques** to obfuscate the plaintext, the mo
 ****
 ## Steganography
 
-If cryptography is placing your valuable text into a key-protected safe, steganography is to bury it in the back of your garden.
+If cryptography is placing your valuables into a key-protected safe, steganography is to bury them in the back of your garden.
 
 Cryptography obfuscates a message to anyone who is not allowed to see it (does not have the key), while steganography hides the existence of this message to the eyes of someone who is not the recipient.
 	*Hiding a message in metadata, in printer yellow dots, in an audio sample spectrum, hiding a message in another message through "whitespace language" ...*
