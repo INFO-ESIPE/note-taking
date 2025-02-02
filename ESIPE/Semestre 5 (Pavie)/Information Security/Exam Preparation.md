@@ -50,7 +50,7 @@ Several authentication factors exists, in four categories:
 
    
 4. What is a VPN? (We haven't seen this one much on class somehow lol)
-Virtual Private Networks are services that interconnects private networks over a public network (Internet) via **tunnelling**.
+Virtual Private Networks are services that **interconnects private networks over a public network** (Internet) via **tunnelling**.
 These tunnels encapsulate the traffic, ensuring isolation from other traffic on the public network. This process can happen either at the network layer (L3VPN) by leveraging protocols like IPSec, or at the data link layer (L2VPN) hence providing a direct connection that appears as if devices are on the same local network.
 
 VPNs does not inherently guarantee confidentiality or encryption (e.g., VPN BGP/MPLS). Furthermore, the potential privacy that a VPN can provide heavily relies on their exit nodes' juridiction and policies.

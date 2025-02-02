@@ -34,8 +34,7 @@ Erosion reduces object size, removing details.
 
 **Definition**: Erosion is a fundamental operation in morphological image processing. It was initially designed for binary images and later extended to greyscale images and complete lattices.
 **Purpose**: It uses a structuring element to probe and reduce shapes in the input image. The operation shrinks the boundaries of objects in the image by eroding (removing) pixels from the edges.
-**Result**: Erosion minimises the size of foreground objects in an image, often useful for separating
-connected components.
+**Result**: Erosion minimises the size of foreground objects in an image, often useful for separating connected components.
 **Applications**:
 - Reducing noise in binary images.
 - Removing small details while preserving the structure of larger objects.
@@ -83,15 +82,13 @@ Obtained by doing **Dilation → Erosion**
 - Filling small gaps in objects or lines.
 - Smoothing contours while keeping larger holes intact.
 
-### Line Detection
+### Line Detection (Hough Transform)
 
 **Concept**: Each edge point in an image maps to a cosine curve in the Hough space (ρ, θ). When all edge points are mapped, a lot of cosine curves are generated in the Hough space.
-**Key Insight**: If multiple edge points belong to the same line in the image, their cosine curves will
-intersect at a specific (ρ,θ) in the Hough space.
+**Key Insight**: If multiple edge points belong to the same line in the image, their cosine curves will intersect at a specific (ρ,θ) in the Hough space.
 **Hough Transform Algorithm**: Detects lines by identifying (ρ,θ)pairs with intersections exceeding a certain threshold.
 These intersections correspond to the strongest lines in the image.
-**Purpose**: This process helps detect straight lines in noisy images where direct edge-based
-methods fail.
+**Purpose**: This process helps detect straight lines in noisy images where direct edge-based methods fail.
 
 ### Canny Edge Detector (CED)
 
@@ -107,25 +104,23 @@ methods fail.
 **Additional Notes**:
 - Used for processing binary images (black and white).
 - Helps retain critical edges while removing noise.
-- Convolution (e.g., Gaussian filter) is applied for smoothing, and other filters can be used
-to refine results.
+- Convolution (e.g., Gaussian filter) is applied for smoothing, and other filters can be used to refine results.
 
-#### 3/9 Operator
+### 3/9 Operator
 
-**Definition**: An operator that analyses relative gray-level intensities to detect edges.
+**Definition**: An operator that analyses relative grey-level intensities to detect edges.
 **Usage**: Used for edge detection, particularly in low-contrast regions.
 **Features**: Sensitive to noise, requiring careful threshold selection.
 
-#### Compass Operator
+### Compass Operator
 
 **Definition**: An edge detection operator that calculates gradients in multiple directions.
 **Usage**: Used for detecting edges in specific orientations.
 **Features**: Provides more directional information than other gradient-based operators.
 
-#### Kirsh’s Operator
+### Kirsh’s Operator
 
-**Definition**: An edge detection operator that computes gradients in a 3x3 neighbourhood in all
-directions.
+**Definition**: An edge detection operator that computes gradients in a 3x3 neighbourhood in all directions.
 **Usage**: Used for detecting edges with strong directional sensitivity.
 **Features**: Computationally intensive but effective for highlighting directional edges
 
@@ -181,19 +176,19 @@ directions.
 
 #### Nagao-Matsuyama Filter
 
-**Definition**: A filter that selects the mean value of the neighbourhood with the least variance.
+**Definition**: A filter that selects the mean value of the neighbourhood with the least variance. It creates 9 subgroups in the neighbourhood and keeps the subgroup with the smallest variance. 
 **Usage**: Used for reducing noise while preserving edges and textures.
 **Features**: Computationally expensive but effective for complex scenes.
-
-#### Weighted Moving Average Filter
-
-**Definition**: A smoothing filter that uses weighted averages of pixel neighbourhoods.
-**Usage**: Used for noise reduction while maintaining more detail than a simple average filter.
-**Features**: More flexible as weights can be customised for specific purposes.
 
 #### Difference of Gaussians (DoG)
 
 **Definition**: A filter obtained by subtracting two Gaussian-blurred versions of an image.
 **Usage**: Used for edge detection and feature enhancement.
 **Features**: Efficient and captures edges across different scales.
+
+#### Weighted Moving Average Filter
+
+**Definition**: A smoothing filter that uses weighted averages of pixel neighbourhoods.
+**Usage**: Used for noise reduction while maintaining more detail than a simple average filter.
+**Features**: More flexible as weights can be customised for specific purposes.
 

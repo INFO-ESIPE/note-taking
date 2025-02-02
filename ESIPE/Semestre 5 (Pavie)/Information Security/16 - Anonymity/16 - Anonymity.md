@@ -10,7 +10,7 @@
 ### What for?
 
 Anonymity ensures that users can interact with digital systems without revealing their identity. As it aims to protect values like privacy and freedom of speech, It encompasses:
-1. **Non-identifiability**: Alice’s real entity is indistinguishable from others within a group, even when attributes are stored in a database
+1. **Non-identifiability**: Alice’s real identity is indistinguishable from others within a group, even when attributes are stored in a database
 2. **Unreachability**: Ensures that, while an observer knows the identity, they cannot pinpoint the physical or logical location of the subject.
 3. **Untrackability**: Prevents correlating multiple interactions or tracking patterns:
 	- Within services: Registration or fingerprinting
