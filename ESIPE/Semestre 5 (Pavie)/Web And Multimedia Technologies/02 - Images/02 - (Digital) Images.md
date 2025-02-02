@@ -95,7 +95,7 @@ The rest we don't care lol
 ## Vector Graphics
 
 When drawing, any line that is neither Horizontal, Vertical or Diagonal is **jagged**.
-**Anti aliasing** is here to reduce this effect :
+**Anti aliasing** is here to reduce this effect:
 ![[antialiasing.png]]
 
 Unlike for bitmaps, vectors are **Object-Oriented Graphics** displaying information mathematically.

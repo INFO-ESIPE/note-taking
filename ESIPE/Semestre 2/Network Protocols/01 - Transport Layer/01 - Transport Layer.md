@@ -211,6 +211,16 @@ Here is the TCP state machine which describes generic behaviours a connection wi
 ***
 ## TCP advanced features
 
+### Delayed ACK
+
+Without any proper mechanism to manage acknowledgements, receiver should send an ACK each time it receives a segment.
+	*So, an acknowledgement per data segment, huge waste of bandwidth...*
+
+Piggybacking is a first solution we saw already, but **delayed ACK** is another mechanism that comes handy.
+
+
+
+
 
 ***
 ## UDP

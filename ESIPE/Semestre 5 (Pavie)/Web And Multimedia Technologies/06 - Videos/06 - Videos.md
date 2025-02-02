@@ -10,7 +10,7 @@
 ****
 ## Analog
 
-For analog videos (interlaced), there were 3 different broadcast standards :
+For analog videos (interlaced), there were 3 different broadcast standards:
 
 | Broadcast formats | Countries                                                  | Horizontal lines | Frame rate |
 | ----------------- | ---------------------------------------------------------- | ---------------- | ---------- |
@@ -19,7 +19,7 @@ For analog videos (interlaced), there were 3 different broadcast standards :
 | NTSC              | USA, Canada, Japan,<br>Korea, Mexico                       | 525              | 29.97 (30) |
 
 
-Analog videos were typically using the YCC colour model. This model was chosen — instead of RGB — in order to keep compatibility with black and white TV sets (if RGB was chosen, grey-level television sets could not comprehend RGB-based analog videos at all).
+Analog videos were typically using the YCC colour model. This model was chosen—instead of RGB—in order to keep compatibility with black and white TV sets (if RGB was chosen, grey-level television sets could not comprehend RGB-based analog videos at all).
 
 YCC is composed of a luminance level **Y** (defined by R, G and B), and two colour components **CC** :
 - C1 = B - Y
@@ -48,8 +48,8 @@ Nearly every digitisation implies compression:
 	1 hour = 1.3 • 60 = 78 GB*
 
 There are two kinds of video compression:
-- **Intra-frame :** An algorithm is applied on each frame independently of the others (like you would compress a static image)
-- **Inter-frame :** Acknowledging the content of the surrounding frames (in general, the one immediately before and after), and compress them by analysing the differences between the frames
+- **Intra-frame:** An algorithm is applied on each frame independently of the others (like you would compress a static image)
+- **Inter-frame:** Acknowledging the content of the surrounding frames (in general, the one immediately before and after), and compress them by analysing the differences between the frames
 	*Only the pixels that changes are coded*
 
 
