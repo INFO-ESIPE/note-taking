@@ -45,48 +45,47 @@ CSS can be applied to an HTML file in several ways :
 </html>
 ```
 
+> [!example]- CSS code example
+> ```css
+> /* Affects all h1 tags */
+> h1 {
+> 	color: red;
+> 	margin: 2em;
+> }
+> 
+> /* Affects all h2 and h3 tags */
+> h2, h3 {
+> 	color: #abc012 !important; /* Important means it will override all priorities */
+> 	text-transform: uppercase;
+> }
+> 
+> /* Only affects h2 tags inside the body tag */
+> body h2 {
+> 	text-align: left;
+> }
+> 
+> /* 
+> Styles are applied in cascade :
+>  - The last modification matters
+> Even thought we specified h1 to be red above, they will ultimatelty appear in green
+> 
+>  - A style is applied to all it's sub-elements (in the DOM). It is recommended to be precise when applying a style, else it will impact a lot of elements
+> */
+> h1 {
+> 	color: green;
+> }
+> 
+> h2 {
+> 	color: blue; /* Here, even though we specified a change of colour later in the file for h2 tags, if will remain of colour #abc012 as we attached an "!important" declaration to it. It is better to avoid using this feature as it is overall bad practice */
+> }
+> ```
+> - `color: green;` is a **declaration**
+> - `h1`, `body h2` are **selectors** (the tags we affect)
+> - `text-align`, `color`, `margin` are **properties**
+> - `red`, `left`, `2em` are **values**
 
-Example of CSS code :
-```css
-/* Affects all h1 tags */
-h1 {
-	color: red;
-	margin: 2em;
-}
 
-/* Affects all h2 and h3 tags */
-h2, h3 {
-	color: #abc012 !important; /* Important means it will override all priorities */
-	text-transform: uppercase;
-}
-
-/* Only affects h2 tags inside the body tag */
-body h2 {
-	text-align: left;
-}
-
-/* 
-Styles are applied in cascade :
- - The last modification matters
-Even thought we specified h1 to be red above, they will ultimatelty appear in green
-
- - A style is applied to all it's sub-elements (in the DOM). It is recommended to be precise when applying a style, else it will impact a lot of elements
-*/
-h1 {
-	color: green;
-}
-
-h2 {
-	color: blue; /* Here, even though we specified a change of colour later in the file for h2 tags, if will remain of colour #abc012 as we attached an "!important" declaration to it. It is better to avoid using this feature as it is overall bad practice */
-}
-```
-- `color: green;` is a **declaration**
-- `h1`, `body h2` are **selectors** (the tags we affect)
-- `text-align`, `color`, `margin` are **properties**
-- `red`, `left`, `2em` are **values**
-
-
-When a page is rendered by the user's web browser, it can have 3 origins :
+When a page is rendered by the user's web browser, it can have 3 origins:
 - **Author**'s CSS (the one we code for our own website)
 - **User-Agent** (web browser), which gives basic styling for tags that were not defined in the author's CSS
 	*This creates inconsistency in the page's rendering, as browsers has different ways of rendering tags by default. To avoid this, developers often use a **CSS Reset** to render everything the same*
@@ -163,21 +162,20 @@ Several ways to apply colours :
 - RGBa function (RGB with opacity)
 	*`rgba(255,0,0,0.3)` (red with 30% opacity*
 
-
-Define colours and background :
-```css
-h1 {
-	color: #a2eb53; /* Text colour */
-	background-color: aqua; /* Colour of the background (entire zone of the elt) */
-}
-
-div.mybackground {
-	background-image: url("images/kitties.jpg"); /* Background from an image */
-	background-repeat: no-repeat; /* Only one instance of the image */
-	background-attachment: scroll; /* Follows as we scroll */
-	background-position: 20px 30px; /* 20px from left, 30px from top */ 
-}
-```
+> [!example]- Example: Define colours and background
+> ```css
+> h1 {
+> 	color: #a2eb53; /* Text colour */
+> 	background-color: aqua; /* Colour of the background (entire zone of the elt) */
+> }
+> 
+> div.mybackground {
+> 	background-image: url("images/kitties.jpg"); /* Background from an image */
+> 	background-repeat: no-repeat; /* Only one instance of the image */
+> 	background-attachment: scroll; /* Follows as we scroll */
+> 	background-position: 20px 30px; /* 20px from left, 30px from top */ 
+> }
+> ```
 
 
 ****
@@ -201,7 +199,7 @@ div.mybackground {
 ****
 ## Text Properties
 
-Text decoration :
+Text decoration:
 ```css
 h1 {
 	text-decoration: line-through; /* none, underline, overline available */
@@ -213,7 +211,7 @@ h1 {
 ```
 
 
-Font :
+Font:
 ```css
 p {
 	font-family: "Arial", sans-serif; 
@@ -223,7 +221,8 @@ p {
 }
 ```
 
-**Tip**: It is better to define font size in `em` rather than in `px`, as it avoids problems when the screen resolution changes
+> [!tip]
+> It is better to define font size in `em` rather than in `px`, as it avoids problems when the screen resolution changes
 
 
 ****
@@ -281,11 +280,11 @@ table {
 	border-collapse: collapse; 
 }
 
-th { 
+th {
 	border-bottom: 1px solid black; 
 }
 
-.col1 { 
+.col1 {
 	text-align: center; 
 }
 
@@ -329,7 +328,7 @@ tr:nth-child(odd) { /* "even" is also available */
 
 CSS3 adds new features
 
-**Borders for boxes:**
+Borders for boxes:
 ```css
 div {
 	border: 2px solid #a1a1a1;
@@ -344,7 +343,7 @@ div {
 }
 ```
 
-**Background size and origin:**
+Background size and origin:
 ```css
 div {
 	background: url(img_flwr.gif);
@@ -359,7 +358,7 @@ div {
 }
 ```
 
-**Special effects for text:**
+Special effects for text:
 ```css
 h1 {
 	text-shadow: 5px 5px 5px #FF0000;
@@ -367,7 +366,7 @@ h1 {
 ```
 ![[text.png|400]]
 
-**Font via files:**
+Font via files:
 Custom fonts can be added to the web server. Those will be automatically downloaded via an HTTP request when the user loads a page.
 	*In the past, websites only used to use `Times` and `Arial`, as they were the only widely-used fonts that every web browser had by default.*
 ```css
@@ -382,7 +381,7 @@ div {
 }
 ```
 
-**Column display:**
+Column display:
 ```css
 .newspaper {
 	column-count: 3;
@@ -391,7 +390,5 @@ div {
 ```
 ![[columns.png|500]]
 
-**Media Queries for Responsive Design (can be found [[9.1 - CSS Display#Responsive Design|here]])**
-
-**Animations and transitions (can be found [[9.2 - CSS Animations|here]])**
-
+Media Queries for Responsive Design (can be found [[9.1 - CSS Display#Responsive Design|here]])
+Animations and transitions (can be found [[9.2 - CSS Animations|here]])

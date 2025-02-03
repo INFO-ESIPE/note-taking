@@ -11,27 +11,23 @@
 Perception of sound is due to variations in air pressure around the tympanum.
 	*When an object vibrates, it produces shifts of nearby air molecules that progressively propagate and arrive at our tympanum, which in turn vibrates.*
 
-In time, the pressure variations produces a **sound wave**.
+In time, the pressure variations produces a sound wave.
 
-Audio is defined by 3 parameters (like colours) :
-- **Volume** : Defined by the extent of pressure variation of the sound wave
-- **Pitch** : This value is given by the frequency of the sound wave (how fast the pressure varies)
-- **Timbre** :Given by the spectrum, it is the shape of the wave
+Audio is defined by 3 parameters:
+- **Volume**: Defined by the extent of pressure variation of the sound wave
+- **Pitch**: This value is given by the frequency of the sound wave (how fast the pressure varies)
+- **Timbre**: Given by the spectrum, it is the shape of the wave
 
 
 ****
 ## Digital 
 
-In order to be processed numerically (via a computer), the sound wave must be :
-- **Sampled** : Measure volume at regular — and short — time intervals, called **Sampling frequency** (measured in hertz)
-- **Quantized** : Finding correspondence between each measure and a volume
-from a finite set of possible volumes
+In order to be processed numerically (via a computer), the sound wave must be:
+- **Sampled**: Measure volume at regular—and short—time intervals, called **sampling frequency** (measured in hertz)
+- **Quantized**: Finding correspondence between each measure and a volume from a finite set of possible volumes
 
 A digitised sound is simply a sequence of bits.
-
-
-An Audio CD has a sampling frequency of 44100 Hz (volume is measured 44100 times per second).
-
+	*An Audio CD has a sampling frequency of 44100 Hz (volume is measured 44100 times per second).*
 
 As digital signal is only composed of binary values, it is very rarely altered by noise (as this noise will not reach the other value). Unlike analog signal where noise affects the audio quality a lot. 
 ![[digital.png|500]]

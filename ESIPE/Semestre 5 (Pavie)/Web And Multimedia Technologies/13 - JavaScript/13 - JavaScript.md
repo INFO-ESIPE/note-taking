@@ -8,14 +8,13 @@
 ```
 
 ****
-## JavaScript ?
+## JavaScript?
 
 JavaScript is a high-level, dynamic, untyped, and interpreted programming language. 
 	*JavaScript is prototype-based with first-class functions, making it a multi-paradigm language, supporting object-oriented, imperative, and functional programming styles.*
 
 > [!note]
 > The standardised name of JavaScript is ECMAScript (as it is developed by Ecma International).
-
 
 it's main purpose is to integrates with HTML to provide interactive and dynamic functionalities:
 - **Direct Inclusion**, with `<script>` tags:

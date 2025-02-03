@@ -68,7 +68,7 @@ Attributes must be specified in between quotes:
 ```xml
 <tag attribute="value"> <!-- correct -->
 <tag attribute='value'> <!-- correct -->
-<tag attribute=value> <!-- wrong -->
+<tag attribute=value>   <!-- wrong -->
 ```
 
 
@@ -93,11 +93,11 @@ Another example:
 
 ### Elements and Attributes
 
-When should I use elements or attributes ?
+When should I use elements or attributes?
 Let's say I want to describe the following information:
 	`A male called Giuseppe Verdi` (good composer)
 
-I can describe it in three ways:
+Those three different ways are valid:
 ```xml
 <!-- 1 -->
 <person>
@@ -116,8 +116,7 @@ I can describe it in three ways:
 <person gender="male" name="Giuseppe" surname="Verdi"/>
 ```
 
-It is better to use **elements for important properties** and **attributes for "accessory"
-properties**.
+It is better to use **elements for important properties** and **attributes for "accessory" properties**.
 Also, **if a property can assume several values, use an element**
 	*As an attribute can only carry a single value...*
 
@@ -356,12 +355,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 ### XHTML
 
-Simply XML complying with XML rules.
+Simply HTML complying with XML rules.
 Main difference with HTML are:
 - tags **must** be in lowercase
 - The `name` attribute is substituted by the `id` attribute as they both should be unique (except for the `<input>` tag, as radiobuttons must share a similar name)
 - All attributes must have a value
-	`<td nowrap=" nowrap">`, but not `<td nowrap>`. So, some multimedia tag's attributes would not work with XHTML, suck as: `<audio controls>`
+	`<td nowrap=" nowrap">`, but not `<td nowrap>`. So, some multimedia tag's attributes would not work with XHTML, such as: `<audio controls>`
 
 ### WML
 
@@ -413,8 +412,7 @@ It must contain:
 - Price
 - Total size, and size per room
 
-We define: "Apartment located in Milan, via Verdi, n. 10, cap 28000, 3rd floor
-worth 450,000€, total size of 110 m². Size per room:
+We define: "Apartment located in Milan, via Verdi, n. 10, cap 28000, 3rd floor worth 450,000€, total size of 110 m². Size per room:
 - Kitchen: 25 m²
 - Living room: 25 m²
 - Bedroom: 15 m²

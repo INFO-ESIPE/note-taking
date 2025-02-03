@@ -10,8 +10,7 @@ Cordoba
 ****
 ## HTML
 
-HTML describes the content of a web page. It derives from Standard Generalised Markup
-Language (SGML)
+HTML describes the content of a web page. It derives from Standard Generalised Markup Language (SGML)
 	*It only defines the semantic of the page, and allows for a very few formatting indications*
 
 HTML5.3 is the latest version that was standardised by W3C

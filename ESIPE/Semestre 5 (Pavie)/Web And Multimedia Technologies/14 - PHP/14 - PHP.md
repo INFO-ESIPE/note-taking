@@ -12,7 +12,7 @@
 
 PHP: Object-oriented, interpreted.
 
-A PHP file is an upgraded HTML file which allows to embed PHP-specific instructions to it.
+A PHP script is an upgraded HTML file which allows to embed PHP-specific instructions to it.
 Those instructions are placed in between `<?php` and `?>`.
 	*Those instructions will not appear on the final HTML document the client will receive from the webserver, it is purely server-side.
 	Each line of PHP ends with a `;`*

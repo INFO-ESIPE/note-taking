@@ -8,23 +8,23 @@
 ****
 ## Representation
 
-Graphical information can either be :
+Graphical information can either be:
 - Raster (bitmap)
 	*GIF, JPEG, PNG, BMP, TIFF....
-	Adobe Photoshop, GIMP ...
+	Adobe Photoshop, GIMP...
 	For photographs, paintings; The image file contains the colour for each pixel.
 - Vector
 	*SVG, WMF, Or any format that manipulates coordinates, equations, parameters...
 	Adobe Illustrator
 	For Logos, drawings, diagrams, or favicons*
 
-OS treats the monitor as a 2-dimensional array of pixels, where each pixel has an associated amount of **video memory (bit depth)** :
+OS treats the monitor as a 2-dimensional array of pixels, where each pixel has an associated amount of **video memory (bit depth)**:
 ![[bit depth.png|400]]
 > [!info]
 > This is a basic example with only on/off pixels. That's why the bit depth is a single bit value.*
 
 **More bit depth = more colours** *(1 byte = 256 colours; 2 bytes = 65,536 colours ...)*
-	We consider it to be **True colour** when each pixel has **3 bytes of bit depth** (one byte for R, G and B respectively).
+	We consider it to be **true colour** when each pixel has **3 bytes of bit depth** (one byte for R, G and B respectively).
 
 If an image uses a smaller amount of colours (for instance, GIF only uses 256 colours) than true colour, those colours will be defined within a palette called the **Colour LookUp Table (CLUT)**, where only the most important colours will be specified.
 
@@ -36,10 +36,10 @@ It is also possible—but deprecated nowadays—for an image (GIF, JPEG) to be *
 ****
 ## Image Resolution
 
-The image file weight depends on both its size in pixels, and the colour levels. Compression is here to lower the size via two methods :
+The image file weight depends on both its size in pixels, and the colour levels. Compression is here to lower the size via two methods:
 - **Spatial Sampling Rate**: Reducing the number of pixels
 - **Quantisation**: Reducing the colours (the number of bits per pixel)
-The compression can either be **Lossless** (no information lost), or **Lossy**.
+The compression can either be **lossless** (no information lost), or **lossy**.
 
 **Spatial Resolution** is the number of pixels per inch. It is measured in **pixel per inch (ppi)**. This is necessary to foresee the physical size (cm, inch) of a digital image.
 	*This means that an image resolution is heavily related to printing.*
@@ -57,19 +57,19 @@ Colours coded on 8 bits, allowing up to 256 colours (strong colour reduction com
 The files are lossless compressed via **Lempel-Ziv-Welch (LZW)**, where sequences of same-colour pixels are coded on a "number of pixels -> colour" row.
 	*This works well for large single-colour areas.*
 
-**GIF89a** allows a colour of the CLUT to be transparent (funny discord GIFs with invisible background) :
+**GIF89a** allows a colour of the CLUT to be transparent (funny discord GIFs with invisible background):
 ![[invisible.png|500]]
 
 
 A web conversion software usually selects the 256 most relevant colours of the image, and place them into the palette. However, the colours will now always be selected from the **System Palette**, defined by the OS:
 ![[palettes.png|500]]
 > [!info]
-> 216 of the 256 colours are the same (between Windows and Mac), they are called the **Safe palette*.
+> 216 of the 256 colours are the same (between Windows and Mac), they are called the **Safe palette**.
 
 We then obtain something similar to this (Macintosh) :
 ![[conversion.png]]
 > [!tip]
-> Process is clearly noticeable when you zoom on the converted image, especially in the top left-hand corner.*
+> Dithering process is clearly noticeable when you zoom on the converted image, especially in the top left-hand corner.
 
 
 ****
