@@ -23,7 +23,7 @@ One can achieve multilabel classification through several techniques.
 
 The most common approach. We simply **create a separate binary classifier for each class**.
 	*If there are 3 classes (A, B, C), train one classifier each for "is A?", "is B?", and "is C?".*
-![[binary relevance.png]]
+![[binary relevance.png|500]]
 
 This technique, however, fails to overcome the challenges we defined above. 
 
@@ -31,7 +31,7 @@ This technique, however, fails to overcome the challenges we defined above.
 
 Here, classifiers are sequentially linked, with **each classifier using predictions from the previous one**. This is called a **Hard Decision**, opposite to a **Soft Decision** (probabilities).
 	*From left to right. The user is responsible of the ordering*
-![[chain.png]]
+![[chain.png|300]]
 
 This works well if the classes follows a logical sequence, but this is far from always being the case. Furthermore, the biggest drawback of this technique is that it **propagates errors**
 	*First classifiers are not always correct. Since the next classes depends on those, they will also contain mistake*
@@ -40,7 +40,7 @@ This works well if the classes follows a logical sequence, but this is far from 
 
 We set up a two-layer structure where predictions from the first layer feed into the second.
 	*Upper classes takes the original attribute vector as input, while the second layer is based on the first layer's output*
-![[stacking.png]]
+![[stacking.png|300]]
 
 This solution is more flexible (any top-layer class can influence any lower-layer class), but on the other hand, this also sometimes forces unnecessary dependencies between classes.
 
@@ -65,7 +65,7 @@ This works well, but still comes with a few issues:
 ### Active Learning
 
 Active learning is a strategy where **the model queries for labels on the most uncertain examples from the unlabeled set**, refining its decision boundary efficiently.
-![[learning.png]]
+![[learning.png|500]]
 
 A few strategies can be used to achieve this:
 - **Random Sampling (RS)**: Pick examples at random

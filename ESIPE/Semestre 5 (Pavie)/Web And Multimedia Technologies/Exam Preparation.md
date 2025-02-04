@@ -25,7 +25,7 @@ Say whether the following statements are true (T) or false (F), clearly justifyi
 
 4. The spatial resolution of an image is given by its width and height
 >[!fail]- False 
-> As explained [[02 - (Digital) Images#Image Resolution|here]], its an integer number that says how many pixel will be put on paper when the image is printed 
+> As explained [[02 - (Digital) Images#Image Resolution|here]], its defined by "ppi", an integer number that says how many pixel will be put on paper when the image is printed 
 
 5. The concept of tweening is specific to vector graphics only
 > [!fail]- False

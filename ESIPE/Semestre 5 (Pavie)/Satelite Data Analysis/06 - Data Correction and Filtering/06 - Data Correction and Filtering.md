@@ -25,7 +25,7 @@ We apply two types of corrections :
 	A **Shadowing** effect can also happen if a part of the target hides other parts (for instance, a tall skyscraper hiding smaller entities behind it).*
 
  If we do possess a 3D Model of the object we have a geometric distortion issue with, we can apply **orthorectification** to obtain a better geometric representation (a render of the object like if our sensor was right on top of it). We will obtain an **ortophoto** which will, however, contains missing data on the parts we re-projected via our model.
-![[orthorectification.png]]
+![[orthorectification.png|500]]
 
 
 ****
@@ -70,9 +70,9 @@ The logic is to use **ratioing**. Let's say we want to get a render of the veget
 
 Low-pass filter keeps the low spatial frequency, but cuts high spatial frequency (abrupt changes between two colours, e.g. black pixel next to a white one)
 	*We cut out some details, and obtain a render that appears more blurry*
-![[lowpass.png]]
+![[lowpass.png|599]]
 
 High-pass filter is the opposite. It only keeps the details of the image.
 	*Everything will appear grey, except the abrupt changes (details) that appears white.
 	That is basically `1 - Low-pass filter`*	
-![[highpass.png]]
+![[highpass.png|500]]

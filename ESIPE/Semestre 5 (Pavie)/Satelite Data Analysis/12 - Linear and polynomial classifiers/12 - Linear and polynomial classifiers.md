@@ -12,7 +12,7 @@ Classification can be understood as dividing data into classes by defining bound
 	*Its the third way of doing it, the two others were [[11 - Nearest Neighbour Classifiers|k-NN]] and [[10 - Bayesian Classifiers|Bayesian classifiers]]*
 
 These boundaries can be **linear** or **non-linear**, depending on the nature of the data. 
-![[boundaries.png]]
+![[boundaries.png|500]]
 
 Linear classifiers are simpler and computationally efficient but may not work well for complex datasets, leading to the need for polynomial or kernel-based methods.
 
@@ -29,7 +29,7 @@ The biggest issue with this method is the **Binary Problem**: Linear classifiers
 - **One against All**: Classify one class against all others.
 	*This requires to change our training data, and it only works if the number of class is small*
 - **Master Classifier**: Resolves conflicts when a sample belongs to multiple classes
-![[ESIPE/Semestre 5 (Pavie)/Satelite Data Analysis/12 - Linear and polynomial classifiers/classifier.png]]
+![[ESIPE/Semestre 5 (Pavie)/Satelite Data Analysis/12 - Linear and polynomial classifiers/classifier.png|550]]
 
 
 ****
@@ -67,7 +67,7 @@ This method finds an **optimal hyperplane** that maximises the margin between cl
 	*We make "non-linearly separable datasets" separable by increasing the dimensional space*
 
 The **kernel trick** is how we do this. We can, for instance, take a 2D dataset and make it linearly separable in a 3D space using a polynomial or Gaussian kernel.
-![[kerneltrick.png]]
+![[kerneltrick.png|550]]
 
 **Pros:** Works well on high-dimensional datasets (like hyperspectral imagery)
 **Cons:** Not effective on huge datasets, very sensitive to noise, and generating the kernel might be tricky in specific contexts (easier said than done)

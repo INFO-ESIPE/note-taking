@@ -15,7 +15,7 @@ We want to know which pixels on radar data corresponds to an urban area.
 First thing that helps is how water doesn't return any information (which is why it always appear black). 
 When it comes to trees, the signal will be diffused (because of the layer of leaves that are oriented in several directions, the EM waves will be reflected "randomly"). Those usually appears grey.
 Very bright (white) points are the result of double-scattering effects, most of the signal comes back to us. This typically happens on buildings (built-up structures) and mountains.
-![[sar.png]]
+![[sar.png|400]]
 > Urban area in the red square
 
 To summarise:
@@ -42,7 +42,7 @@ Now, we can apply our UEXT to a series of images (in time) to obtain a multi-tem
 > This is very useful if we want to observe urban expansion:
 > - how the city expands in time (edge expansion growth)
 > - how new clusters are created nearby the original cluster we captured (outlying growth)
-![[multitemporal.png]]
+![[multitemporal.png|550]]
 
 "Coherence" is a measure of similarity between two images of the same area. The objective is to **detect changes inside the urban area itself** (e.g. a building was renovated).
 We chain this coherence on a set of n images.

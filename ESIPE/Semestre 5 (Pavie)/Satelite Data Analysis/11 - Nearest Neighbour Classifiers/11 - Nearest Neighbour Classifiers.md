@@ -12,7 +12,7 @@ Classification assigns data points (pixels in an image) to classes based on thei
 Proximity is used as the measure of similarity, making **distance** a central concept in classifiers like **k-NN**.
 
 But we still have a problem: What if clusters are too close to each other ?
-![[distance.png]]
+![[distance.png|400]]
 	*If a pixel ends up in the red area, does it belongs more into the left cluster, or the one on the right ?*
 
 
@@ -43,7 +43,7 @@ Another issue is **scale-related**. Features with larger ranges dominate distanc
 
 The last concern is related to the **Curse of Dimensionality (or "Hughes Phenomenon")**:
 Increasing the number of features improves classification accuracy initially but eventually reduces it as noise increases and training samples become sparse.
-![[hugues.png]]
+![[hugues.png|450]]
 
 **Solution**: Well, just avoid excessive features
 	*At least without the adequate training data that goes with it*
@@ -54,4 +54,4 @@ Increasing the number of features improves classification accuracy initially but
 
 The first step towards improving k-NN is to simply **improve our training set**.
 	*Mostly by removing redundant (points that doesn't add new information) and misleading (points that belong to one class but are near other classes) points*
-![[redundancy.png]]
+![[redundancy.png|550]]

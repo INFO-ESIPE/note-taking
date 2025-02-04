@@ -9,20 +9,20 @@
 ## Representation
 
 In general, remote sensed data **coming from an imaging sensor** is represented as a numerical matrix. We can map the numerical values of the matrix to grey-values/coloured pixels if we need a more visually appealing result for our data.
-![[matrix.png]]
+![[matrix.png|350]]
 
 Out of a spectral component we *can* measure :
 - **Amplitude A**, which indicates the voltage (how much is reflected to us)
-![[amplitude.png]]
+![[amplitude.png|400]]
 
 - Intensity. Not important, it's similar to Amplitude even though the returned value is not exactly the same, it corresponds to the same kind of value
 
 - **Phase Phi**, helps us estimating the delay of reception of the EM wave.
-![[phase.png]]
+![[phase.png|400]]
 
 - **Polarisation**, which indicates the oscillation axis/degree (is it horizontal, vertical, blabla...) of both the electric field and the magnetic field.
 	*As this degree can be random, we have to ensure it's value.*
-![[polarization.png]]
+![[polarization.png|400]]
 
 We can break down the incoming signal in several spectral components that we measure separately. This allows us to obtain a vector of values which represents the amplitude for each part of the EM wave.
 

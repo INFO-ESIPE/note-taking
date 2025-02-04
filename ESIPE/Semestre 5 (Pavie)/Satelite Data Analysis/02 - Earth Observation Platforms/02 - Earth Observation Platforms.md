@@ -9,21 +9,17 @@
 ## Sensors
 
 Begin by understanding how we can have sensors in space, how they work, technical difficulties that may appear etc
-
 The sensor is always attached to a "platform" (ground, balloon, plane, drone...).
-
 
 ### Ground-based sensing
 
 A **weather radar** is always on the ground, looking at the atmosphere and collecting various information nearby.
 	*Same for radars, GPR...*
 
-
 ### Ground-based images
 
 Often retrieved from online sources (social medias, StreetView, Mapillary...)
 	*Usually just photos of buildings from the street, a drone, a plane... That's what we use for OSINT in general, but it can still be useful for our field*
-
 
 ### HAPs
 
@@ -31,18 +27,14 @@ Often retrieved from online sources (social medias, StreetView, Mapillary...)
 Usually in standby at a **height greater than airplanes, but lower than satellites**. They have engines on the side that keeps them in position. 
 	They can provides continuous data (videos), unlike satellites.
 
-
 ### Spaceborne sensing
-*This course will focus on **Spaceborne Remote Sensing**, so this of interest.*
+*This course will focus on **Spaceborne Remote Sensing**, so this is of interest.*
 
-They provide **periodic acquisitions**
-	*Not continuous, there is a break between each capture...*
+They provide **periodic acquisitions**, not continuous (there is a break between each capture...)
 
-Biggest advantage of this solution is that satellites — even though they are expensive to build and put into orbit — lives there for an extended period of time, ending in a **low per-datum cost** as we can collect thousands of photos for 10 to 15 years.
-
+Biggest advantage of this solution is that satellites—even though they are expensive to build and put into orbit—lives there for an extended period of time, ending in a **low per-datum cost** as we can collect thousands of photos for 10 to 15 years.
 
 **Space segment** (satellite) possess a very **low storage capacity**. Data from the sensors is volatile and must be transferred to the ground segment quickly. 
-
 **Ground segment** (mission control on earth) is mostly here to remotely supervise the satellite 
 	*back up data, know where the satellite is, where it is taking the images from, how to orientate it ...*
 
@@ -65,8 +57,8 @@ It is also possible to synchronise the movement of the satellite with the sun. T
 	*this does not, however, prevents the atmosphere changes between images... obviously*
 
 We call the **nadir point** the point of the Earth which is right under the satellite (vertically):
-![[nadir.png]]
+![[nadir.png|399]]
 
 **Swath** represents the surface strip that a satellite can cover as the earth moves. This succession of nadir points provides a continuous zone that can be captured.
 	Where **azimuth** is the motion direction
-![[swath.png]]
+![[swath.png|400]]

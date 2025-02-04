@@ -18,7 +18,7 @@ This is useful in Machine Learning in various situations:
 To obtain decent classification, it is mandatory to provide a **reliable training** to our algorithm.
 
 Example of classification:
-![[classification.png]]
+![[classification.png|550]]
 
 *Note that (Remote sensing) classification overlaps with **semantic segmentation** in computer vision.*
 
@@ -32,14 +32,14 @@ Example of classification:
 **Classification Unit**: The smallest portion of data assigned to a class, often a pixel or a group of pixels (superpixel).
 
 The **Classifier** is what assigns LC/LU to each classification unit:
-![[classifier.png]]
+![[classifier.png|500]]
 
 **Hard vs. Fuzzy Classification**:    
 -  **Hard**: Each pixel belongs to one and only one class.
-![[hard.png]]
+![[hard.png|500]]
 
 - **Fuzzy**: Pixels can partially belong to multiple classes with assigned probabilities.
-![[fuzzy.png]]
+![[fuzzy.png|550]]
 
 ****
 ## Methods of Classification
@@ -47,11 +47,11 @@ The **Classifier** is what assigns LC/LU to each classification unit:
 **Supervised Classification** is a **knowledge-driven approach** where classes are predefined and the algorithm is trained on labeled data (Ground Truth).
 1. Collect training data representative of each class.
 2. Use it to "train" the classifier to recognise these classes in the dataset.
-![[supervised.png]]
+![[supervised.png|250]]
 
 On the other hand, **Unsupervised Classification** is a **Data-driven approach** where the algorithm groups pixels based on inherent similarities.
 	*No a priori information, only user-set parameters – limited human input*
-![[unsupervised.png]]
+![[unsupervised.png|250]]
 
 
 ****
@@ -63,7 +63,7 @@ On the other hand, **Unsupervised Classification** is a **Data-driven approach**
 - **Test Set**: A separate dataset to evaluate the classifier's accuracy.
 
 - **Sampling Strategies**: Methods for collecting representative data points; usually 50–100 samples per class.
-![[sampling.png]]
+![[sampling.png|300]]
 
 
 ****
@@ -78,7 +78,7 @@ We compare the classification with ground truth on a unit-by-unit basis (frequen
 means pixel-by-pixel)
 Once this is done, we store it into a **confusion matrix**, which is a table comparing predicted classes against actual Ground Truth classes.
 
-![[confusion matrix.png]]
+![[confusion matrix.png|550]]
 *Here, pixels on the diagonal are correctly classified (classifier found the correct class)*
 
 Two types of errors can occur:
@@ -105,7 +105,7 @@ Can we fix this ?
 
 Measures classification accuracy while accounting for chance agreement.
 We can attempt to compute this with a simple formula:
-![[kappa.png]]
+![[kappa.png|200]]
 
 where `P0` is the probability of correct classification
 and `Pc` is the probability of correct classification attributable to pure chance

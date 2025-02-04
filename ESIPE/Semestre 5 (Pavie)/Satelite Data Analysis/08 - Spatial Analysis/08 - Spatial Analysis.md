@@ -25,27 +25,27 @@ We visualise **relationships between pixels at varying distances** with [[08 - S
 **Covariance Functions** quantifies the relationship between pixels separated by distance `h`.
 	*Indicates how values co-vary spatially*
 
-![[covariance.png]]
+![[covariance.png|300]]
 
 
 ### Semivariogram
 
 **Semivariogram** measures the loss of correlation as the distance between pixels increases.
 	*It is usually tightly related to covariance...*
-![[semivariogram.png]]
+![[semivariogram.png|400]]
 
 A Semivariogram is composed of:
 - **Nugget**: Variability at small distances or due to measurement errors/miss.
 - **Sill**: Maximum variability, corresponding to dataset variance.
 - **Range**: Distance where correlation drops to the sill, showing how far spatial influence extends (minimum `h` where sill is reached).
-![[semivariogram-ill.png]]
+![[semivariogram-ill.png|450]]
 
 Here, the **nugget is the missing part at the beginning** (data not captured). The **sill is observable at the rightmost part** of the graph, and the **range is what's in between beginning and sill**. 
 
 
 Here is a more talkative situation:
-![[urban.png]]
-![[urban-result.png]]
+![[urban.png|500]]
+![[urban-result.png|500]]
 
 
 ****
@@ -55,7 +55,7 @@ The scattergram indicates how homogeneous the values are
 
 If the scattergram is dense (few points, mostly focused on a same position on the scattergram), the values are correlated. They are uncorrelated otherwise.
 	*This allows us to compute spatial information on portions of an image. We can recognise patterns in an area (rectangular fields, buildings pattern, lakes ...)*
-![[scattergram.png]]
+![[scattergram.png|400]]
 
 
 ****
@@ -78,7 +78,7 @@ Around 14 textures are available, here are the major ones:
 - **Energy**: Also called Angular Second Moment; measures uniformity, with higher values for smoother textures.
 - **Homogeneity**: Evaluates closeness of pixel values to the diagonal of the GLCM, indicating smoother textures.
 
-![[textures.png]]
+![[textures.png|450]]
 
 
 ****
@@ -88,4 +88,4 @@ It's an Interpolation Technique that **predicts the value of a variable at unobs
 
 It's main purpose is to fill missing data — and reconstruct bad values — in remote sensing images.
 
-![[kriging.png]]
+![[kriging.png|500]]

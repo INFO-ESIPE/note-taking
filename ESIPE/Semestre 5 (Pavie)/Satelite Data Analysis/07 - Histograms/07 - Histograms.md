@@ -13,7 +13,7 @@ As explained [[03 - Histogram|here]], the histogram represents the tonal distrib
 Usually, peaks in the histogram correspond to dominant features or classes (e.g., water, vegetation).
 	*By applying a [[06 - Data Correction and Filtering#Thresholding|thresholding]] on this histogram, we can isolate features on the image (like a mask)*
 Those peaks are called **modes**:
-![[modes.png]]
+![[modes.png|400]]
 
 In general, we use **Gaussian curves to model histogram modes**, describing data distributions with just two parameters (mean and variance).
 	*This may introduce inaccuracies of real-world, as noise, variability, or spectral mixing affects the distribution...*
