@@ -1,6 +1,6 @@
 [[Satellite Data Analysis]]
 12/12/2024
-==I still need to process this note, it might contain errors==
+==Didn't understand this class lol, I suggest you don't rely on those notes for this lecture==
 ****
 **Table of Contents**
 ```table-of-contents

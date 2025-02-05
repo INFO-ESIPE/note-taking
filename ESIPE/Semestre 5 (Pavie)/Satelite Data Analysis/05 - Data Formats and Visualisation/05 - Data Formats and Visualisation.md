@@ -9,47 +9,59 @@
 ## Raster
 
 Raster images are similar to [[02 - (Digital) Images#Representation|bitmaps]] really, it is just the opposite of [[02 - (Digital) Images#Vector Graphics|vector data that is computed mathematically (object-oriented)]]. 
-	*Raster is just a grid (2D Array) where each cell contains a value.*
-
+	*Raster is just a grid (2D Array) where each cell (e.g., pixel) contains a value (e.g., colour, elevation...)*
 
 ### Bands
 
-In general, we use bands to simply display an image with its normal colours:
+In remote sensing, **bands** refer to different ranges of wavelengths captured by the sensor. 
+Typically, bands are used to display images in their normal colours. For example, a 3-band image usually corresponds to the Red, Green, and Blue (RGB) bands, which combine to create a true-colour image:
+
 ![[bands.png]]
 
-But it's up to us. For instance, a 3-bands image expect RGB for normal colours. We can decide that the R band will be replaced by the Infrared band, etc.
-![[bandcolour.png|700]]
+However, bands can be manipulated for specific purposes. For instance, the Red band in an RGB image can be replaced with an Infrared band to highlight vegetation or other features:
+
+![[bandcolour.png|550]]
 
 
-We call **pseudocolour** a representation that applies a custom palette of colours on a greyscale representation in order to highlight details (this is especially used in maps or weather forecast presentations about temperature, winds ...)
+We call **pseudocolour** a representation that applies a custom palette of colours on a greyscale image in order to highlight details (this is especially used in maps or weather forecast presentations about temperature, winds ...)
 ![[pseudoclour.png|700]]
 
 
 ****
 ## DEM
 
-As briefly explained [[03 - Earth Observation Instruments#LIDAR|here]], the Digital Elevation Model (DEM) represent Earth's surface on 3D. It is possible to superimpose images of the surface on this model in order to obtain a realistic render.
-	*The z axis represents the height, based on a reference level called **geoid***
+As briefly explained [[03 - Earth Observation Instruments#LIDAR|here]], the Digital Elevation Model (DEM) **represent Earth's surface on 3D**. It is possible to superimpose images of the surface on this model in order to obtain a realistic render.
+	The z axis represents the height, based on a reference level called **geoid**
+
 ![[dem.png|500]]
 
-The DEM is actually a combination of the **Digital Surface Model (DSM)** (features on the ground like buildings, trees ...) and the **Digital Terrain Model (DTM)** (only represents the terrain)
-![[dsm-dtm.png|400]]
+The DEM is actually a combination of two models: 
+- The **Digital Surface Model (DSM)**, features on the ground like buildings, trees...
+- The **Digital Terrain Model (DTM)**, which only represents the bare ground surface (without anything on top of it)
 
+![[dsm-dtm.png|400]]
 
 ### TIN
 
-We can also represent the DEM on a **Triangulated Irregular Network (TIN)** instead of a regular grid like we did above.
-This TIN will be composed of non-overlapping faces (triangles) calculated from a series of points:
+A **Triangulated Irregular Network (TIN)** is an alternative way to represent a DEM. Instead of using a regular grid, a TIN uses a series of non-overlapping triangles calculated from a set of points.
+
 ![[tin.png|500]]
 
-This is more complex to set-up, but it offers way more information, outlines natural features, and **adapts to the relief** (which is good, for a DEM that is supposed to incarnate the relief...).
+**Advantages of TIN:**
+    - Provides more detailed information.
+    - Outlines natural features more accurately.
+    - Adapts better to the terrain's relief, making it more suitable for representing complex landscapes.
+    
+**Disadvantages of TIN:**
+    - More complex to set up compared to a regular grid.
+    - Requires more computational resources.
 
 
 ****
 ## Vector
 
-Mathematical approach. Essentially composed of points, lines and open/closed polygons.
-	*This is used for maps*
+Mathematical approach to representing geographic features. It is composed of points, lines, and polygons (both open and closed).
+	*Widely used for maps, where precision and scalability are important*
 
 
 ****
@@ -67,3 +79,6 @@ Mathematical approach. Essentially composed of points, lines and open/closed pol
 | **Accuracy**                                      | -           | +           |
 | **Flexibility in Representing Shapes**            | -           | +           |
 | **Ease of Combining with Remote Sensing Imagery** | +           | -           |
+> [!info]- Details on some categories
+> **Spatial Resolution:** Raster data can represent continuous data (e.g., elevation, temperature) more effectively, while vector data is better for discrete features (e.g., roads, boundaries).
+> **Ease of Combining with Remote Sensing Imagery:** Raster data is easier to combine with remote sensing imagery, as it is already in a grid format.
