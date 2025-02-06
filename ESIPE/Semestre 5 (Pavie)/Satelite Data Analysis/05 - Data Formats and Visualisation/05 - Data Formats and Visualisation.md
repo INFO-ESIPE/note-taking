@@ -8,7 +8,7 @@
 ****
 ## Raster
 
-Raster images are similar to [[02 - (Digital) Images#Representation|bitmaps]] really, it is just the opposite of [[02 - (Digital) Images#Vector Graphics|vector data that is computed mathematically (object-oriented)]]. 
+Raster images are similar to [[02 - (Digital) Images#Representation|bitmaps]] really, it is just the opposite of [[02 - (Digital) Images#Vector Graphics|vector data that is computed mathematically (object-oriented)]].
 	*Raster is just a grid (2D Array) where each cell (e.g., pixel) contains a value (e.g., colour, elevation...)*
 
 ### Bands

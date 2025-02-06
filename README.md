@@ -1,4 +1,4 @@
-This repository contains notes from classes I attended during engineering school. The structure and content align with what was taught and the materials (slides, laboratory classes) provided to us. I do not own anything that is shown here, I simply write it down with my own words and in a convenient format, so I (and others) can retrieve the concepts quickly and easily if needed.
+This repository contains notes from classes I attended during engineering school. The structure and content align with what was taught and the materials (slides, laboratory classes) provided to us. I do not claim ownership on anything that is shown here, I simply write it down with my own words and in a convenient format, so I (and others) can retrieve the concepts quickly and easily if needed.
 
 Most of the notes are in English, but some remains in French...
 

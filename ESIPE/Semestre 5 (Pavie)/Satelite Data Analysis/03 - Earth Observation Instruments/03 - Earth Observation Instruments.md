@@ -26,7 +26,7 @@ Active sensors are generally less dependent on external conditions, which makes 
 ## Passive Sensors
 
 Passive sensors often use **pass-band filters** to focus on a specific **central wavelength** within the EM spectrum. However, these filters also capture a range of wavelengths around the central wavelength, known as the **bandwidth**.
-*Capturing a single wavelength is often insufficient for meaningful data analysis. A range of wavelengths provides more comprehensive information.*    
+*Capturing a single wavelength is often insufficient for meaningful data analysis. A range of wavelengths provides more comprehensive information.*
 
 > [!example]
 > Imaging spectrometers generate images by capturing multiple spectral bands, allowing for detailed analysis of the target area.
