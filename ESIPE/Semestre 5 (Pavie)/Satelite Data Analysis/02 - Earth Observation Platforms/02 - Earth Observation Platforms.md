@@ -52,6 +52,7 @@ Orbits can be classified by three types (depending on their height):
 - High earth orbits (≥ 35780 km)
 
 Low and Mid can use any degree, while high ones can only be on the 0° (equator plane) as it helps to maintain the distance on a 24h basis. We call it **Geostationary**.
+	*Satellite always face the same point on earth*
 
 It is also possible to synchronise the movement of the satellite with the sun. This **Sun-synchronous orbit** allows to keep the same shadows and lighting between different photos it takes
 	*this does not, however, prevents the atmosphere changes between images... obviously*
