@@ -66,7 +66,7 @@ Each method will return a slightly different output as they will separate data i
 ***
 ## K-Means clustering
 
-A popular method used to group data points into clusters based on their similarity. The goal is to divide a dataset into a predefined number of clusters (`K`), where each cluster is represented by its **center** (called the **centroid**). Here's how it works:
+A popular method used to group data points into clusters based on their similarity. The goal is to divide a dataset into a predefined number of clusters (`K`), where each cluster is represented by its **centre** (called the **centroid**). Here's how it works:
 1. **Initialise Cluster Centres**: Start by randomly selecting `K` points from the dataset as the initial cluster centres (centroids). These can also be placed in a regular pattern if preferred.
 
 2. **Assign Points to Clusters**

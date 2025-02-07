@@ -9,6 +9,7 @@
 ## Representation
 
 In general, remote sensed data **coming from an imaging sensor** is represented as a numerical matrix. We can map the numerical values of the matrix to grey-values/coloured pixels if we need a more visually appealing result for our data.
+
 ![[matrix.png|350]]
 
 
@@ -66,11 +67,3 @@ Different types of resolution are important in remote sensing:
 The quantisation step is prone to errors, like any approximation.
 Furthermore, the quality also depends on how precise we want our render to be
 	*Colours render on 3 bytes will give [[02 - (Digital) Images#Representation|true colour]] output but will be heavy. Render on one byte is more lightweight but we lose details...*
-
-
-***
-## Temporal Resolution
-
-**Temporal resolution** refers to the time interval (or latency) between successive measurements. It is crucial for monitoring changes over time.
-For instance, high temporal resolution are measurements separated by less than 3 days. Low temporal resolutions are the ones separated by 16 days, which is kind of a lot (typical for satellites).
-
