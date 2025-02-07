@@ -1,5 +1,23 @@
 - Radar Lidar(acronyme) : light detection and ranging
-- Convelution :
+- ### **Convolution in Satellite Data Processing**
+
+Convolution is widely used in remote sensing and satellite image analysis for tasks such as object detection, image sharpening, noise reduction, and feature extraction.
+
+#### **How Convolution Works**
+
+- A small matrix (kernel/filter) is moved across the image.
+- Each pixel value is recalculated based on the weighted sum of its neighboring pixel values, defined by the kernel.
+- This operation highlights specific spatial patterns in the image.
+
+#### **Examples of Convolution in Satellite Images**
+
+1. **Edge Detection** (e.g., Sobel or Prewitt filters) – Helps identify boundaries of features such as roads, buildings, and water bodies.
+2. **Smoothing (Blurring)** (e.g., Gaussian filter) – Reduces noise by averaging neighboring pixel values.
+3. **Sharpening** (e.g., Laplacian filter) – Enhances fine details by emphasizing high-frequency components.
+4. **Feature Extraction** – Helps in vegetation index calculations, land cover classification, and cloud detection.
+5. **Deep Learning (CNNs)** – Convolutional Neural Networks (CNNs) use multiple convolution layers to automatically extract features for classification and segmentation of satellite images.
+
+
 - Supervised and unsupervised learning :
 	- **Supervised Classification** is a **knowledge-driven approach** where classes are predefined and the algorithm is trained on labeled data (Ground Truth).
 	1. Collect training data representative of each class.
@@ -21,7 +39,7 @@
 		This includes radars, LIDAR...
 
 
-1. 1. Different types of resolution are important in remote sensing:
+6. 1. Different types of resolution are important in remote sensing:
     
     1. **Temporal Resolution:** Frequency at which data is captured over time. For example:
         
@@ -31,6 +49,12 @@
     2. **Spectral Resolution:** Ability of the sensor to distinguish between different wavelengths of the EM spectrum. Higher spectral resolution provides more detailed data but requires more storage capacity and can impact data availability.
     3. **Spatial Resolution:** Size of the smallest object that can be resolved in the image. It is determined by the **Ground Instantaneous Field Of View (GIFOV)**, which is the area on the ground that corresponds to a single pixel in the image. If a detail is smaller than the GIFOV, it will not be captured._Higher spatial resolution results in a more detailed and larger matrix of data._
     4. **Radiometric Resolution:** Ability of the sensor to distinguish between different levels of intensity or amplitude. Higher radiometric resolution allows for more precise measurements of the signal strength.
-2. data satellite image:
-3. spatial satellite
-4. radiance/reflectance et reflected radiance.
+- **Data Satellite Image**: A satellite image is a digital representation of the Earth's surface captured by a satellite sensor. It consists of pixel-based data, where each pixel represents a specific location on Earth and contains values corresponding to different spectral bands.
+    
+- **Spatial Satellite**: This likely refers to the **spatial resolution** of a satellite image, which defines the size of the smallest object that can be detected. It is measured in meters per pixel. Higher spatial resolution (e.g., 30 cm) allows for more detailed imagery, whereas lower spatial resolution (e.g., 1 km) captures broader areas with less detail.
+    
+- **Radiance/Reflectance and Reflected Radiance**:
+    
+    - **Radiance**: The amount of electromagnetic energy received by the satellite sensor per unit area, per unit solid angle, and per unit wavelength. It is measured in watts per square meter per steradian per micrometer (W·m⁻²·sr⁻¹·μm⁻¹).
+    - **Reflectance**: The ratio of reflected radiation to the incoming radiation from the Sun. It is a unitless value (ranging from 0 to 1 or expressed as a percentage).
+    - **Reflected Radiance**: This refers to the portion of the total radiance that is reflected off the Earth's surface and captured by the sensor. It is influenced by surface properties, atmospheric conditions, and the angle of incidence.
