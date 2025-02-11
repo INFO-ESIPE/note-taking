@@ -196,7 +196,7 @@ This layer is called an **"end to end" transport service**, which means it is ex
 	In other words, it is only executed by the two machines communicating, not the intermediate machines (routers, switches, access point...) in between.
 
 Two main protocols for this layer:
-- **Transmission Control Protocol (TCP)**, RFC 793
+- **Transmission Control Protocol (TCP)**, RFC 793, 9293
 	*Connected, flow control, retransmission of lost frames, segmentation of data from the application layer*
 - **User Datagram Protocol (UDP)**, RFC 768
 	*Handles "datagrams" without connection establishment. It does not guarantee reliability, order, or segmentation beyond the network layer MTU limits.*

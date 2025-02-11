@@ -65,6 +65,7 @@ An exchange is uniquely identified by the **quintuplet**:  `Protocol + Client so
 
 ***
 ## TCP general principles
+*Transmission Control Protocol; RFC 793, 9293*
 
 An application interacts with TCP via **calls** (e.g., Open, Send, Receive, Close, Abort...): App transmits a command to TCP, and the later replies with information on the success/failure of the command execution, along with the connection state.
 	*Those calls are defined by the OS, and may differ depending on the implementation of TCP.*
@@ -376,8 +377,9 @@ The most popular ones are: **Reno**, **Tahoe**, **New Reno**, BIC, CUBIC
 
 ***
 ## UDP
+*User Datagram Protocol; RFC 768*
 
-User Datagram Protocol (RFC 768). It offers minimal features:
+It offers minimal features:
 - Not connection-oriented (Datagrams)
 - Doesn't handle congestion control, sequencing or recovery. However, it does provide a minimal form of error handling through a **checksum**.
 - Stateless
