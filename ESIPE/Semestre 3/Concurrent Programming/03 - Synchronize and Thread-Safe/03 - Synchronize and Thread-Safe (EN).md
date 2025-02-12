@@ -119,7 +119,7 @@ public class Counter {
 >    - Lock must be **final**, as it **must be initialised in the constructor and never change afterwards** 
 >    - As mentioned above, **never provide an accessor to the lock**
 > - It must be an **object**, so no primitives (int, long...) nor null 
-> - The chosen object **mustn't implement interning** (String literals). More details [[03 - Synchronize and Thread-Safe (EN)#Interning|bellow]] 
+> - The chosen object **mustn't implement interning** (String literals). More details [[03 - Synchronize and Thread-Safe (EN)#Interning|below]] 
 
 Locks in java are called **"re-entrant"**, a **same thread can acquire several time the same lock**:
 ```java

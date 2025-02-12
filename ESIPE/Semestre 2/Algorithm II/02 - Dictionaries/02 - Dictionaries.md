@@ -59,7 +59,7 @@ remove(int num) {
 }
 ```
 > [!Caution] 
-> The approach is good, but it requires a massive array... Let's fix this space problem bellow
+> The approach is good, but it requires a massive array... Let's fix this space problem below
 
 
 ***
@@ -102,7 +102,7 @@ Another collision resolution strategy: all elements are stored directly in the h
 When a collision occurs (two keys hashing to the same index), the algorithm **probes for the next available bucket in the array**.
 1. **Hash the Key**: Use the hash function to find the initial index.
 2. **Probe**: If the bucket at that index is occupied, look for the next available slot according to a probing scheme.
-	*A simple solution (used in the example bellow) is linear probing, resulting in a fixed interval (`interval=1`) for instance*
+	*A simple solution (used in the example below) is linear probing, resulting in a fixed interval (`interval=1`) for instance*
 3. **Wrap Around**: The table is treated as circular; if you reach the end of the array, you continue from the beginning.
 ![[openaddressing.png]]
 > [!Important] 

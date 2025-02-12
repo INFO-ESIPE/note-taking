@@ -98,11 +98,11 @@ We can now see various useful commands we can leverage inside gdb:
 Most of those instructions have corresponding shorthand commands.
 	*E.g., `info register eip` can be shortened by `i r eip`*
 
-It is also possible to do mathematical operations. The result will be **stored in a temporary variable in the debugger** (called `$1` in the example bellow):
+It is also possible to do mathematical operations. The result will be **stored in a temporary variable in the debugger** (called `$1` in the example below):
 ```asm
 print $ebp - 4
 $1 = (void *) 0xbffff804
-x/4xb $1 # Re-using $1. More information on x command bellow (examine part)
+x/4xb $1 # Re-using $1. More information on x command below (examine part)
 0xbffff804: 0xc0 0x83 0x04 0x08
 ```
 
@@ -154,7 +154,7 @@ Example:
 0x8048384 <main+16>: 0x00fc45c7 0x83000000 0x7e09fc7d 0xc713eb02
 0x8048394 <main+32>: 0x84842404 0x01e80804 0x8dffffff 0x00fffc45
 ```
-> Notice how the units are padded to the right as we enlarge the unit size (0x**c7** -> 0x45**c7***) due to little-endian (least significant byte stored first). gdb is smart enough to reverse the value correctly, that's why we have this behaviour. Demonstration bellow:
+> Notice how the units are padded to the right as we enlarge the unit size (0x**c7** -> 0x45**c7***) due to little-endian (least significant byte stored first). gdb is smart enough to reverse the value correctly, that's why we have this behaviour. Demonstration below:
 
 ```asm
 (gdb) x/4xb $eip

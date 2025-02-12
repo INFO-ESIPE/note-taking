@@ -61,7 +61,7 @@ Thresholding divides the image into regions by intensity:
 
 ### Colour representation
 
-We represent a colour on an int (four bytes, expressed in hexadecimal bellow):
+We represent a colour on an int (four bytes, expressed in hexadecimal below):
 	`int pixel = 0xAARRGGBB`
 
 Where:

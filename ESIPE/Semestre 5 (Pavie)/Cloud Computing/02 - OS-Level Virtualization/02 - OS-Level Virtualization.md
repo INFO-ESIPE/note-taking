@@ -93,12 +93,12 @@ It's primary use is to run Linux containers, but it can also run Windows contain
 
 Libcontainer is a cross-system abstraction layer aimed to support a wide range of **isolation technologies by exploiting the Linux Kernel**.
 
-![[libcontainer.png]]
+![[libcontainer.png|300]]
 
 It aims at offering better features to classic LXC
 	*Portable deployment across machines, Versioning (git-like), Component reuse, Shared libraries...*
 
-All this process isolation is possible since version 3.16 of the Linux kernel (3 Aug. 2014). The subtopics bellow are permitted by `libcontainer`.
+All this process isolation is possible since version 3.16 of the Linux kernel (3 Aug. 2014). The subtopics below are permitted by `libcontainer`.
 
 
 #### Workspace isolation: Namespaces

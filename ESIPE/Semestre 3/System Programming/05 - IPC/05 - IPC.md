@@ -296,7 +296,7 @@ Once declared, only two operations are permitted:
 	*So, this is a blocking action. Sometimes also called `P()`, which stands for **P**roberen te verlage (**TRY** to decrease)*
 - `post()`: Atomic operation that increments the semaphore by 1, waking up a waiting P, if any.
 	*Equivalent to a `signal()`. Sometimes also called `V()`, which stands for **V**erhogen (increase)*
-> This means that we can not directly read/write the integer value after initialisation, it is **opaque**. Furthermore, those two methods must necessarily be atomic (so if several `P()` occurs at the same time, the integer value cannot drop bellow 0).
+> This means that we can not directly read/write the integer value after initialisation, it is **opaque**. Furthermore, those two methods must necessarily be atomic (so if several `P()` occurs at the same time, the integer value cannot drop below 0).
 
 > [!tip]
 > Try to represent it like a traffic light turning red when the integer reaches 0, thus blocking all access via `P()` until someone uses `V()` to come back:

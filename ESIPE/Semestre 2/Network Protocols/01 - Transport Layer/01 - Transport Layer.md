@@ -114,7 +114,7 @@ Initiated by the application layer, it is opened via three segments (hence the n
 
 Can be initiated by any end when no more resources to send. It frees the allocated resources.
 It is composed of four segments.
-	*The second segment on the figure bellow is actually done in two steps: FIN is sent first, and then ACK (each on its own segment)*
+	*To be precise, the second segment on the figure below is actually done in two steps: FIN is sent first, and then ACK (each on its own segment)*
 
 ![[closing.png|600]]
 

@@ -630,7 +630,7 @@ console.log(car.driverName()); // ReferenceError: driver is not defined
 ```
 
 ### Deeper dive - Prototypes
-*This is mostly useful for JavaScript 6 and bellow*
+*This is mostly useful for JavaScript 6 and below*
 
 How does the `class` keyword really works ?
 Well in fact, a JavaScript class is a function:

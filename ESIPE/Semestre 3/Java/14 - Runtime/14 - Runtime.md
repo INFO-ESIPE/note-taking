@@ -99,7 +99,7 @@ This is the first step. Every object we instantiate is binded to a mark bit (whi
 3. We turn the mark bit to true (1) for each object we can reach
 > This process can obviously be done while the program is running
 
-Now that our objects are marked, we need to do something with the ones that we could not reach. Two algorithms exists (bellow), but they do share this same mark phase.
+Now that our objects are marked, we need to do something with the ones that we could not reach. Two algorithms exists (below), but they do share this same mark phase.
 
 #### Mark & Sweep
 

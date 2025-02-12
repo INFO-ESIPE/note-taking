@@ -167,7 +167,7 @@ Thread.ofPlatform().name("Listener thread").start(() -> {
 ```
 
 
-As we don't manage the execution order, we **cannot predict in which order the names bellow will be printed**:
+As we don't manage the execution order, we **cannot predict in which order the names below will be printed**:
 ```java
 public static void main(String[] args) {
 	Runnable runnable = () -> {

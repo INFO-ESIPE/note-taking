@@ -44,7 +44,7 @@ The client will receive:
 
 PHP is a **weakly typed** language, which means it's up to PHP to decide a variable type upon assignment. 
 	*This means that a variable type can change through time.*
-However, modern versions of PHP allow **type enforcement** (explained [[14 - PHP#Forcing typing (out of class scope)|bellow]]). Main scalar types:
+However, modern versions of PHP allow **type enforcement** (explained [[14 - PHP#Forcing typing (out of class scope)|below]]). Main scalar types:
 - `int`
 - `float`
 - `string`
@@ -358,7 +358,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 Two more superglobals exists: 
 - `$_SESSION`: Stores user-specific data during a session.
 - `$_COOKIE`: Stores small pieces of data in the client’s browser.
-Those are covered [[14 - PHP#Sessions and cookies|bellow]].
+Those are covered [[14 - PHP#Sessions and cookies|below]].
 
 ### Sessions and cookies
 
