@@ -528,12 +528,303 @@ All allocations are documented by [IANA](https://www.iana.org/numbers)
 
 
 ***
-## Dynamic routing and addressing in WANs
+## Addressing and Dynamic Routing in WANs
+
+### AS
+*Autonomous System; RFC 1930*
+
+An AS is a collection of networks under a single administrative domain, governed by a unified routing policy. It is identified by a 2 or 4 bytes **AS Number (ASN)**.
+	*Assignment follows the procedure describes above for IP management: IANA -> RIR -> ISP/Telecom*
+
+> [!example]- ASN examples
+> AS2200 (Renater), AS12322 (Free), AS3215 (Orange)
 
 
+### IGP, EGP
+*Interior Gateway Protocol; Exterior Gateway Protocol*
+
+IGPs (e.g., RIP, OSPF) manages routing **within** an AS, maintaining up-to-date topology information by correctly completing routing tables.
+
+> [!info]- IGP examples
+> - **RIP (Routing Information Protocol, RFC 1058)** is a distance-vector protocol using hop count as a metric, and periodically broadcasts routing tables to neighbours,
+>   However, it has limited scalability (max 15 hops)
+> - **OSPF (Open Shortest Path First, RFC 2328)** is a link-state protocol using Dijkstra’s algorithm. It floods Link-State Advertisements (LSAs) to build a topology map.
+>   Supports hierarchical routing with areas
+
+EGPs (e.g., BGP), on the other hand, are here to exchange routing information (address ranges) **between** ASes, so each AS can learn others' addresses.
+
+> [!info]- EGP example
+> - **BGP (Border Gateway Protocol, RFC 4271)** is a path-vector protocol which advertises routes as sequences of ASes. Those routers are selected based on attributes like AS path length, local preference, and MED (Multi-Exit Discriminator).
+
+![[igp-egp.png|600]]
+
+
+### Route Aggregation and VLSM
+*Variable Length Subnet Masking*
+
+The aforementioned mechanisms will heavily increase the amount of lines in the routing tables (which will increase latency and mem/CPU consumption).
+A mechanism of **route aggregation (supernetting)** is here to reduce routing table size by merging contiguous prefixes.
+
+The logic is: IANA attributes contiguous blocks of addresses to RIRs. The later must keep the contiguous aspect when re-distributing it to ISPs.
+
+![[supernetting.png|500]]
+> [!caution] Limitation
+> Historically-attributed static addresses disturb the contiguity of the ranges
+
+> [!example]- Supernetting example
+> ![[supernetting-example.png|650]]
+
+
+Now, VLSM is here to allocate subnets hierarchically to minimise wasted addresses:
+1. Assign the largest subnet first
+2. Allocate smaller subnets from remaining contiguous blocks
+
+> [!example]- ISP owns `200.100.128.0/19`
+> So, we begin with the following:
+>```
+>11001000 . 01100100 . 100 00000 . 0000 0000
+> |_______________________| |_______________|
+>         Net-id                Host-id
+>```
+>
+> Now, client A needs 2000 addresses: 11 bits host-id -> `/21` prefix
+> 	Range from `200.100.128.1 `to `200.100.135.254`
+> Client B needs 1000 addresses: 10 bits host-id -> `/22` prefix
+>	Range from `200.100.136.1` to `200.100.139.254`
+> Client C needs 100 addresses: 7 bits host-id -> `/25` prefix
+>	Range from `200.100.140.1` to `200.100.140.127`
+> 
+> The best way to visualise this is as a tree:
+> ![[vlsm-tree.png|600]]
+
+
+### `/31` prefix
+*RFC 3021, 2000*
+
+This addressing scheme only gives room for two addresses: Network and broadcast address. Both addresses are usable for interface assignments, unlike larger subnets where these are typically reserved.
+In general, this is used for **point-to-point links**, such as direct connections between two routers.
+	*Purpose is to avoid wasting addresses, dynamic routing protocols are unaffected as long as both endpoints support RFC 3021 (which is the case for most modern Operating Systems)*
+
+![[thirtyone.png|600]]
+
+
+### Dynamic routing
+
+Protocols fulfilling this purpose are based algorithms searching for the "best path". Two large kinds:
+1. **Distance vector protocols**, shortest path algorithm (e.g., Belman-Ford)
+	Periodic transmission of known routes to neighbouring routers → update if route is shorter or new 
+		*[[02 - Network Layer#IGP, EGP|RIP]], RIPv2, IGRP...*
+
+> [!example]- Routing table construction
+> ![[vector-rtable.png|600]]
+
+> [!example]- Topology change
+> ![[vector-topology-change.png|600]]
+
+2. **Link state protocols**, usually relies on Dijkstra
+	Attributes a metric to links (depending on robustness, capacity...).
+	Periodic transmission of the state of links between routers → establishment of a complete map of the topology → calculation of the ‘best’ routes (lowest cost)
+		*[[02 - Network Layer#IGP, EGP|OSPF]], IS-IS...*
+
+> [!example]- Neighbourhood discovery
+> ![[link-neighbourhood.png|600]]
+
+> [!example]- Topology information propagation
+> ![[link-topology.png|600]]
+
+> [!example]- Common topology and routing tables
+> ![[link-routing.png|600]]
+
+> [!example]- Topology change
+> ![[link-topology-change.png|600]]
+
+Comparison:
+
+| **Criteria**                  | **Distance-Vector (e.g., RIP)**       | **Link-State (e.g., OSPF)**                |
+| ----------------------------- | ------------------------------------- | ------------------------------------------ |
+| **Convergence Speed**         | Slower (relies on periodic updates)   | Faster (uses triggered updates)            |
+| **Transient Loops**           | Possible (split-horizon mitigates)    | None (loop-free via SPF algorithm)         |
+| **Bandwidth Usage**           | Higher (full routing table exchanges) | Lower (sends incremental updates)          |
+| **Resource Consumption**      | Lower CPU/memory (small tables)       | Higher CPU/memory (maintains topology)     |
+| **Implementation Complexity** | Simpler (easy to configure)           | More complex (requires topology setup)     |
+| **Hierarchical Support**      | Not natively supported                | Supported (e.g., OSPF areas, IS-IS levels) |
 
 
 ***
 ## IPv6
 *Internet Protocol, Version 6; RFC 2460, 8200*
+
+Introduced for two reasons:
+- Remedy IPv4 address exhaustion
+- Improve weak points of IPv4 (fragmentation, QoS, security...)
+
+Transition form IPv4 to IPv6 is still ongoing, with more or less success on specific infrastructures
+
+![[ipv6-transition.png|600]]
+> For April 2023
+
+IPv6 are managed similarly to IPv4 (IANA, RIR).
+
+
+### IP Format
+
+Address coded on 16 bytes (128 bits), and follows those guidelines:
+- **Grouping**: Bytes are grouped into **four hexadecimal digits** (two bytes per group), separated by colons (`:`).
+- **Prefix Notation**: The prefix length (CIDR notation) is appended with a `/`, similar to IPv4.
+
+>Here's an example of an IPv6 address with a `/64` prefix:
+
+```
+0010 0000 0010 0101  1010 1011 0000 0001  0000 1100 0010 0100  0001 0000 0100 1010  0000 0000 0000 0000  0000 0000 0000 0000  0001 0011 1101 1110  0001 1111 0000 0000
+2025               : AB01               : 0C24               : 104A               : 0000               : 0000               : 13DE               : 1F00               /64
+|_________________________________________________________________________________| |________________________________________________________________________________|
+								    Net-id                                                                             Host-id
+```
+
+However, an IPv6 can be abbreviated:
+- **Leading Zeros**: Omit leading zeros in each group.
+- **Consecutive Zeros**: Replace one or more consecutive groups of zeros with `::`.
+	*Note that this last shortcut can only be used once per address*
+
+> [!example]- Abbreviate the IPv6 above
+>```
+>   2025 : AB01 : 0C24 : 104A : 0000 : 0000 : 13DE : 1F00 / 64
+>= 2025 : AB01 :  C24 : 104A ::              13DE : 1F00 / 64
+>```
+
+
+### Scope
+
+Three main entities:
+3. **Node**: Any device on the network (e.g., host, router, server)
+4. **Link**: A collection of interfaces that can communicate at the data link layer without traversing a router
+	*(e.g., Ethernet/WiFi, PPP)*
+5. **Site**: An interconnected set of subnets within an organisation.
+
+![[ipv6-scope.png|600]]
+
+| **Type**           | **Usage**                                                                                                | **Prefix**                     |
+| ------------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| Link-Local Unicast | Identifies an interface on a local network (link)<br>Not routable beyond the local network<br>           | `FE80::/10`                    |
+| Global unicast     | Identifies an interface globally on the Internet<br>Routable across the entire IPv6 internet             | `2000::/3`                     |
+| Multicast          | Represents a group of interfaces<br>Packets sent to a multicast address are delivered to all members<br> | `FF00::/8`                     |
+| Anycast            | Assigned to multiple interfaces<br>Packets are routed to the nearest interface with this address<br><br> | Shared with <br>Global Unicast |
+> [!info]
+> There is no broadcast address for IPv6
+
+> [!info]- Multicast prefixes
+> | **Prefix**                  | **Scope** | **Meaning**                                            |
+> | --------------------------- | --------- | ------------------------------------------------------ |
+> | `FF01::1`                   | Node      | All node addresses on the local device                 |
+> | `FF01::2`                   | Node      | All router addresses on the local device               |
+> | `FF02::1`                   | Link      | All node addresses on the local network                |
+> | `FF02::2`                   | Link      | All router addresses on the local network              |
+> | `FF02::1:2`                 | Link      | All DHCPv6 servers/relays                              |
+> | `FF02:0:0:0:0:1:FF00::/104` | Link      | Solicited-node multicast (used for neighbor discovery) |
+> | `FF02::9`                   | Link      | RIPng routers                                          |
+> | `FF05::2`                   | Site      | All routers within the organization                    |
+> | `FF05::1:3`                 | Site      | All DHCPv6 servers within the organization             |
+> 
+
+> [!info]- Unspecified addresses
+> | **Type**            | **Notation** | **Remarks**                       |
+> | ------------------- | ------------ | --------------------------------- |
+> | Unspecified address | `::/128`     | Same usage as `0.0.0.0` in IPv4   |
+> | Loopback            | `::1/128`    | Same usage as `127.0.0.1` in IPv4 |
+> 
+> 
+
+#### Interface Identifier
+
+**64-bit value** that uniquely identifies an interface when combined with a network prefix.
+
+**Original Method (Deprecated)** - Derived from the **MAC address**:
+      1. Invert the _Universal/Local (U) bit_ (7th bit of the first byte)
+      2. Insert `FF:FE` between the 3rd and 4th bytes of the MAC.    
+        - **Example**: `00:1C:98:3A:6D:25` → `021C:98FF:FE3A:6D25`
+
+> [!caution] Issue
+> This method gives too much room for device tracking, as the identifiers are predictable...
+   
+**RFC 7217 (Secure Method)** - Generates a **non-reversible interface identifier** using:
+    - A cryptographic hash (SHA-1) of the MAC address
+    - Network prefix
+    - Secret key (optional).
+
+> [!success] Better
+
+#### Link-Local address
+
+Local scope, identifies an interface on a link. Used for auto-configuration of the machine (global unicast address, neighbourhood & router discovery...)
+**Format**
+- **Prefix**: `FE80::/64` (first 64 bits).
+- **Interface Identifier**: Last 64 bits (derived from MAC or RFC 7217).
+
+> [!example]- For MAC Address `00:1C:98:3A:6D:25`
+> Interface Id: `00:1C:98:3A:6D:25` -> ``21C:98FF:FE3A:6D25``
+> Link-Local Address: `FE80:: 21C:98FF:FE3A:6D25 / 64`
+> 
+> ![[link-local.png|600]]
+
+This local address can be auto-configured, thus enabling communication within the local network segment (link), three steps:
+6. Generate interface-id
+7. Address formation (combine link-local prefix and interface-id like described above)
+8. **Uniqueness check**: Host sends an **ICMPv6 Neighbour Solicitation** message to the multicast address `FF02::1` (all nodes on the link).
+	If no response (Neighbour Advertisement) is received, the address is considered unique
+
+![[link-local-config.png|550]]
+
+
+#### Global unicast address
+
+Uniquely identifies an interface over the internet. Composed of three parts:
+9. **Global routing prefix**: 48 bits, assigned by a RIR or ISP. Begins by bits `001`
+10. **Subnet-id**: 16 bits to segment the network, managed by the organisation
+11. **Interface Identifier (interface-id)**, 64 bits
+
+![[global-address.png|700]]
+
+> [!example]- MAC `00:1C:98:3A:6D:25` ; global prefix `2018:77:1 ::/48` ; subnet-id `1`
+> `2018:77:1: 1 :21C:98FF:FE3A:6D25 / 64`
+
+Again, this can be auto-configured for global internet communication, four steps:
+12. **Prefix Acquisition**: Routers broadcast the global prefix (e.g., `2001:db8::/48`) via **ICMPv6 Router Advertisement (RA)** messages
+13. **Address Formation**: Combine the global prefix, subnet ID (assigned by the organisation), and interface ID (like described above)
+14. **Uniqueness Check**: Host performs **Duplicate Address Detection (DAD)** via multicast *Neighbour Solicitation*
+15. **Source Address**: All configuration messages (e.g., DAD, router solicitation) use the **link-local address** as the source
+
+![[global-config.png|600]]
+
+#### Anycast address
+
+As mentioned earlier, those addresses are here to deliver packets to the **nearest** instance of a service (e.g., DNS, CDN nodes).
+Services shares the same address across multiple interfaces, and the routing protocol select the "closest" instance based on metrics (e.g., hop count).
+
+![[anycast.png|650]]
+
+
+### ICMPv6
+
+Critical for most of IPv6, it combines—and replaces—IPv4's IGMP, ICMP and ARP.
+It keeps being used for error handling, but also:
+- **Neighbour Discovery (ND)**, replacing ARP as it allows to resolve IPv6 to MAC, and detect duplicate addresses
+- **Path MTU Discovery (PMTUd)**, which lets the source dynamically determines the maximum MTU along a path
+
+
+### Modes of configuration
+
+IPv6 supports two methods for address configuration:
+16. **Stateless Address Autoconfiguration (SLAAC)**
+    The OS automatically configures addresses at startup **without a central server**        
+    Uses **ICMPv6 messages** for:
+        - **Router Discovery**: Routers periodically send *Router Advertisement (RA)* messages containing the global prefix
+        - **Duplicate Address Detection (DAD)**: Hosts verify address uniqueness via *Neighbour Solicitation* multicast messages
+        - **DHCPv6 Optional**: Additional parameters (domain name, DNS servers) can be obtained via DHCPv6 without relying on it for IP assignment
+
+17. **Stateful Configuration (DHCPv6)**
+    A **DHCPv6 server** assigns all configuration parameters, including:
+        - IPv6 addresses
+        - Domain name, DNS servers, and other network settings
+        - Used when centralised control over address allocation is required
+
 
