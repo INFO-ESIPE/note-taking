@@ -94,7 +94,7 @@ The three "private network" address blocks cannot route to the Internet without 
 > 
 > | **Role**  | **Class** | **Range**                 | **Possible Networks** | **Possible Machines** |
 > | --------- | --------- | ------------------------- | --------------------- | --------------------- |
-> | Unicast   | A         | 1.0.0.0–126.0.0.0         | 126                   | 16 777 214            |
+> | Unicast   | A         | 1.0.0.0–126.255.255.255         | 126                   | 16 777 214            |
 > | Unicast   | B         | 128.0.0.0–191.255.0.0     | 16 382                | 65 534                |
 > | Unicast   | C         | 192.0.0.0–223.255.255.0   | 2 097 150             | 254                   |
 > | Multicast | D         | 224.0.0.0–239.255.255.0   | 268 435 455           |                       |
@@ -314,7 +314,7 @@ We can divide a network into subnetworks. We reserve most significant bits of th
 
 ### Fragmentation
 
-As explained in the very first lecture, internet is about connecting heterogeneous networks which does not rely on the same protocols for the physical and data link layer (done by IP).
+As explained in the very first lecture, internet is about connecting heterogeneous networks which does not rely on the same protocols for the physical and data link layer. Differences on the later are abstracted by IP.
 This is because the data link layer has a great variety of standards, distinguished by:
 - Their **addressing schemes**; MAC address for ethernet & WiFi, VPI/VCI for Asynchronous Transfer Mode (ATM) networks...
 - Their **Maximum Transfer Unit (MTU)**, so the maximum accepted size of the SDU for our IP packet
@@ -333,6 +333,9 @@ Four header fields are used to achieve fragmentation:
 
 > [!example]- 4000 bytes packet entering a 1500-MTU network
 > ![[header-fragment.png|675]]
+
+> [!info] Method for IPv6
+> In IPv6, routers do not fragment packets. Instead, sources use ICMPv6 Packet Too Big messages to discover the MTU and adjust packet sizes accordingly.
 
 
 ### ARP
@@ -767,9 +770,9 @@ Local scope, identifies an interface on a link. Used for auto-configuration of t
 > ![[link-local.png|600]]
 
 This local address can be auto-configured, thus enabling communication within the local network segment (link), three steps:
-6. Generate interface-id
-7. Address formation (combine link-local prefix and interface-id like described above)
-8. **Uniqueness check**: Host sends an **ICMPv6 Neighbour Solicitation** message to the multicast address `FF02::1` (all nodes on the link).
+1. Generate interface-id
+2. Address formation (combine link-local prefix and interface-id like described above)
+3. **Uniqueness check**: Host sends an **ICMPv6 Neighbour Solicitation** message to the multicast address `FF02::1` (all nodes on the link).
 	If no response (Neighbour Advertisement) is received, the address is considered unique
 
 ![[link-local-config.png|550]]
@@ -778,9 +781,9 @@ This local address can be auto-configured, thus enabling communication within th
 #### Global unicast address
 
 Uniquely identifies an interface over the internet. Composed of three parts:
-9. **Global routing prefix**: 48 bits, assigned by a RIR or ISP. Begins by bits `001`
-10. **Subnet-id**: 16 bits to segment the network, managed by the organisation
-11. **Interface Identifier (interface-id)**, 64 bits
+1. **Global routing prefix**: 48 bits, assigned by a RIR or ISP. Begins by bits `001`
+2. **Subnet-id**: 16 bits to segment the network, managed by the organisation
+3. **Interface Identifier (interface-id)**, 64 bits
 
 ![[global-address.png|700]]
 
@@ -788,10 +791,10 @@ Uniquely identifies an interface over the internet. Composed of three parts:
 > `2018:77:1: 1 :21C:98FF:FE3A:6D25 / 64`
 
 Again, this can be auto-configured for global internet communication, four steps:
-12. **Prefix Acquisition**: Routers broadcast the global prefix (e.g., `2001:db8::/48`) via **ICMPv6 Router Advertisement (RA)** messages
-13. **Address Formation**: Combine the global prefix, subnet ID (assigned by the organisation), and interface ID (like described above)
-14. **Uniqueness Check**: Host performs **Duplicate Address Detection (DAD)** via multicast *Neighbour Solicitation*
-15. **Source Address**: All configuration messages (e.g., DAD, router solicitation) use the **link-local address** as the source
+1. **Prefix Acquisition**: Routers broadcast the global prefix (e.g., `2001:db8::/48`) via **ICMPv6 Router Advertisement (RA)** messages
+2. **Address Formation**: Combine the global prefix, subnet ID (assigned by the organisation), and interface ID (like described above)
+3. **Uniqueness Check**: Host performs **Duplicate Address Detection (DAD)** via multicast *Neighbour Solicitation*
+4. **Source Address**: All configuration messages (e.g., DAD, router solicitation) use the **link-local address** as the source
 
 ![[global-config.png|600]]
 
@@ -807,21 +810,23 @@ Services shares the same address across multiple interfaces, and the routing pro
 
 Critical for most of IPv6, it combines—and replaces—IPv4's IGMP, ICMP and ARP.
 It keeps being used for error handling, but also:
-- **Neighbour Discovery (ND)**, replacing ARP as it allows to resolve IPv6 to MAC, and detect duplicate addresses
+- **Neighbour Discovery (ND)**, Allows to resolve IPv6 to MAC, and detect duplicate addresses
 - **Path MTU Discovery (PMTUd)**, which lets the source dynamically determines the maximum MTU along a path
+
+ND and Neighbour Advertisement (NA) allows ICMPv6 to completely replace ARP.
 
 
 ### Modes of configuration
 
 IPv6 supports two methods for address configuration:
-16. **Stateless Address Autoconfiguration (SLAAC)**
+1. **Stateless Address Autoconfiguration (SLAAC)**
     The OS automatically configures addresses at startup **without a central server**        
     Uses **ICMPv6 messages** for:
         - **Router Discovery**: Routers periodically send *Router Advertisement (RA)* messages containing the global prefix
         - **Duplicate Address Detection (DAD)**: Hosts verify address uniqueness via *Neighbour Solicitation* multicast messages
         - **DHCPv6 Optional**: Additional parameters (domain name, DNS servers) can be obtained via DHCPv6 without relying on it for IP assignment
 
-17. **Stateful Configuration (DHCPv6)**
+2. **Stateful Configuration (DHCPv6)**
     A **DHCPv6 server** assigns all configuration parameters, including:
         - IPv6 addresses
         - Domain name, DNS servers, and other network settings
