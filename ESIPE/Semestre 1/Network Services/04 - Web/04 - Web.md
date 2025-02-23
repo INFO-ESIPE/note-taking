@@ -268,6 +268,9 @@ HTTP Methods are known as **idempotent** if they always have the same behaviour,
 > | OPTIONS    | y        | y              |
 > | HEAD       | y        | y              |
 
+*Note: Header fields about proxy forwarding are mentioned [[01 - Filtering#"Forwarded" extension|in this lecture]].
+	   Deeper look at the CONNECT method is provided [[01 - Filtering#HTTP CONNECT|here]].*
+
 
 ### HSTS
 
