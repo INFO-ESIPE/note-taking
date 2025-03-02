@@ -10,7 +10,7 @@
 Applications already implement their own security mechanisms (S/MIME for Email, Kerberos for Active Directory, TLS for web access), but we would like **to have an IP-Level security mechanism, introducing IPsec.**. 
 	*While aforementioned mechanism are implemented at the application layer (OSI Level 7) or presentation layer (OSI Level 6), IPsec will operate at the network layer (OSI Level 3).*
 
-![[osi-model.png]]
+![[osi-model.png|300]]
 
 The point of a lower-level security mechanism is **to provide a generic security mechanism for any kind of application or communication** (while higher-level ones only works for specific applications).
 
@@ -42,7 +42,7 @@ But what are the concrete benefits of IPsec, well:
 
 It looks like this:
 
-![[ipsec-archi.png]]
+![[ipsec-archi.png|550]]
 > [!note]
 > Since we aren't in a networking class (nor an algorithmic class), we will only focus on the two protocols of the upper layer. 
 
@@ -58,22 +58,22 @@ IPSec provides two modes of operation to cater to different use cases: one for p
 
 First solution for encapsulation. Provides data integrity, authentication of the IP packet sender, and optional replay protection. 
 ==However, it does not provide encryption.==
-![[ipsec-ah.svg]]
+![[ipsec-ah.svg|650]]
 
 
 ### Encapsulating Security Payload (ESP)
 
 Second solution for encapsulation. Adds both encryption and authentication to ensure confidentiality and integrity.
-![[ipsec-esp.svg]]
+![[ipsec-esp.svg|650]]
 
 
 ***
 ## Commercial VPNs
-*Very superficial approach...*
+*Very superficial approach... Deeper dive [[03 - Anonymisation#VPN|here]]*
 
 Commercial Virtual Private Networks (VPN) services leverage IPSec or other protocols to establish secure transport-level connections. The **end-user will be connected to a privately-owned exit node**.
 
-![[vpn-exitnode.svg]]
+![[vpn-exitnode.svg|550]]
 
 However, keep in mind that commercial VPNs:
 - **Cannot hide their own usage**, meaning organisations may block VPN traffic.

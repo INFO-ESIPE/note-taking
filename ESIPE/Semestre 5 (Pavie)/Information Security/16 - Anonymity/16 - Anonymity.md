@@ -16,16 +16,13 @@ Anonymity ensures that users can interact with digital systems without revealing
 	- Within services: Registration or fingerprinting
 	- Across services: Techniques like tracking cookies aggregate data to form profiles
 
-
 > [!info]- Mind the difference between Anonymity and Pseudonymity
 >**Anonymity**: Complete non-identifiability or untraceability.
 >**Pseudonymity**: Use of an alias (nickname), often protected by law, for partial identity concealment.
 
-
 ### For who?
 
 Even though the lectures says that it is mostly for whistleblowers, corporations, law enforcement, governments and criminals, it is good for any individual to remain as anonymous as possible in most situations.
-
 
 ### Data Anonymisation and K-Anonymity
 
@@ -41,7 +38,7 @@ Two ways to gain "anonymity" on our communication:
 > [!caution] Downside: Single Point of failure, the proxy knows both who we are and who we communicate with
 
 2. **Mix Network (Mixes)**: Random permutation and decryption of messages.
-![[mix-network.png|550]]
+![[mix-network.png|450]]
 > [!caution] Downside: Each layer requires asymmetric encryption (costly and slow)
 
 
@@ -53,13 +50,12 @@ In essence, TOR leverages the strength of both mixes and proxies:
 1. Proxies: Communication passes through **a series of Onion Routers** (intermediaries). The final router delivers the message to its recipient.
 2. Mixes: **Symmetric encryption is established with each Onion Router** along the communication path, creating a secure route.
 
-![[onionkeys.png|700]]
-
+![[onionkeys.png|500]]
 
 Each Onion Router is associated with a dedicated **symmetric key**, introducing the concept of **layered encryption**:
 - Each message is encrypted in layers, with one layer dedicated to each Onion Router.
 - As the message traverses the path, each router decrypts its respective layer and forwards the message to the next.
-> ![[onion.png|500]]
+> ![[onion.png|400]]
  
 The design ensures that no single router knows both:
 - The source (the identity of the original sender)
@@ -73,7 +69,6 @@ The design ensures that no single router knows both:
 > Furthermore, keep in mind that those intermediates can not necessarily deduce if the machine they interact with is another onion router or a real client/server.
 
 Keep in mind that the communication must still use TLS, as the last node can see our message. TOR is here to anonymise our exchange, not the frame itself. 
-
 
 ### Attacks Against TOR
 *We would need a dedicated networking class in order to explain & understand this correctly... Let's talk about them in a superficial manner though*

@@ -8,7 +8,7 @@
 ## Refresher: Trees
 
 We have seen how to do a depth traversal on trees. What is important is the order of traversal, and the properties of this order.
-![[dft_property.png]]
+![[dft_property.png|550]]
 
 
 ***
@@ -53,7 +53,7 @@ void recDFS(Graph graph, int s, boolean[] visited) {
 > `O(∣V∣+∣E∣)` for adjacency list representation.
 
 Here is what our DFS looks like:
-![[dfs_bool.gif]]
+![[dfs_bool.gif|350]]
 
 
 ### Coloured DFS
@@ -63,7 +63,7 @@ The **Forest** of a Graph DFS is the **set of trees obtained by keeping the edge
 We also classify some of the edges for the DFS:
 - **Tree edges** are the one used for the recursive calls
 - **Backward edges** are the one linking a vertex to one of its ancestor (or itself) in the forest
-![[backward.png]]
+![[backward.png|450]]
 > [!note]
 > Tree edges in blue, backward edges in pink
 

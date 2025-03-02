@@ -10,7 +10,8 @@
 ### Concept
 
 Here is what a graph looks like:
-![[graph.png]]
+
+![[graph.png|400]]
 > [!info]
 > In this situation, we can see that our graph is **oriented** (directed graph), but this is not mandatory for a graph (same as trees).
 
@@ -53,10 +54,10 @@ Graph where there is an edge `x → y` whenever there is an edge `y → x`.
 	*In other words, if one can go from `x` to `y`, we can go from `y` to `x`
 
 Edges are represented by simple links:
-![[undirected.png]]
+![[undirected.png|450]]
 
 An undirected graph is **connected** when there is **a path from every vertex to any other vertex**:
-![[connected_graph.png]]
+![[connected_graph.png|500]]
 
 > [!info]
 > This notion of connection also exists for directed graphs, but we call it a **strongly connected graph** in this context.
@@ -69,7 +70,7 @@ A graph, either directed or undirected, is weighted when there is **a value (a r
 	(In our [[01 - Graphs Fundamentals#Encoding|internal representation]], a weight of "0" is reserved to signify the absence of an edge)*
 
 > [!example]
-> ![[graph_weight.png]]
+> ![[graph_weight.png|250]]
 > The shortest path from `D` to `B` is `D -> A -> B`. 
 > Even though we have to traverse two edges, the total weight is lower than `D -> B`.
 
@@ -107,7 +108,7 @@ We will go with the most common characteristics:
 The adjacency matrix of a graph is a matrix `M` of size `|V| × |V|`, where each value represents the weight of an edge linking two vertices.
 	*If our graph is not weighted, our matrix can simply contain boolean values instead of numbers*
 
-![[adjacency_matrix.png]]
+![[adjacency_matrix.png|450]]
 
 If our graph is not oriented, edges must be set with the same weight on both directions!
 
@@ -117,7 +118,7 @@ If our graph is not oriented, edges must be set with the same weight on both dir
 The adjacency lists representation of a graph consists of a size-`|V|` array `A`, indexed by the vertices, of linked lists.
 The list `A[i]` contains all the successors of vertex `i` (not necessarily ordered).
 
-![[adjacency_list.png]]
+![[adjacency_list.png|450]]
 
 If it is a weighted graph, the elements of the lists contain both the successor and the weight of the edge!
 
