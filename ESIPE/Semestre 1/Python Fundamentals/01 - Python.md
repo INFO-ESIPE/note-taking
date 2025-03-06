@@ -179,6 +179,32 @@ even_numbers = list(filter(lambda x: x % 2 == 0, [1, 2, 3, 4]))
 print(even_numbers)  # [2, 4]
 ```
 
+Functions can accept a **variable number of positional arguments** using the `*args` syntax (so, non-keyword arguments.
+```python
+def sum_all(*args):
+    total = 0
+    for num in args:
+        total += num
+    return total
+
+print(sum_all(1, 2, 3))  # Output: 6
+print(sum_all(4, 5, 6, 7))  # Output: 22
+```
+> [!info]
+> It's pretty much the same as varargs in Java, or variadic functions in C via `stdarg.h`
+
+Furthermore, it is also possible for functions to accept a **variable number of keyword arguments** using the `**kwargs` syntax:
+```python
+def greet(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key.capitalize()}: {value}")
+
+greet(name="Alice", age=30, country="Wonderland")
+# Name: Alice
+# Age: 30
+# Country: Wonderland
+```
+
 ### Data structures
 
 Classic list, which comes with util methods (`append`, `extend`...).
@@ -476,7 +502,7 @@ from ..filters import equalizer
 ### Concept and manual use
 
 A virtual environment is an isolated Python environment to **manage project-specific dependencies without conflicts** (especially because most dependencies we will use aren't from the standard library).
-IDEs like PyCharm makes this step easier, but you can still do it manually:
+IDEs like PyCharm makes this step easier, but you can still do it manually from your shell:
 ```python
 python3 -m venv my_project_env      # Create a venv
 source my_project_env/bin/activate  # Activate (Linux/macOS)
@@ -545,6 +571,37 @@ pipx inject <package> <dependency>  # e.g., pipx inject black httpx
 | **Purpose**     | Install libraries      | Install CLI tools      |
 | **Environment** | Global or project venv | Isolated per-tool venv |
 | **Safety**      | Risk of conflicts      | No conflicts           |
+
+> [!example]- venv and package install for a basic flask project
+> ```python
+> python -m venv myenv          # Create the venv
+> source myenv/bin/activate     # Activate the venv
+> pip install Flask             # We install some packages we need for our project (in flask)
+> pip install Flask-SQLAlchemy  # ...
+> pip install psycopg2-binary   # ...
+> pip install Flask-Migrate     # ...
+> pip install Flask-WTF         # ...
+> pip install email-validator   # ...
+> pip freeze > requirements.txt # Freeze the installed packages to a requirements file
+> deactivate                    # Deactivate the virtual environment when done
+> ```
+> 
+
+### Mamba & Miniforge
+
+Mamba is the drop-in replacement for the old "Conda" package management and environment management system, designed to be faster and to handle complex dependency graphs.
+	*So, unlike pip it manages both the venv and the packages*
+Miniforge is a minimalistic installer for Conda that includes Conda-Forge as the default channel. It provides a lightweight way to install both Conda and Mamba, focusing on open-source packages and community contributions.
+
+```bash
+mamba create --name myenv python=3.9             # Create an isolated environment
+mamba activate myenv                             # Activate the environment
+mamba install numpy pandas                       # Install packages
+mamba env export --name myenv > environment.yml  # Export environment
+mamba env create --file environment.yml          # Create environment from file
+```
+
+Miniforge is widely used for scientific computing (HPC) or data science.
 
 
 ***
