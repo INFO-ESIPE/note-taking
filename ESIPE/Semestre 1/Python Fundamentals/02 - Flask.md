@@ -368,6 +368,9 @@ def index():
 > [!info]
 > Similarly to how we used `request.form.get('username')` instead of `request.form['username']` above, we use `request.cookies.get()` to correctly retrieve (or not) the cookie without raising a `KeyError` if the cookie isn't there.
 
+Similarly to Laravel, Flask allows to define **middlewares** which can capture/modify a request before it reaches the view function, and a responses before it is sent to the client.
+Middleware can be implemented as a decorator or a class that wraps the WSGI application.
+
 
 ***
 ## Response
@@ -633,14 +636,153 @@ Note that signals are made for observation, not for direct modification of the d
 
 
 ***
-## Security
+## Logging
 
+We can use python's built-in logging module to handle this task. It can output messages to the console, a file, or both:
+```python
+import logging
+from logging.handlers import RotatingFileHandler
+
+handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
+handler.setLevel(logging.INFO)
+app.logger.addHandler(handler)
+
+@app.route('/')
+def index():
+    app.logger.info('Processing default request')
+    return "Hello, World!"
+
+@app.errorhandler(404)
+def page_not_found(e):
+    app.logger.error(f"Page not found: {e}")
+    return render_template('404.html'), 404
+```
+> [!info]
+> Classic logging levels: `DEBUG`, `INFO`, `WARNING`, `ERROR`, and `CRITICAL`
 
 
 ***
-## Logging and error handling
+## Basic security
 
+Use the `Secure` and `HttpOnly` flags for cookies:
+```python
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+)
+```
+
+Similar to the CSRF protection in Laravel blade files (`@csrf`), use Flask-WTF to implement CSRF protection:
+```python
+from flask_wtf.csrf import CSRFProtect
+
+csrf = CSRFProtect(app)
+```
+
+Use rate limiting to prevent brute-force. Libraries like Flask-Limiter can help:
+```python
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"]
+)
+```
+
+The rest is common sense, sanitise inputs, have preconditions which checks the user's session and binded permissions, set up a vault to securely manage secrets (API keys, database credentials, blabla).
 
 
 ***
 ## Asynchronous Tasks
+
+Essential for blocking I/O and time-consuming operations (e.g., sending emails, processing files, interacting with external APIs).
+Several asynchronous task queues are available, the most popular are **Celery** and Redis Queue.
+```bash
+pip install celery
+```
+
+We can now create a Celery instance and configure it to work with the Flask app:
+```python
+from celery import Celery
+
+def make_celery(app):
+    celery = Celery(
+        app.import_name,
+        backend=app.config['CELERY_RESULT_BACKEND'],
+        broker=app.config['CELERY_BROKER_URL']
+    )
+    celery.conf.update(app.config)
+    TaskBase = celery.Task
+
+    class ContextTask(TaskBase):
+        abstract = True
+
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return TaskBase.__call__(self, *args, **kwargs)
+
+    celery.Task = ContextTask
+    return celery
+
+# In the Flask app factory
+from flask import Flask
+
+app = Flask(__name__)
+app.config.update(
+    CELERY_BROKER_URL='redis://localhost:6379/0',
+    CELERY_RESULT_BACKEND='redis://localhost:6379/0'
+)
+celery = make_celery(app)
+```
+
+Finally, we define our async tasks, and call them from other parts of our app:
+```python
+@celery.task # Our async task
+def send_email(to, subject, body):
+    # blabla
+    pass
+
+@app.route('/send-email', methods=['POST'])
+def send_email_route():
+    data = request.json
+    send_email.delay(data['to'], data['subject'], data['body']) # Run asynchronously, so it doesn't block the server
+    return "Email sent!", 200
+```
+
+
+***
+## Deployment
+
+As we quickly mentioned at the beginning, deployment begins by choosing a good WSGI for a simple and universal interface between the web server and the application:
+- **Gunicorn**: A Python WSGI HTTP Server for UNIX. It’s a pre-fork worker model, which means it forks multiple worker processes to handle requests concurrently. Stable and performant
+      Command to run: `gunicorn app:app`
+- **uWSGI**: A fast, self-healing, and low-resource-consuming application server for various programming languages and protocols. This one is highly configurable and suitable for high-performance needs
+	  Command to run: `uwsgi --http :5000 --module app:app`
+- **Werkzeug (for development only!!!)**: The built-in server in Flask, based on Werkzeug’s development server. Not suitable for production due to its single-threaded nature and lack of security features
+    Command to run: `flask run`
+
+We should now set up a reverse proxy (Nginx, Apache, or IIS) which will sit between the backend and the client. It will handle incoming requests and forward them to the WSGI server, while providing load balancing, caching, compression, and more.
+```
+server {
+    listen 80;
+    server_name domain.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+> [!info] Very basic Nginx Configuration
+> Nginx configuration which sets up a reverse proxy for a web application running on port 8000.
+> - Nginx will listen for incoming requests on port 80.
+> - `proxy_pass http://127.0.0.1:8000;` will forward the requests to the flask backend running on port 8000 
+> - The remaining fields are pretty much covered in the [[01 - Filtering#"Forwarded" extension|filtering lecture]] and the [[04 - Web|web lecture]].
+
+Basic stuff is now set. It's up to you to deploy it on the cloud, do the containerisation with docker or similar, etc.

@@ -1,7 +1,7 @@
 [[Python]]
 ***
-**Note:** We'll consider you know the basics (OOP, Concurrent programming and programming overall, what's an interpreter, how to use a command line...)
-It is recommended to use PyCharm community edition for this class as it is beginner friendly. Feel free to keep using neovim though. 
+**Note:** We'll consider that you know the basics (OOP, Concurrent programming and programming overall, what's an interpreter, how to use a command line...)
+It is recommended to use PyCharm community edition for this class as it is beginner friendly
 ***
 **Table of Contents**
 ```table-of-contents
@@ -502,13 +502,13 @@ from ..filters import equalizer
 ### Concept and manual use
 
 A virtual environment is an isolated Python environment to **manage project-specific dependencies without conflicts** (especially because most dependencies we will use aren't from the standard library).
-IDEs like PyCharm makes this step easier, but you can still do it manually from your shell:
-```python
+Softwares like [[01 - Python#Mamba & Miniforge|Conda]] makes this step easier, yet you can still configure your environment manually:
+```bash
 python3 -m venv my_project_env      # Create a venv
-source my_project_env/bin/activate  # Activate (Linux/macOS)
-my_project_env\Scripts\activate.bat # Activate (Windaube)
+source my_project_env/bin/activate  # Activate venv (Linux/macOS)
+my_project_env\Scripts\activate.bat # Activate venv (Windaube)
 pip install requests numpy          # Install packages
-deactivate                          # Deactivate
+deactivate                          # Deactivate venv
 
 pip freeze > requirements.txt       # Export installed packages (yes, its specified in a simple text file)
 pip install -r requirements.txt     # Install from a requirements file
@@ -516,25 +516,21 @@ pip install -r requirements.txt     # Install from a requirements file
 > [!info]
 > Activating a venv modifies the shell’s `PATH` to prioritise the venv’s Python. It also sets `VIRTUAL_ENV` to point to the venv directory.
 > When deactivating, it unsets `VIRTUAL_ENV`, removes the venv’s `bin` from `PATH`, and restores the shell to use the **system Python** and globally installed packages.
+> In general, the name of the venv will be indicated on the left (e.g. `(my_project_venv)`) when launched, it's a useful visual indicator.
 
 ### pip & pipx
 
 Let's dig into that `pip` keyword we saw above.
-Pip is python’s default package installer. It can install packages both globally or in a virtual environment.
+Pip is python’s default package installer. It can install packages both globally or in a virtual environment depending on if you execute the pip commands inside an activated venv or not.
 ```bash
 pip install <package>           # Install a package
 pip uninstall <package>         # Remove a package
 pip list                        # Show installed packages
 
-# Install/upgrade pip itself (system-wide)
-python -m pip install --upgrade pip
-
-# Install a package globally (avoid this unless necessary)
-pip install --user <package>    # User-level install (no sudo)
-sudo pip install <package>      # System-wide install (risky)
+python -m pip install --upgrade pip # Install/upgrade pip itself (system-wide)
 
 # Install a package locally (within a venv)
-source my_venv/bin/activate     # Activate venv first
+source my_venv/bin/activate     # Activate venv first, execute the pip commands inside it
 pip install <package>           # Installed only in the venv
 
 pip list --outdated             # Check outdated packages
@@ -545,8 +541,11 @@ pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1
 
 pip freeze > requirements.txt   # Update requirements.txt after manual upgrades
 ```
+> [!tip]
+> Tools like `pip-review` or simply running ``pip list --outdated` helps patching vulnerabilities in outdated packages
 
-Another useful tool is `pipx`, which installs Python CLI tools **globally in isolated environments** to avoid dependency conflicts. So, if you have to install something globally, do it with `pipx`.
+
+Another useful tool is `pipx`, which installs Python CLI tools **globally in isolated environments** to avoid dependency conflicts. So, if you have to install something system-wide, do it with `pipx`.
 	*Each tool is installed in a separated venv, it offers a cleaner global python environment*
 ```bash
 pipx ensurepath              # Add to shell PATH
@@ -566,31 +565,17 @@ pipx run cowsay "Moo"        # Run a tool once without installing
 pipx inject <package> <dependency>  # e.g., pipx inject black httpx
 ```
 
-|                 | **pip**                | **pipx**               |
-| --------------- | ---------------------- | ---------------------- |
-| **Purpose**     | Install libraries      | Install CLI tools      |
-| **Environment** | Global or project venv | Isolated per-tool venv |
-| **Safety**      | Risk of conflicts      | No conflicts           |
+|                 | **pip**                    | **pipx**               |
+| --------------- | -------------------------- | ---------------------- |
+| **Purpose**     | Install libraries          | Install CLI tools      |
+| **Environment** | Global (bad), project venv | Isolated per-tool venv |
+| **Safety**      | Risk of conflicts          | No conflicts           |
 
-> [!example]- venv and package install for a basic flask project
-> ```python
-> python -m venv myenv          # Create the venv
-> source myenv/bin/activate     # Activate the venv
-> pip install Flask             # We install some packages we need for our project (in flask)
-> pip install Flask-SQLAlchemy  # ...
-> pip install psycopg2-binary   # ...
-> pip install Flask-Migrate     # ...
-> pip install Flask-WTF         # ...
-> pip install email-validator   # ...
-> pip freeze > requirements.txt # Freeze the installed packages to a requirements file
-> deactivate                    # Deactivate the virtual environment when done
-> ```
-> 
-
-### Mamba & Miniforge
+### Conda/Mamba & Miniforge
 
 Mamba is the drop-in replacement for the old "Conda" package management and environment management system, designed to be faster and to handle complex dependency graphs.
-	*So, unlike pip it manages both the venv and the packages*
+	*So, it allows to manage both the venv and the packages*
+
 Miniforge is a minimalistic installer for Conda that includes Conda-Forge as the default channel. It provides a lightweight way to install both Conda and Mamba, focusing on open-source packages and community contributions.
 
 ```bash
@@ -599,9 +584,63 @@ mamba activate myenv                             # Activate the environment
 mamba install numpy pandas                       # Install packages
 mamba env export --name myenv > environment.yml  # Export environment
 mamba env create --file environment.yml          # Create environment from file
+mamba deactivate                                 # Deactivate the environment
 ```
+> [!info]
+> Conda and mamba commands are interchangeable; mamba is just a faster counterpart of conda, it just does the job quicker.
+> Miniforge is widely used for scientific computing (HPC) or data science.
 
-Miniforge is widely used for scientific computing (HPC) or data science.
+It is worth noting that Conda allows to download packages beyond python (e.g., NodeJs with npm). 
+On isolated scientific environments, you will usually have to point to the organisation's offline **Artifactory**, so Conda can collect the remote artifacts. You can specify this in the `~/.condarc` file:
+```bash
+channels:
+  - conda-forge
+  - nodefaults
+
+channel_alias: https://your_artifacts.com/repository/conda-proxy
+
+ssl_verify: false
+```
+> [!tip]
+> Sometimes the scientific environment will pre-load a shared `.condarc` file with inconvenient settings. To ensure Conda is using your specific configuration, you can use the following command to check which configuration files are being loaded: `conda config --show-sources`
+> 
+> If multiple configuration files are listed, you can prioritise your own `.condarc` file by setting the `CONDARC` environment variable to its path. This ensures that Conda uses your specified configuration over any shared or default settings:
+> ```bash
+> export CONDARC=~/.condarc
+> ```
+> 
+
+By default, a Conda venv comes included with several useful programs, including pip. So, if you only want Conda for its virtual environment aspect, you may init the venv and use pip inside it to manage your packages.
+
+> [!example]- venv and package install for a basic flask+electron project
+> ```bash
+> # Create Conda environment (-y to accept basic utils installed in the venv)
+> conda create --name flask_electron_env python=3.10 -y
+> 
+> # Activate the Conda environment
+> conda activate flask_electron_env
+> 
+> # Install Node.js and npm via Conda
+> conda install -c conda-forge nodejs -y
+> npm install -g electron # Global install for electron, so it can be used outside of the venv
+> 
+> # You can install your packages with pip if you prefer
+> # for instance, flask-sqlalchemy doesn't exist on conda channels so you need pip 
+> pip install Flask
+> pip install Flask-SQLAlchemy
+> pip install psycopg2-binary
+> pip install Flask-Migrate
+> pip install Flask-WTF
+> pip install email-validator
+> 
+> # Freeze the installed packages to a requirements file
+> pip freeze > requirements.txt
+> 
+> flask run # Launches server
+> ```
+> 
+> In a separate terminal (outside of the venv, thanks to global install), you can simply type `electron .` to start the app.
+> Just make sure both npm (via `npmrc`) and Conda (via `.condarc`) points to a working channel (or an Artifactory) so it can retrieve the packages.
 
 
 ***
