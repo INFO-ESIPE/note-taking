@@ -215,7 +215,7 @@ Another situation to avoid is to nest objects too much. Prioritise a **flat** (n
 
 Well that's Kool and the Gang, but we don't really plan on doing webapps with a single page right? Fortunately, the React ecosystem includes libraries which comes handy when it comes to manage our routes in an SPA manner, the most popular one being [React Router](https://github.com/remix-run/react-router#readme), which  matches the URLs to specific components of the app.
 ```bash
-npm install react-router-dom
+npm i react-router-dom
 ```
 
 ### Modes
@@ -370,3 +370,143 @@ export function LoginPage() {
   );
 }
 ```
+
+
+***
+## Handling data fetching
+
+Let's take a basic scenario where we have to retrieve data from a distant API, how do we handle the situation.
+An important thing to understand is that fetching data (with Axios or `fetch`) is simple, the difficult part is the **asynchronous state management**.
+	*Mostly because of edge cases, race conditions, how to handle the rendering of the page while the data is loading, if an error is thrown, how to differentiate a situation of "no data yet" with "no data at all" considering the initial state...*
+
+A first naive and boilerplate approach—which is still worth mentioning and understanding—is to rely on the `useEffect` hook which lets you synchronise a component with an external system.
+You use your fetch/Axios method inside of it to fetch the data, and then manage the state once its collected:
+```tsx
+import { useState, useEffect } from 'react';
+import { fetchBio } from './api.js';
+
+export default function Page() {
+  const [person, setPerson] = useState('Alice');
+  const [bio, setBio] = useState(null);
+  
+  useEffect(() => {
+    async function startFetching() {
+      setBio(null);
+      const result = await fetchBio(person);
+      if (!ignore) {
+        setBio(result);
+      }
+    }
+
+    let ignore = false;
+    startFetching();
+    return () => {
+      ignore = true;
+    }
+  }, [person]);
+
+  return (
+    <>
+      <select value={person} onChange={e => {
+        setPerson(e.target.value);
+      }}>
+        <option value="Alice">Alice</option>
+        <option value="Bob">Bob</option>
+        <option value="Taylor">Taylor</option>
+      </select>
+      <hr />
+      <p><i>{bio ?? 'Loading...'}</i></p>
+    </>
+  );
+}
+```
+> [!caution] Why is it something to avoid doing?
+> This is far from being efficient and ergonomic, and it forces you to do things manually in a very verbose and repetitive way for each data you collect. It also misses very important features we expect from data fetching, the major ones being caching and background re-fetching.
+> Furthermore, this kind of simplistic pattern will often end up in **“network waterfalls”**: A component fetches data, then loads a child component which also fetches data, etc. We end up loading data sequentially, one by one, which is extremely slow and clearly visible on the rendering.
+
+As we can see, `useEffect` is not a good solution. A more convenient and performant **async state manager** is [React Query](https://tanstack.com/query/latest/docs/framework/react/overview), as it provides all features we need through a simplistic syntax.
+	*It is worth mentioning that React-Router also provides a simple [data loading feature](https://beta.reactrouter.com/6.28.0/start/overview#data-loading)which might come handy in simple situations*
+```bash
+npm i react-query
+```
+
+Again, this is not about fetching data but about handling the overall situation, so you still need your fetching function (usually in a "service" folder/file).
+
+> [!example]- Comparing `useEffect` to `useQuery` on the exact same situation
+> `useEffect`, mind the usage of this annoying `ignore` variable for our cleanup function
+> ```jsx
+> function Bookmarks({ category }) {
+>   const [isLoading, setIsLoading] = useState(true)
+>   const [data, setData] = useState()
+>   const [error, setError] = useState()
+> 
+>   useEffect(() => {
+>     let ignore = false
+>     setIsLoading(true)
+>     fetch(`${endpoint}/${category}`)
+>       .then(res => {
+>         if (!res.ok) {
+>           throw new Error('Failed to fetch')
+>         }
+>         return res.json()
+>       })
+>       .then(d => {
+>         if (!ignore) {
+>           setData(d)
+>           setError(undefined)
+>         }
+>       })
+>       .catch(e => {
+>         if (!ignore) {
+>           setError(e)
+>           setData(undefined)
+>         }
+>       })
+>       .finally(() => {
+>         if (!ignore) {
+>           setIsLoading(false)
+>         }
+>       })
+>       return () => {
+>         ignore = true
+>       }
+>   }, [category])
+> }
+> ```
+> 
+> Same thing with `useQuery`:
+> ```jsx
+> function Bookmarks({ category }) {
+>   const { isLoading, data, error } = useQuery({
+>     queryKey: ['bookmarks', category],
+>     queryFn: () =>
+>       fetch(`${endpoint}/${category}`).then((res) => {
+>         if (!res.ok) {
+>           throw new Error('Failed to fetch')
+>         }
+>         return res.json()
+>       }),
+>   })
+> }
+> ```
+> A Very important thing to note here is that `useQuery` does not introduce any overwhelming situation (empty states, multiple fetches of strict mode, complex loading/error states) or bugs (race condition).
+
+The library comes with very useful features and ensure a safe management of our fetched data. We can even perfection the example above by adding the cancellation feature to it:
+```jsx
+function Bookmarks({ category }) {
+  const { isLoading, data, error } = useQuery({
+    queryKey: ['bookmarks', category],
+    queryFn: ({ signal }) =>
+      fetch(`${endpoint}/${category}`, { signal }).then((res) => {
+        if (!res.ok) {
+          throw new Error('Failed to fetch')
+        }
+        return res.json()
+      }),
+  })
+}
+```
+
+
+***
+## Memoisation and React compiler

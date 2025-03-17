@@ -9,7 +9,7 @@
 
 A promise-based HTTP client which can run on both Node.js (HTTP Requests) and a browser (XMLHttpRequests). More convenient than the native `fetch` API, as it offers a pleasant syntax, better error handling, automatic JSON parsing, timeouts and request cancelling, and more.
 ```bash
-npm install axios
+npm i axios
 ```
 
 ### Basic requests
